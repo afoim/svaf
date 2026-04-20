@@ -52,7 +52,15 @@
 		{#each siteConfig.bio.links as link}
 			<a href={link.url} target="_blank" rel="noopener noreferrer">
 				<Button variant="outline" class="flex items-center gap-2">
-					<Icon icon={link.icon} class="w-5 h-5" />
+					<Icon 
+						icon={link.icon} 
+						class="w-5 h-5"
+						style={link.name === 'QQ' ? 'color: #333333' : 
+						       link.name === 'Telegram' ? 'color: #0088cc' : 
+						       link.name === 'Bilibili' ? 'color: #fb7299' : 
+						       link.name === 'GitHub' ? 'color: #2ea44f' : 
+						       link.name === 'Folo' ? 'color: #ff6b35' : ''}
+					/>
 					<span class="text-sm font-medium">{link.name}</span>
 				</Button>
 			</a>

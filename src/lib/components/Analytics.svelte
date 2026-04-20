@@ -107,6 +107,12 @@
 </script>
 
 <svelte:head>
+	<!-- Cookie Consent CSS -->
+	<link
+		rel="stylesheet"
+		href="https://www.termsfeed.com/public/cookie-consent/4.2.0/cookie-consent.css"
+	/>
+
 	<!-- 必要追踪脚本 -->
 	<script
 		data-cookie-consent="strictly-necessary"

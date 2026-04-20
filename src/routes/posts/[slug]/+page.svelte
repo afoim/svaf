@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
 	import { siteConfig } from '$lib/config/site';
+	import ImageViewer from '$lib/components/ImageViewer.svelte';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
@@ -78,6 +79,9 @@
 		</div>
 	</footer>
 </article>
+
+<!-- 图片查看器 -->
+<ImageViewer />
 
 <style>
 	@import "tailwindcss";

@@ -17,7 +17,7 @@
 </script>
 
 <svelte:head>
-	<title>{post.metadata.title} - {siteConfig.name}</title>
+	<title>{post.metadata.title} - {siteConfig.title}</title>
 	<meta name="description" content={post.metadata.description} />
 	<meta property="og:title" content={post.metadata.title} />
 	<meta property="og:description" content={post.metadata.description} />

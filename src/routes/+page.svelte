@@ -4,14 +4,15 @@
 </script>
 
 <svelte:head>
-	<title>{siteConfig.name} - 首页</title>
+	<title>{siteConfig.title} - 首页</title>
 </svelte:head>
 
 <div class="flex min-h-screen flex-col items-center justify-center gap-4">
 	<img src={siteConfig.icon} alt="Site Icon" class="h-24 w-24 rounded-full" />
 	
-	<h1 class="text-4xl font-bold">欢迎来到 {siteConfig.name}</h1>
-	<p class="text-muted-foreground">
+	<h1 class="text-4xl font-bold">{siteConfig.title}</h1>
+	<h2 class="text-xl text-muted-foreground">{siteConfig.subtitle}</h2>
+	<p class="text-muted-foreground text-center max-w-2xl">
 		{siteConfig.description}
 	</p>
 	<p class="text-sm text-muted-foreground">

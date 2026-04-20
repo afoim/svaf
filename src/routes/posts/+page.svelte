@@ -17,13 +17,13 @@
 </script>
 
 <svelte:head>
-	<title>博客 - {siteConfig.name}</title>
+	<title>文章列表 - {siteConfig.title}</title>
 	<meta name="description" content="浏览所有文章" />
 </svelte:head>
 
 <div class="container mx-auto max-w-4xl px-4 py-12">
 	<div class="mb-12 text-center">
-		<h1 class="mb-4 text-4xl font-bold">博客</h1>
+		<h1 class="mb-4 text-4xl font-bold">文章列表</h1>
 		<p class="text-muted-foreground">分享技术、想法和经验</p>
 	</div>
 

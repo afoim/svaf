@@ -2,7 +2,7 @@
 title: 隐私政策
 published: 1998-12-31T19:20:15
 description: 本隐私政策适用于AcoFork Blog（以下简称“我们”）。
-image: ""
+image: "img/privacy-policy.png"
 draft: false
 lang: ""
 ---

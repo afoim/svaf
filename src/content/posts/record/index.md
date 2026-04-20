@@ -2,7 +2,7 @@
 category: 记录
 description: 一些记录，不定时更新
 draft: false
-image: https://c-p.2x.nz/h
+image: img/record.png
 lang: zh_CN
 published: 1998-12-31T16:00:00
 tags:

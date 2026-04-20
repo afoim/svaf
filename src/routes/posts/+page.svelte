@@ -130,6 +130,12 @@
 	});
 	
 	let hasAnyFilter = $derived(searchFilters.title || searchFilters.description || searchFilters.content || searchFilters.path);
+	
+	let totalStats = $derived(() => {
+		if (!hasLoaded) return { totalPosts: posts.length, totalWords: 0 };
+		const totalWords = allPosts.reduce((sum, post) => sum + post.wordCount, 0);
+		return { totalPosts: posts.length, totalWords };
+	});
 
 	function formatDate(dateString: string) {
 		const date = new Date(dateString);
@@ -156,6 +162,11 @@
 	<div class="mb-12 text-center">
 		<h1 class="mb-4 text-4xl font-bold">文章列表</h1>
 		<p class="text-muted-foreground">分享技术、想法和经验</p>
+		{#if hasLoaded}
+			<p class="mt-2 text-sm text-muted-foreground">
+				共 {totalStats().totalPosts} 篇文章 · 总计 {totalStats().totalWords.toLocaleString()} 字
+			</p>
+		{/if}
 	</div>
 
 	<div class="mb-8">

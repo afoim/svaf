@@ -12,30 +12,44 @@ export const GET: RequestHandler = async () => {
 		.filter(post => !post.metadata.draft)
 		.sort((a, b) => new Date(b.metadata.published).getTime() - new Date(a.metadata.published).getTime());
 
+	// 动态导入文章内容并渲染为 HTML
+	const postsWithContent = await Promise.all(
+		publishedPosts.map(async (post) => {
+			try {
+				// 导入文章的 mdsvex 组件
+				const module = await import(`../../../content/posts/${post.slug}/index.md`);
+				// 获取渲染后的 HTML
+				const html = module.default.render().html;
+				return { ...post, html };
+			} catch (error) {
+				console.error(`Failed to load content for ${post.slug}:`, error);
+				return { ...post, html: post.metadata.description };
+			}
+		})
+	);
+
 	const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0">
 	<channel>
-		<title>${siteConfig.title}</title>
-		<description>${siteConfig.description}</description>
-		<link>${siteConfig.url}</link>
-		<atom:link href="${siteConfig.url}/rss.xml" rel="self" type="application/rss+xml"/>
-		<language>zh-CN</language>
-		<lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
-		${publishedPosts.map(post => `
+		<title>${escapeXml(siteConfig.title)}</title>
+		<description>${escapeXml(siteConfig.bio.bio)}</description>
+		<link>${siteConfig.url}/</link>
+		<language>zh_CN</language>
+		${postsWithContent.map(post => `
 		<item>
 			<title>${escapeXml(post.metadata.title)}</title>
-			<description>${escapeXml(post.metadata.description)}</description>
 			<link>${siteConfig.url}/posts/${post.slug}/</link>
 			<guid isPermaLink="true">${siteConfig.url}/posts/${post.slug}/</guid>
+			<description>${escapeXml(post.metadata.description)}</description>
 			<pubDate>${new Date(post.metadata.published).toUTCString()}</pubDate>
-			${post.metadata.image ? `<enclosure url="${siteConfig.url}${post.metadata.image}" type="image/webp"/>` : ''}
+			<content:encoded><![CDATA[${post.html}]]></content:encoded>
 		</item>`).join('')}
 	</channel>
 </rss>`;
 
 	return new Response(xml, {
 		headers: {
-			'Content-Type': 'application/xml',
+			'Content-Type': 'application/xml; charset=utf-8',
 			'Cache-Control': 'max-age=0, s-maxage=3600'
 		}
 	});

@@ -182,7 +182,7 @@
 		border-radius: 0.25rem;
 		background-color: var(--muted);
 		padding: 0.125rem 0.375rem;
-		font-family: monospace;
+		font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
 		font-size: 0.875rem;
 	}
 

@@ -5,8 +5,12 @@ import type { RequestHandler } from './$types';
 
 export const prerender = true;
 
-// 预加载所有文章模块 - 使用与 getAllPosts 相同的模式
-const modules = import.meta.glob('/src/content/posts/**/index.md', { eager: true });
+// 预加载所有文章模块，同时获取原始内容
+const modules = import.meta.glob('/src/content/posts/**/index.md', { 
+	eager: true,
+	query: '?raw',
+	import: 'default'
+});
 
 export const GET: RequestHandler = async () => {
 	const posts = await getAllPosts();
@@ -37,13 +41,15 @@ export const GET: RequestHandler = async () => {
 	// 添加文章到 feed
 	for (const post of publishedPosts) {
 		const modulePath = `/src/content/posts/${post.slug}/index.md`;
-		const module = modules[modulePath] as any;
+		const rawContent = modules[modulePath] as string;
 		
+		// 移除 frontmatter，获取正文
 		let content = '';
-		
-		if (module && module.default && module.default.render) {
-			const rendered = module.default.render();
-			content = rendered.html || rendered;
+		if (rawContent) {
+			const parts = rawContent.split('---');
+			if (parts.length >= 3) {
+				content = parts.slice(2).join('---').trim();
+			}
 		}
 
 		feed.addItem({

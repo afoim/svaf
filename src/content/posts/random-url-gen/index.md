@@ -162,7 +162,7 @@ flowchart TB
 
 而如果说你前后端都在一起，正常情况下来说，一次请求复用肯定是比两次连接更快的，不过为了方便管理和统计，我的大部分API仍然使用 **302 重定向** 
 
-::github{repo="afoim/EdgeOne_Function_PicAPI"}
+[afoim/EdgeOne_Function_PicAPI](https://github.com/afoim/EdgeOne_Function_PicAPI)
 
 上线的API： https://eopfapi.acofork.com/pic?img=ua
 # 奇技淫巧1：利用Cloudflare Origin Rules实现无计费的随机URL
@@ -172,7 +172,7 @@ flowchart TB
 
 他提到的仓库为
 
-::github{repo="Mabbs/cf-hitokoto"}
+[Mabbs/cf-hitokoto](https://github.com/Mabbs/cf-hitokoto)
 
 大致为，Cloudflare在规则提供一个方法，该方法可以在规则层生成一个UUID，而UUID每次都是随机的，我们可以依据此来在规则层做随机URL
 
@@ -217,7 +217,7 @@ J --> K
 K --> L
 ```
 
-::github{repo="afoim/cf-rule-random-url"}
+[afoim/cf-rule-random-url](https://github.com/afoim/cf-rule-random-url)
 
 上线的API： https://img.072103.xyz/h | https://img.072103.xyz/v
 
@@ -249,7 +249,7 @@ flowchart LR
 
 ```
 
-::github{repo="afoim/Static_RandomPicAPI"}
+[afoim/Static_RandomPicAPI](https://github.com/afoim/Static_RandomPicAPI)
 
 上线的 API： https://pic1.acofork.com
 

@@ -33,7 +33,7 @@ ai_level: 2
 
 首先，Fork仓库
 
-::github{repo="afoim/Static_Redirect_Group"}
+[afoim/Static_Redirect_Group](https://github.com/afoim/Static_Redirect_Group)
 
 接下来，先修改一些硬编码内容。由于 Cloudflare Worker 在处理静态资源时不能直接使用环境变量，因此部分信息是直接写在 HTML 里的。你可以在所有 HTML 文件中搜索 `afoim` 并替换成自己的内容；如果你愿意，也可以额外增加一层配置，并在构建阶段注入这些值。
 

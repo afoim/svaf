@@ -231,7 +231,7 @@ apk add curl unzip jq openssl tar iproute2 bash
 
 那么...让我们请出 Cloudflare Worker！
 
-::github{repo="afoim/cf-worker-aliyun-cdt-tracker"}
+[afoim/cf-worker-aliyun-cdt-tracker](https://github.com/afoim/cf-worker-aliyun-cdt-tracker)
 
 在Cloudflare Worker的仪表盘配置五个机密环境变量即可
 以下是需要配置的机密环境变量 (Secrets)：

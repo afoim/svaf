@@ -1,4 +1,4 @@
----
+﻿---
 title: 手把手教你AI翻唱！
 published: 2025-10-13T06:23:12
 description: 利用RVC训练音色模型然后使用Replay直出AI翻唱！

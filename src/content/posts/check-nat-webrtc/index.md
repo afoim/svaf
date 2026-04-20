@@ -14,7 +14,7 @@ https://www.bilibili.com/video/BV1H4DuBWEes/
 
 我们都知道，NAT类型测试非常简单就可以实现，我们可以使用类似如下Python库在客户端本地跑一个脚本测试
 
-::github{repo=MikeWang000000/Natter}
+[MikeWang000000/Natter](https://github.com/MikeWang000000/Natter)
 
 但如果我说，我们根本就不需要下载一个程序，只需要打开一个浏览器就可以测试你的NAT类型呢？
 
@@ -46,6 +46,6 @@ https://www.bilibili.com/video/BV1H4DuBWEes/
 
 ![](img/check-nat-webrtc.png)
 
-::github{repo=afoim/webrtc_check_nat}
+[afoim/webrtc_check_nat](https://github.com/afoim/webrtc_check_nat)
 
-::url{href="https://2x.nz/nat-check/"}
+[https://2x.nz/nat-check/](https://2x.nz/nat-check/)

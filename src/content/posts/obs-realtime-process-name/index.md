@@ -57,7 +57,7 @@ ai_level: 1
 
 于是，这个小项目就这样诞生了：
 
-::github{repo="afoim/process_watch2txt"}
+[afoim/process_watch2txt](https://github.com/afoim/process_watch2txt)
 
 ![](img/WindowsTerminal_wV1C4TbD15.gif)
 

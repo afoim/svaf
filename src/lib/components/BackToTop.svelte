@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { ArrowUp01Icon } from '@hugeicons/svelte';
+	import Icon from '@iconify/svelte';
 
 	let showButton = false;
 	let scrollY = 0;
@@ -31,7 +31,7 @@
 		class="fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl"
 		aria-label="回到顶部"
 	>
-		<ArrowUp01Icon class="h-5 w-5" />
+		<Icon icon="mdi:chevron-up" class="w-5 h-5" />
 	</button>
 {/if}
 

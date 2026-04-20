@@ -237,10 +237,4 @@
 			<p class="text-muted-foreground">暂无文章</p>
 		</div>
 	{/if}
-
-	<div class="mt-12 text-center">
-		<a href="/">
-			<Button variant="outline">返回首页</Button>
-		</a>
-	</div>
 </div>

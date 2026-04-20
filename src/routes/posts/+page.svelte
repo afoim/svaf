@@ -29,7 +29,7 @@
 
 	<div class="space-y-6">
 		{#each posts as post}
-			<article class="group relative overflow-hidden rounded-lg border bg-card transition-all hover:shadow-lg" style="border: 0 solid !important;">
+			<article class="group relative overflow-hidden rounded-lg bg-card transition-all hover:shadow-lg" style="border: 1px solid rgba(0,0,0,0.1);">
 				<a href="/posts/{post.slug}" class="block">
 					<div class="flex flex-col gap-4 p-6 md:flex-row">
 						{#if post.metadata.image}

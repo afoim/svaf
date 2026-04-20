@@ -43,19 +43,48 @@
 		return text.replace(regex, '<mark class="bg-yellow-200 dark:bg-yellow-800">$1</mark>');
 	}
 
-	let filteredPosts = $derived(() => {
-		if (!searchQuery.trim()) return posts;
+	function getMatchedContentLines(content: string, query: string): string[] {
+		if (!query.trim()) return [];
+		const lines = content.split('\n');
+		const queryLower = query.toLowerCase();
+		const matched: string[] = [];
+		
+		for (const line of lines) {
+			if (line.toLowerCase().includes(queryLower)) {
+				const trimmed = line.trim();
+				if (trimmed && !trimmed.startsWith('#') && trimmed.length > 10) {
+					matched.push(trimmed);
+					if (matched.length >= 3) break;
+				}
+			}
+		}
+		
+		return matched;
+	}
+
+	let filteredPostsWithMatches = $derived(() => {
+		if (!searchQuery.trim()) return posts.map(p => ({ post: p, matchedLines: [] }));
 		
 		const query = searchQuery.toLowerCase();
-		const rssResults = allPosts.filter(post => 
-			post.title.toLowerCase().includes(query) ||
-			post.description.toLowerCase().includes(query) ||
-			post.content.toLowerCase().includes(query)
-		);
+		const results: Array<{ post: typeof posts[0], matchedLines: string[] }> = [];
 		
-		return posts.filter(post => 
-			rssResults.some(rss => rss.link.includes(post.slug))
-		);
+		for (const post of posts) {
+			const rssPost = allPosts.find(rss => rss.link.includes(post.slug));
+			if (!rssPost) continue;
+			
+			const titleMatch = rssPost.title.toLowerCase().includes(query);
+			const descMatch = rssPost.description.toLowerCase().includes(query);
+			const contentMatch = rssPost.content.toLowerCase().includes(query);
+			
+			if (titleMatch || descMatch || contentMatch) {
+				const matchedLines = contentMatch && !titleMatch && !descMatch 
+					? getMatchedContentLines(rssPost.content, query)
+					: [];
+				results.push({ post, matchedLines });
+			}
+		}
+		
+		return results;
 	});
 
 	function formatDate(dateString: string) {
@@ -91,17 +120,17 @@
 			<div class="mt-2 min-h-[20px]">
 				{#if isLoading}
 					<p class="text-sm text-muted-foreground">搜索中...</p>
-				{:else if filteredPosts().length === 0}
+				{:else if filteredPostsWithMatches().length === 0}
 					<p class="text-sm text-muted-foreground">未找到匹配的文章</p>
 				{:else}
-					<p class="text-sm text-muted-foreground">找到 {filteredPosts().length} 篇文章</p>
+					<p class="text-sm text-muted-foreground">找到 {filteredPostsWithMatches().length} 篇文章</p>
 				{/if}
 			</div>
 		{/if}
 	</div>
 
 	<div class="space-y-6">
-		{#each filteredPosts() as post}
+		{#each filteredPostsWithMatches() as { post, matchedLines }}
 			<article class="group relative overflow-hidden rounded-lg bg-card transition-all hover:shadow-lg" style="border: 1px solid rgba(0,0,0,0.1);">
 				<a href="/posts/{post.slug}" class="block">
 					<div class="flex flex-col gap-4 p-6 md:flex-row">
@@ -134,6 +163,16 @@
 							<p class="text-muted-foreground">
 								{@html highlightText(post.metadata.description, searchQuery)}
 							</p>
+							
+							{#if matchedLines.length > 0}
+								<div class="mt-3 space-y-1 border-l-2 border-primary/30 pl-3">
+									{#each matchedLines as line}
+										<p class="text-sm text-muted-foreground">
+											{@html highlightText(line, searchQuery)}
+										</p>
+									{/each}
+								</div>
+							{/if}
 						</div>
 					</div>
 				</a>
@@ -141,7 +180,7 @@
 		{/each}
 	</div>
 
-	{#if filteredPosts().length === 0 && !searchQuery}
+	{#if filteredPostsWithMatches().length === 0 && !searchQuery}
 		<div class="py-12 text-center">
 			<p class="text-muted-foreground">暂无文章</p>
 		</div>

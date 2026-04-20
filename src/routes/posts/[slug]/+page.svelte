@@ -190,43 +190,38 @@
 		margin-bottom: 1rem;
 		overflow-x: auto;
 		border-radius: 0.5rem;
-		background-color: var(--muted);
 		padding: 1rem;
 	}
 
 	:global(.prose pre code) {
 		background-color: transparent;
 		padding: 0;
+		font-size: 0.875rem;
+		line-height: 1.7;
 	}
 	
-	/* rehype-pretty-code 主题切换 */
-	:global(.prose [data-theme="dark"]) {
-		display: none;
+	/* rehype-pretty-code 使用 CSS 变量实现主题切换 */
+	:global(.prose pre) {
+		background-color: var(--shiki-light-bg);
+		color: var(--shiki-light);
 	}
 	
 	@media (prefers-color-scheme: dark) {
-		:global(.prose [data-theme="light"]) {
-			display: none;
-		}
-		
-		:global(.prose [data-theme="dark"]) {
-			display: block;
+		:global(.prose pre) {
+			background-color: var(--shiki-dark-bg);
+			color: var(--shiki-dark);
 		}
 	}
 	
-	/* 代码高亮行 */
-	:global(.prose .line--highlighted) {
-		background-color: rgba(200, 200, 255, 0.1);
-		display: block;
-		margin: 0 -1rem;
-		padding: 0 1rem;
+	/* 应用 shiki 的颜色变量到每个 span */
+	:global(.prose pre span) {
+		color: var(--shiki-light);
 	}
 	
-	/* 代码高亮词 */
-	:global(.prose .word--highlighted) {
-		background-color: rgba(200, 200, 255, 0.2);
-		padding: 0.125rem 0.25rem;
-		border-radius: 0.25rem;
+	@media (prefers-color-scheme: dark) {
+		:global(.prose pre span) {
+			color: var(--shiki-dark);
+		}
 	}
 
 	:global(.prose img) {

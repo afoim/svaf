@@ -2,6 +2,32 @@
 	import { Button } from '$lib/components/ui/button';
 	import { siteConfig } from '$lib/config/site';
 	import Icon from '@iconify/svelte';
+	import { onMount } from 'svelte';
+	
+	let totalPageViews = $state<number | null>(null);
+	
+	async function loadTotalPageViews() {
+		try {
+			const response = await fetch('https://t.2x.nz/batch', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'text/plain'
+				},
+				body: JSON.stringify(['/'])
+			});
+			
+			if (response.ok) {
+				const views = await response.json() as number[];
+				totalPageViews = views[0] || 0;
+			}
+		} catch (error) {
+			console.error('Failed to load total page views:', error);
+		}
+	}
+	
+	onMount(() => {
+		loadTotalPageViews();
+	});
 </script>
 
 <svelte:head>
@@ -14,6 +40,11 @@
 	<div class="text-center">
 		<h1 class="text-4xl font-bold mb-2">{siteConfig.bio.name}</h1>
 		<p class="text-lg text-muted-foreground mb-4">{siteConfig.bio.bio}</p>
+		{#if totalPageViews !== null}
+			<p class="text-sm text-muted-foreground">
+				全站浏览量: {totalPageViews.toLocaleString()}
+			</p>
+		{/if}
 	</div>
 
 	<!-- 社交媒体链接 -->

@@ -12,12 +12,16 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
 	},
 	"devDependencies": {
+		"@hugeicons/core-free-icons": "^4.1.1",
+		"@hugeicons/svelte": "^1.1.2",
 		"@iconify/svelte": "^5.2.1",
+		"@internationalized/date": "^3.12.1",
 		"@sveltejs/adapter-auto": "latest",
 		"@sveltejs/adapter-static": "^3.0.10",
 		"@sveltejs/kit": "latest",
 		"@sveltejs/vite-plugin-svelte": "^7.0.0",
 		"@tailwindcss/vite": "^4.2.2",
+		"bits-ui": "^2.18.0",
 		"clsx": "^2.1.1",
 		"mdsvex": "^0.12.7",
 		"shadcn-svelte": "^1.2.7",

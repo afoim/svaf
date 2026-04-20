@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
+	import { Input } from '$lib/components/ui/input';
+	import { Checkbox } from '$lib/components/ui/checkbox';
 	import { siteConfig } from '$lib/config/site';
 	import type { PageData } from './$types';
 
@@ -157,45 +159,29 @@
 	</div>
 
 	<div class="mb-8">
-		<input
+		<Input
 			type="text"
 			bind:value={searchQuery}
 			onfocus={loadRSS}
 			placeholder="搜索文章标题、描述或内容..."
-			class="w-full rounded-lg border border-input bg-background px-4 py-3 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+			class="w-full"
 		/>
 		
-		<div class="mt-3 flex flex-wrap gap-2">
+		<div class="mt-3 flex flex-wrap gap-4">
 			<label class="flex items-center gap-2 cursor-pointer">
-				<input
-					type="checkbox"
-					bind:checked={searchFilters.title}
-					class="h-4 w-4 rounded border-input"
-				/>
+				<Checkbox bind:checked={searchFilters.title} />
 				<span class="text-sm">标题</span>
 			</label>
 			<label class="flex items-center gap-2 cursor-pointer">
-				<input
-					type="checkbox"
-					bind:checked={searchFilters.description}
-					class="h-4 w-4 rounded border-input"
-				/>
+				<Checkbox bind:checked={searchFilters.description} />
 				<span class="text-sm">简介</span>
 			</label>
 			<label class="flex items-center gap-2 cursor-pointer">
-				<input
-					type="checkbox"
-					bind:checked={searchFilters.content}
-					class="h-4 w-4 rounded border-input"
-				/>
+				<Checkbox bind:checked={searchFilters.content} />
 				<span class="text-sm">正文</span>
 			</label>
 			<label class="flex items-center gap-2 cursor-pointer">
-				<input
-					type="checkbox"
-					bind:checked={searchFilters.path}
-					class="h-4 w-4 rounded border-input"
-				/>
+				<Checkbox bind:checked={searchFilters.path} />
 				<span class="text-sm">路径</span>
 			</label>
 		</div>

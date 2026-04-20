@@ -67,12 +67,25 @@
 		{/each}
 	</div>
 	
-	<div class="mt-4">
+	<div class="mt-4 flex gap-3">
 		<a href="/posts">
 			<Button class="flex items-center gap-2">
 				<Icon icon="mdi:post-outline" class="w-5 h-5" />
 				博客
 			</Button>
 		</a>
+		
+		<Button
+			variant="outline"
+			class="flex items-center gap-2"
+			onclick={() => {
+				if (window.cookieconsent && typeof window.cookieconsent.openPreferencesCenter === 'function') {
+					window.cookieconsent.openPreferencesCenter();
+				}
+			}}
+		>
+			<Icon icon="mdi:cookie-settings" class="w-5 h-5" />
+			Cookie 设置
+		</Button>
 	</div>
 </div>

@@ -9,9 +9,10 @@
 	let searchQuery = $state('');
 	let allPosts = $state<Array<{ title: string; link: string; description: string; date: string; content: string }>>([]);
 	let isLoading = $state(false);
+	let hasLoaded = $state(false);
 
 	async function loadRSS() {
-		if (allPosts.length > 0) return;
+		if (hasLoaded) return;
 		
 		isLoading = true;
 		try {
@@ -28,6 +29,7 @@
 				date: item.querySelector('pubDate')?.textContent || '',
 				content: item.querySelector('content\\:encoded, encoded')?.textContent || ''
 			}));
+			hasLoaded = true;
 		} catch (error) {
 			console.error('Failed to load RSS:', error);
 		} finally {
@@ -75,17 +77,21 @@
 		<input
 			type="text"
 			bind:value={searchQuery}
-			onfocus={loadRSS}
+			oninput={loadRSS}
 			placeholder="搜索文章标题、描述或内容..."
 			class="w-full rounded-lg border border-input bg-background px-4 py-3 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
 		/>
-		<div class="mt-2 min-h-[20px]">
-			{#if isLoading}
-				<p class="text-sm text-muted-foreground">加载搜索数据中...</p>
-			{:else if searchQuery && filteredPosts().length === 0}
-				<p class="text-sm text-muted-foreground">未找到匹配的文章</p>
-			{/if}
-		</div>
+		{#if searchQuery}
+			<div class="mt-2 min-h-[20px]">
+				{#if isLoading}
+					<p class="text-sm text-muted-foreground">搜索中...</p>
+				{:else if filteredPosts().length === 0}
+					<p class="text-sm text-muted-foreground">未找到匹配的文章</p>
+				{:else}
+					<p class="text-sm text-muted-foreground">找到 {filteredPosts().length} 篇文章</p>
+				{/if}
+			</div>
+		{/if}
 	</div>
 
 	<div class="space-y-6">

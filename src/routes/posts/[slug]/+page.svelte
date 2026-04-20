@@ -80,6 +80,8 @@
 </article>
 
 <style>
+	@reference "tailwindcss";
+	
 	/* Markdown 样式 */
 	:global(.prose) {
 		@apply text-foreground;

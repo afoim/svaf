@@ -4,9 +4,12 @@
 	import ImageViewer from '$lib/components/ImageViewer.svelte';
 	import Giscus from '$lib/components/Giscus.svelte';
 	import type { PageData } from './$types';
+	import { onMount } from 'svelte';
 
 	let { data }: { data: PageData } = $props();
 	const { post, component, slug } = data;
+	
+	let pageViews = $state<number | null>(null);
 
 	function formatDate(dateString: string) {
 		const date = new Date(dateString);
@@ -16,6 +19,29 @@
 			day: 'numeric'
 		});
 	}
+	
+	async function loadPageViews() {
+		try {
+			const response = await fetch('https://t.2x.nz/batch', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'text/plain'
+				},
+				body: JSON.stringify([`/posts/${slug}/`])
+			});
+			
+			if (response.ok) {
+				const views = await response.json() as number[];
+				pageViews = views[0] || 0;
+			}
+		} catch (error) {
+			console.error('Failed to load page views:', error);
+		}
+	}
+	
+	onMount(() => {
+		loadPageViews();
+	});
 </script>
 
 <svelte:head>
@@ -47,6 +73,10 @@
 			<time class="text-sm text-muted-foreground">
 				{formatDate(post.metadata.published)}
 			</time>
+			{#if pageViews !== null}
+				<span class="text-sm text-muted-foreground">·</span>
+				<span class="text-sm text-muted-foreground">{pageViews.toLocaleString()} 次浏览</span>
+			{/if}
 		</div>
 
 		<h1 class="mb-4 text-4xl font-bold">{post.metadata.title}</h1>

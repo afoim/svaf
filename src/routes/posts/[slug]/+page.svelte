@@ -198,6 +198,36 @@
 		background-color: transparent;
 		padding: 0;
 	}
+	
+	/* rehype-pretty-code 主题切换 */
+	:global(.prose [data-theme="dark"]) {
+		display: none;
+	}
+	
+	@media (prefers-color-scheme: dark) {
+		:global(.prose [data-theme="light"]) {
+			display: none;
+		}
+		
+		:global(.prose [data-theme="dark"]) {
+			display: block;
+		}
+	}
+	
+	/* 代码高亮行 */
+	:global(.prose .line--highlighted) {
+		background-color: rgba(200, 200, 255, 0.1);
+		display: block;
+		margin: 0 -1rem;
+		padding: 0 1rem;
+	}
+	
+	/* 代码高亮词 */
+	:global(.prose .word--highlighted) {
+		background-color: rgba(200, 200, 255, 0.2);
+		padding: 0.125rem 0.25rem;
+		border-radius: 0.25rem;
+	}
 
 	:global(.prose img) {
 		margin-top: 1rem;

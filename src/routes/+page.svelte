@@ -14,9 +14,6 @@
 	<div class="text-center">
 		<h1 class="text-4xl font-bold mb-2">{siteConfig.bio.name}</h1>
 		<p class="text-lg text-muted-foreground mb-4">{siteConfig.bio.bio}</p>
-		<p class="text-sm text-muted-foreground">
-			站点地址: <a href={siteConfig.url} class="underline hover:text-foreground">{siteConfig.url}</a>
-		</p>
 	</div>
 
 	<!-- 社交媒体链接 -->

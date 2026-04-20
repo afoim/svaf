@@ -4,20 +4,28 @@
 
 	onMount(() => {
 		// Cookie Consent 加载
-		if (!window.__cookieConsentScriptLoaded) {
+		const loadCookieConsent = () => {
+			if (window.__cookieConsentScriptLoaded) return;
 			window.__cookieConsentScriptLoaded = true;
+			
 			const script = document.createElement('script');
 			script.src = 'https://www.termsfeed.com/public/cookie-consent/4.2.0/cookie-consent.js';
 			script.charset = 'UTF-8';
 			script.async = true;
+			
+			script.onload = () => {
+				// 脚本加载完成后运行配置
+				setTimeout(runCookieConsent, 100);
+			};
+			
 			document.head.appendChild(script);
-		}
+		};
 
 		// Cookie Consent 配置
 		const runCookieConsent = () => {
 			const cc = window.cookieconsent;
 			if (!cc || typeof cc.run !== 'function') {
-				requestAnimationFrame(runCookieConsent);
+				setTimeout(runCookieConsent, 100);
 				return;
 			}
 
@@ -35,20 +43,23 @@
 			});
 		};
 
-		runCookieConsent();
+		loadCookieConsent();
 
 		// 百度统计
-		window._hmt = window._hmt || [];
-		if (!window.__baiduAnalyticsLoaded) {
+		const loadBaidu = () => {
+			if (window.__baiduAnalyticsLoaded) return;
 			window.__baiduAnalyticsLoaded = true;
+			window._hmt = window._hmt || [];
+			
 			const hm = document.createElement('script');
 			hm.src = 'https://hm.baidu.com/hm.js?a87028bb5a1ed77d98f192bc12b56142';
 			hm.async = true;
 			document.head.appendChild(hm);
-		}
+		};
 
 		// Google 第三方脚本
-		if (!window.__googleThirdPartyDeferredLoaded) {
+		const loadGoogle = () => {
+			if (window.__googleThirdPartyDeferredLoaded) return;
 			window.__googleThirdPartyDeferredLoaded = true;
 			window.dataLayer = window.dataLayer || [];
 			window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
@@ -78,6 +89,19 @@
 				'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1683686345039700',
 				{ crossorigin: 'anonymous' }
 			);
+		};
+
+		// 延迟加载统计脚本
+		if ('requestIdleCallback' in window) {
+			window.requestIdleCallback(() => {
+				loadBaidu();
+				loadGoogle();
+			}, { timeout: 4000 });
+		} else {
+			setTimeout(() => {
+				loadBaidu();
+				loadGoogle();
+			}, 2000);
 		}
 	});
 </script>

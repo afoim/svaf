@@ -19,26 +19,18 @@
 	<!-- 社交媒体链接 -->
 	<div class="flex flex-wrap gap-3 justify-center">
 		{#each siteConfig.bio.links as link}
-			<a 
-				href={link.url} 
-				target="_blank" 
-				rel="noopener noreferrer"
-				class="flex items-center gap-2 px-4 py-2 rounded-lg bg-muted hover:bg-muted/80 transition-colors"
-				title={link.name}
-			>
-				<Icon icon={link.icon} class="w-5 h-5" />
-				<span class="text-sm font-medium">{link.name}</span>
+			<a href={link.url} target="_blank" rel="noopener noreferrer">
+				<Button variant="outline" class="flex items-center gap-2">
+					<Icon icon={link.icon} class="w-5 h-5" />
+					<span class="text-sm font-medium">{link.name}</span>
+				</Button>
 			</a>
 		{/each}
 	</div>
 	
-	<div class="flex gap-2 mt-4">
+	<div class="mt-4">
 		<a href="/posts">
-			<Button>博客</Button>
+			<Button>查看博客</Button>
 		</a>
-		<Button variant="secondary">Secondary</Button>
-		<Button variant="destructive">Destructive</Button>
-		<Button variant="outline">Outline</Button>
-		<Button variant="ghost">Ghost</Button>
 	</div>
 </div>

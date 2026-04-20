@@ -50,7 +50,11 @@ export default function redirectsPlugin() {
 		// 开发模式：配置中间件处理重定向
 		configureServer(server) {
 			server.middlewares.use((req, res, next) => {
-				const path = req.url?.split('?')[0];
+				// 移除查询参数和尾部斜杠
+				let path = req.url?.split('?')[0];
+				if (path && path.endsWith('/') && path !== '/') {
+					path = path.slice(0, -1);
+				}
 				
 				if (path && path in redirects) {
 					const destination = redirects[path];

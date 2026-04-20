@@ -72,6 +72,10 @@
 	let filteredPostsWithMatches = $derived(() => {
 		if (!searchQuery.trim()) return posts.map(p => ({ post: p, matchedLines: [] }));
 		
+		// 检查是否至少选择了一个过滤器
+		const hasAnyFilter = searchFilters.title || searchFilters.description || searchFilters.content || searchFilters.path;
+		if (!hasAnyFilter) return [];
+		
 		const query = searchQuery.toLowerCase();
 		const results: Array<{ post: typeof posts[0], matchedLines: string[] }> = [];
 		
@@ -94,6 +98,8 @@
 		
 		return results;
 	});
+	
+	let hasAnyFilter = $derived(searchFilters.title || searchFilters.description || searchFilters.content || searchFilters.path);
 
 	function formatDate(dateString: string) {
 		const date = new Date(dateString);
@@ -162,7 +168,9 @@
 		
 		{#if searchQuery}
 			<div class="mt-2 min-h-[20px]">
-				{#if isLoading}
+				{#if !hasAnyFilter}
+					<p class="text-sm text-red-500">你什么都不选怎么搜啊喂！</p>
+				{:else if isLoading}
 					<p class="text-sm text-muted-foreground">搜索中...</p>
 				{:else if filteredPostsWithMatches().length === 0}
 					<p class="text-sm text-muted-foreground">未找到匹配的文章</p>

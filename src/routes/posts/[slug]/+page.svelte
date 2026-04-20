@@ -191,6 +191,7 @@
 		overflow-x: auto;
 		border-radius: 0.5rem;
 		padding: 1rem;
+		font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
 	}
 
 	:global(.prose pre code) {
@@ -198,6 +199,7 @@
 		padding: 0;
 		font-size: 0.875rem;
 		line-height: 1.7;
+		font-family: inherit;
 	}
 	
 	/* rehype-pretty-code 使用 CSS 变量实现主题切换 */

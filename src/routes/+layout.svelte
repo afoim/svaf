@@ -1,6 +1,7 @@
 <script lang="ts">
 	import '../app.css';
 	import { siteConfig } from '$lib/config/site';
+	import BackToTop from '$lib/components/BackToTop.svelte';
 
 	let { children } = $props();
 </script>
@@ -19,3 +20,5 @@
 </svelte:head>
 
 {@render children()}
+
+<BackToTop />

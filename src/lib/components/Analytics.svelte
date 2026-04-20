@@ -91,16 +91,33 @@
 			);
 		};
 
+		// Microsoft Clarity（仅在用户同意 tracking 后加载）
+		const loadClarity = () => {
+			if (window.__clarityLoaded) return;
+			window.__clarityLoaded = true;
+			
+			(function(c,l,a,r,i,t,y){
+				c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+				t=l.createElement(r);
+				t.async=1;
+				t.src="https://www.clarity.ms/tag/"+i;
+				y=l.getElementsByTagName(r)[0];
+				y.parentNode.insertBefore(t,y);
+			})(window, document, "clarity", "script", "v94yrasi99");
+		};
+
 		// 延迟加载统计脚本
 		if ('requestIdleCallback' in window) {
 			window.requestIdleCallback(() => {
 				loadBaidu();
 				loadGoogle();
+				loadClarity();
 			}, { timeout: 4000 });
 		} else {
 			setTimeout(() => {
 				loadBaidu();
 				loadGoogle();
+				loadClarity();
 			}, 2000);
 		}
 	});
@@ -132,15 +149,6 @@
 		src="https://static.cloudflareinsights.com/beacon.min.js"
 		data-cf-beacon={JSON.stringify({ token: '15fe148e91b34f10a15652e1a74ab26c' })}
 	></script>
-
-	<!-- Clarity -->
-	<script type="text/plain" data-cookie-consent="tracking">
-		{`(function(c,l,a,r,i,t,y){
-			c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-			t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-			y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-		})(window, document, "clarity", "script", "v94yrasi99");`}
-	</script>
 </svelte:head>
 
 <!-- Google Tag Manager (noscript) -->

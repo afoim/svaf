@@ -1,0 +1,1353 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>《二叉树树》官方网站</title>
+        <link>https://2x.nz</link>
+        <description>Protect What You Love.</description>
+        <lastBuildDate>Mon, 20 Apr 2026 09:30:27 GMT</lastBuildDate>
+        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+        <generator>https://github.com/jpmonette/feed</generator>
+        <language>zh-CN</language>
+        <copyright>All rights reserved 2026, 二叉树树</copyright>
+        <atom:link href="https://2x.nz/rss.xml" rel="self" type="application/rss+xml"/>
+        <item>
+            <title><![CDATA[俗话都说项目写久了会变成史山...今天我们来铲史...]]></title>
+            <link>https://2x.nz/posts/improve-dev-speed/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/improve-dev-speed/</guid>
+            <pubDate>Sun, 19 Apr 2026 10:05:45 GMT</pubDate>
+            <description><![CDATA[什么？我只想改一个字看看预览都要等1分钟？这是什么神人项目啊？！]]></description>
+            <content:encoded><![CDATA[<p>什么？我只想改一个字看看预览都要等1分钟？这是什么神人项目啊？！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/astro.png" length="0" type="image/png"/>
+        </item>
+        <item>
+            <title><![CDATA[将你的Linux硬盘映射到Windows？]]></title>
+            <link>https://2x.nz/posts/sshfs/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/sshfs/</guid>
+            <pubDate>Sat, 18 Apr 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[如何像Windows一样管理Linux文件和开发？SSHFS来帮你！]]></description>
+            <content:encoded><![CDATA[<p>如何像Windows一样管理Linux文件和开发？SSHFS来帮你！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/Linux-win.png" length="0" type="image/png"/>
+        </item>
+        <item>
+            <title><![CDATA[让我们自建一个自己的CDN！]]></title>
+            <link>https://2x.nz/posts/self-host-cdn/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/self-host-cdn/</guid>
+            <pubDate>Sat, 11 Apr 2026 16:21:41 GMT</pubDate>
+            <description><![CDATA[你有没有想过从0通过各种开源项目自己搭建一个CDN？今天就来教你！]]></description>
+            <content:encoded><![CDATA[<p>你有没有想过从0通过各种开源项目自己搭建一个CDN？今天就来教你！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/scdn.png" length="0" type="image/png"/>
+        </item>
+        <item>
+            <title><![CDATA[WTF？免费优质线路2c4g VPS！免费GLM模型无限用！免费Opus 4.6！]]></title>
+            <link>https://2x.nz/posts/what-the-fuck-claw-replit/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/what-the-fuck-claw-replit/</guid>
+            <pubDate>Sun, 05 Apr 2026 18:17:20 GMT</pubDate>
+            <description><![CDATA[2026年4月6日，这天凌晨...神了...]]></description>
+            <content:encoded><![CDATA[<p>2026年4月6日，这天凌晨...神了...</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/claude.png" length="0" type="image/png"/>
+        </item>
+        <item>
+            <title><![CDATA[握草，用浏览器检测你的NAT类型？！]]></title>
+            <link>https://2x.nz/posts/check-nat-webrtc/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/check-nat-webrtc/</guid>
+            <pubDate>Sat, 04 Apr 2026 13:46:01 GMT</pubDate>
+            <description><![CDATA[众所周知，NAT类型的检测并不是什么门槛，但是，如果我说纯浏览器也可以实现检测呢...]]></description>
+            <content:encoded><![CDATA[<p>众所周知，NAT类型的检测并不是什么门槛，但是，如果我说纯浏览器也可以实现检测呢...</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/nat.png" length="0" type="image/png"/>
+        </item>
+        <item>
+            <title><![CDATA[手搓一个电子邮件订阅器！]]></title>
+            <link>https://2x.nz/posts/email-posts-sub/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/email-posts-sub/</guid>
+            <pubDate>Fri, 03 Apr 2026 11:19:05 GMT</pubDate>
+            <description><![CDATA[你可曾想过手搓一个基于邮件形式的文章订阅器？读者只需告诉系统邮箱，之后的文章更新都会发一封邮件来通知他们！]]></description>
+            <content:encoded><![CDATA[<p>你可曾想过手搓一个基于邮件形式的文章订阅器？读者只需告诉系统邮箱，之后的文章更新都会发一封邮件来通知他们！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/email.png" length="0" type="image/png"/>
+        </item>
+        <item>
+            <title><![CDATA[你在做全栈吗？你想要前后端统一的热重载吗？]]></title>
+            <link>https://2x.nz/posts/concurrently/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/concurrently/</guid>
+            <pubDate>Tue, 24 Mar 2026 11:51:17 GMT</pubDate>
+            <description><![CDATA[经常做全栈的小伙伴们都知道，写完后端看效果要dev，写完前端看效果也要dev，那么有没有一劳永逸的解决方案呢？]]></description>
+            <content:encoded><![CDATA[<p>经常做全栈的小伙伴们都知道，写完后端看效果要dev，写完前端看效果也要dev，那么有没有一劳永逸的解决方案呢？</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/concurrently.png" length="0" type="image/png"/>
+        </item>
+        <item>
+            <title><![CDATA[教你手搓网线！打好人生第一个水晶头！]]></title>
+            <link>https://2x.nz/posts/rj45/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/rj45/</guid>
+            <pubDate>Mon, 23 Mar 2026 07:21:29 GMT</pubDate>
+            <description><![CDATA[现代生活离不开网络，你想要自己搓一根网线吗？]]></description>
+            <content:encoded><![CDATA[<p>现代生活离不开网络，你想要自己搓一根网线吗？</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/rj45.png" length="0" type="image/png"/>
+        </item>
+        <item>
+            <title><![CDATA[你...买 Cloudflare Pro 了吗？来玩超级牛逼的 Snippets ！]]></title>
+            <link>https://2x.nz/posts/snippets/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/snippets/</guid>
+            <pubDate>Wed, 18 Mar 2026 10:53:50 GMT</pubDate>
+            <description><![CDATA[Snippets 是 Cloudflare 提供的不限量不计费的轻量Worker，我们可以拿她干不少有趣的业务！]]></description>
+            <content:encoded><![CDATA[<p>Snippets 是 Cloudflare 提供的不限量不计费的轻量Worker，我们可以拿她干不少有趣的业务！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/snippets-1.png" length="0" type="image/png"/>
+        </item>
+        <item>
+            <title><![CDATA[终极版！国内免梯上Github！]]></title>
+            <link>https://2x.nz/posts/gh-cf/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/gh-cf/</guid>
+            <pubDate>Tue, 10 Mar 2026 11:29:58 GMT</pubDate>
+            <description><![CDATA[巨简单！1分钟自建你的Github代理！]]></description>
+            <content:encoded><![CDATA[<p>巨简单！1分钟自建你的Github代理！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/cf-gh.png" length="0" type="image/png"/>
+        </item>
+        <item>
+            <title><![CDATA[如何在直播中让你的观众实时了解你在用什么软件？]]></title>
+            <link>https://2x.nz/posts/obs-realtime-process-name/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/obs-realtime-process-name/</guid>
+            <pubDate>Sat, 07 Mar 2026 19:19:43 GMT</pubDate>
+            <description><![CDATA[通过持续监测当前前台进程和指定程序的窗口标题，并将结果写入 TXT 文件，就可以让 OBS 实时向观众展示你正在使用的软件或当前播放的内容。]]></description>
+            <content:encoded><![CDATA[<p>通过持续监测当前前台进程和指定程序的窗口标题，并将结果写入 TXT 文件，就可以让 OBS 实时向观众展示你正在使用的软件或当前播放的内容。</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/OBS-RT-PC.png" length="0" type="image/png"/>
+        </item>
+        <item>
+            <title><![CDATA[Codex！无限剑制！]]></title>
+            <link>https://2x.nz/posts/codex-unlimited-blade-works/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/codex-unlimited-blade-works/</guid>
+            <pubDate>Fri, 06 Mar 2026 05:48:05 GMT</pubDate>
+            <description><![CDATA[多的不说，仅做记录]]></description>
+            <content:encoded><![CDATA[<p>多的不说，仅做记录</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/codex.png" length="0" type="image/png"/>
+        </item>
+        <item>
+            <title><![CDATA[AI Agent 二三事]]></title>
+            <link>https://2x.nz/posts/ai-agent/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/ai-agent/</guid>
+            <pubDate>Thu, 05 Mar 2026 14:51:54 GMT</pubDate>
+            <description><![CDATA[从实战角度对比 AI IDE 与 AI Agent，并演示如何用 ZCF 快速安装和配置 Codex。]]></description>
+            <content:encoded><![CDATA[<p>从实战角度对比 AI IDE 与 AI Agent，并演示如何用 ZCF 快速安装和配置 Codex。</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/ai-agent.png" length="0" type="image/png"/>
+        </item>
+        <item>
+            <title><![CDATA[一行命令拉爆你的Win11硬盘4K随机性能！]]></title>
+            <link>https://2x.nz/posts/win11-native-nvme/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/win11-native-nvme/</guid>
+            <pubDate>Thu, 26 Feb 2026 22:27:08 GMT</pubDate>
+            <description><![CDATA[你知道吗？其实Windows一直都在让NVMe硬盘以兼容模式跑！]]></description>
+            <content:encoded><![CDATA[<p>你知道吗？其实Windows一直都在让NVMe硬盘以兼容模式跑！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/win11-native-nvme.png" length="0" type="image/png"/>
+        </item>
+        <item>
+            <title><![CDATA[教你在Cloudflare上原生托管视频！自建YouTube！]]></title>
+            <link>https://2x.nz/posts/cfvideo/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/cfvideo/</guid>
+            <pubDate>Thu, 26 Feb 2026 22:01:46 GMT</pubDate>
+            <description><![CDATA[你知道吗？Cloudflare上也是可以“原生”托管视频的！]]></description>
+            <content:encoded><![CDATA[<p>你知道吗？Cloudflare上也是可以“原生”托管视频的！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/cfvideo.png" length="0" type="image/png"/>
+        </item>
+        <item>
+            <title><![CDATA[极客湾手机大横评补档]]></title>
+            <link>https://2x.nz/posts/jkw/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/jkw/</guid>
+            <pubDate>Wed, 25 Feb 2026 17:20:03 GMT</pubDate>
+            <description><![CDATA[大手来了，我说大手来了你尔朵隆吗]]></description>
+            <content:encoded><![CDATA[<p>大手来了，我说大手来了你尔朵隆吗</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/jkw.png" length="0" type="image/png"/>
+        </item>
+        <item>
+            <title><![CDATA[保姆级通过Google Adsense的教程！]]></title>
+            <link>https://2x.nz/posts/google-adsense/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/google-adsense/</guid>
+            <pubDate>Mon, 23 Feb 2026 12:46:15 GMT</pubDate>
+            <description><![CDATA[你是否正在运营一个脍炙人口的网站？手把手教你变现！]]></description>
+            <content:encoded><![CDATA[<p>你是否正在运营一个脍炙人口的网站？手把手教你变现！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/google-adsense1.png" length="0" type="image/png"/>
+        </item>
+        <item>
+            <title><![CDATA[魔幻嫁接！免费用上完全体的Bitwarden！]]></title>
+            <link>https://2x.nz/posts/bitwarden-com/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/bitwarden-com/</guid>
+            <pubDate>Mon, 23 Feb 2026 08:08:48 GMT</pubDate>
+            <description><![CDATA[你是否正在寻找一个密码库？又不想自托管？]]></description>
+            <content:encoded><![CDATA[<p>你是否正在寻找一个密码库？又不想自托管？</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/bitwarden.png" length="0" type="image/png"/>
+        </item>
+        <item>
+            <title><![CDATA[网站加友链的最佳姿势是什么？当然是自动化啦！]]></title>
+            <link>https://2x.nz/posts/auto-pr-link/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/auto-pr-link/</guid>
+            <pubDate>Tue, 17 Feb 2026 22:41:17 GMT</pubDate>
+            <description><![CDATA[如果你经常一觉醒来就看到一堆友链 PR，还得逐个检查格式、顺手帮对方修语法错误，那把这件事自动化确实会轻松很多。]]></description>
+            <content:encoded><![CDATA[<p>如果你经常一觉醒来就看到一堆友链 PR，还得逐个检查格式、顺手帮对方修语法错误，那把这件事自动化确实会轻松很多。</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/auto-pr-link-12.png" length="0" type="image/png"/>
+        </item>
+        <item>
+            <title><![CDATA[如何在你的网站上放一个压缩炸弹？]]></title>
+            <link>https://2x.nz/posts/web-bomb/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/web-bomb/</guid>
+            <pubDate>Sat, 14 Feb 2026 03:59:29 GMT</pubDate>
+            <description><![CDATA[你知道压缩炸弹吗？就是那种看着人畜无害小小的只有几kb的文件，但是解压后却有高达几十几百G的文件的神秘东西！]]></description>
+            <content:encoded><![CDATA[<p>你知道压缩炸弹吗？就是那种看着人畜无害小小的只有几kb的文件，但是解压后却有高达几十几百G的文件的神秘东西！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/web-bomb.png" length="0" type="image/png"/>
+        </item>
+        <item>
+            <title><![CDATA[手把手教你跑一个二次元AI老婆！]]></title>
+            <link>https://2x.nz/posts/ai-wife/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/ai-wife/</guid>
+            <pubDate>Thu, 12 Feb 2026 10:20:25 GMT</pubDate>
+            <description><![CDATA[极！其！简！单！傻！子！都！会！本期将手把手教你从软件安装，到模型配置再到出图，百分百画出惊艳的图片！]]></description>
+            <content:encoded><![CDATA[<p>极！其！简！单！傻！子！都！会！本期将手把手教你从软件安装，到模型配置再到出图，百分百画出惊艳的图片！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/ai-wife-15.png" length="0" type="image/png"/>
+        </item>
+        <item>
+            <title><![CDATA[阿里云网关 DPI 阻断绕过漏洞分析报告：TLS Client Hello 分片逃逸]]></title>
+            <link>https://2x.nz/posts/aliyun-icp-tls-bug/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/aliyun-icp-tls-bug/</guid>
+            <pubDate>Wed, 11 Feb 2026 11:38:46 GMT</pubDate>
+            <content:encoded><![CDATA[<p></p>]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[论DeepWiki为什么是神！]]></title>
+            <link>https://2x.nz/posts/deepwiki/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/deepwiki/</guid>
+            <pubDate>Wed, 11 Feb 2026 04:54:28 GMT</pubDate>
+            <description><![CDATA[你是否在Github有一些脍炙人口的开源项目？快看看有没有被DeepWiki收录！获得免费！强大！易用！实时更新的知识库！]]></description>
+            <content:encoded><![CDATA[<p>你是否在Github有一些脍炙人口的开源项目？快看看有没有被DeepWiki收录！获得免费！强大！易用！实时更新的知识库！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/deepwiki.png" length="0" type="image/png"/>
+        </item>
+        <item>
+            <title><![CDATA[连着被打了4个月，来做一个彻头彻尾的复盘吧！]]></title>
+            <link>https://2x.nz/posts/review-ddos/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/review-ddos/</guid>
+            <pubDate>Tue, 10 Feb 2026 03:18:55 GMT</pubDate>
+            <description><![CDATA[自25年11月至今，该网站被连续不断攻击了总计高达几百TiB，攻击峰值高达6.8Gbps，且攻击者从最开始的纯印度IP攻击到如今的纯中国大陆IP攻击。今天，就跟大家谈谈攻击者为什么要攻击，他们想得到什么，以及如何防范DDOS]]></description>
+            <content:encoded><![CDATA[<p>自25年11月至今，该网站被连续不断攻击了总计高达几百TiB，攻击峰值高达6.8Gbps，且攻击者从最开始的纯印度IP攻击到如今的纯中国大陆IP攻击。今天，就跟大家谈谈攻击者为什么要攻击，他们想得到什么，以及如何防范DDOS</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/review-ddos-5.png" length="0" type="image/png"/>
+        </item>
+        <item>
+            <title><![CDATA[你需要为你的网站上水印吗？水印怎么打才有效？]]></title>
+            <link>https://2x.nz/posts/watermark/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/watermark/</guid>
+            <pubDate>Wed, 04 Feb 2026 07:21:17 GMT</pubDate>
+            <description><![CDATA[很早之前，我得知了我的文章被盗了，当时觉得也没啥，今天又翻到当时的聊天记录，还是觉得就算文章被盗了，也应该让看文章的所有用户都知道原文章到底是谁写的]]></description>
+            <content:encoded><![CDATA[<p>很早之前，我得知了我的文章被盗了，当时觉得也没啥，今天又翻到当时的聊天记录，还是觉得就算文章被盗了，也应该让看文章的所有用户都知道原文章到底是谁写的</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/watermark.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[你真的懂了浏览器跨域吗？COOP，COEP，CORP，CORS都是管什么的？]]></title>
+            <link>https://2x.nz/posts/coxp/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/coxp/</guid>
+            <pubDate>Mon, 02 Feb 2026 20:54:03 GMT</pubDate>
+            <description><![CDATA[你是否在浏览或开发网站时在浏览器控制台看到过“由于跨域XXX，已阻止加载XXX”，或“200 Failed”状态？今天带你搞懂浏览器的跨域安全模型]]></description>
+            <content:encoded><![CDATA[<p>你是否在浏览或开发网站时在浏览器控制台看到过“由于跨域XXX，已阻止加载XXX”，或“200 Failed”状态？今天带你搞懂浏览器的跨域安全模型</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/coxp.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[让我们来看看图片防盗链各大厂做的怎么样！]]></title>
+            <link>https://2x.nz/posts/avatar/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/avatar/</guid>
+            <pubDate>Sun, 01 Feb 2026 08:57:26 GMT</pubDate>
+            <description><![CDATA[今天突发奇想就像试试抓抓各大厂的头像接口，没想到有挺多根本没有防盗链]]></description>
+            <content:encoded><![CDATA[<p>今天突发奇想就像试试抓抓各大厂的头像接口，没想到有挺多根本没有防盗链</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/avatar.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[想要一个Cookie管理器？无需手搓！]]></title>
+            <link>https://2x.nz/posts/cookie-consent/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/cookie-consent/</guid>
+            <pubDate>Fri, 30 Jan 2026 12:27:05 GMT</pubDate>
+            <description><![CDATA[Cookie Consent是一个开源简单实现的Cookie管理器，能让您的网站GDPR合规，仅需复制粘贴！]]></description>
+            <content:encoded><![CDATA[<p>Cookie Consent是一个开源简单实现的Cookie管理器，能让您的网站GDPR合规，仅需复制粘贴！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/cookie-consent.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[你可曾想过，直接将BitWarden部署到Cloudflare Worker？]]></title>
+            <link>https://2x.nz/posts/warden-worker/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/warden-worker/</guid>
+            <pubDate>Mon, 26 Jan 2026 09:00:52 GMT</pubDate>
+            <description><![CDATA[warden-worker就是这样一个项目，它将Rust编译为WASM，然后部署到Cloudflare Worker，无需VPS，无需家里云，只需点点鼠标就可免费用上自己的密码托管！]]></description>
+            <content:encoded><![CDATA[<p>warden-worker就是这样一个项目，它将Rust编译为WASM，然后部署到Cloudflare Worker，无需VPS，无需家里云，只需点点鼠标就可免费用上自己的密码托管！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/warden-worker.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[如何让一个文件在Git提交中永远消失？如何丢掉其中一条提交并保持逻辑完整？]]></title>
+            <link>https://2x.nz/posts/del-git-commit/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/del-git-commit/</guid>
+            <pubDate>Fri, 23 Jan 2026 22:57:21 GMT</pubDate>
+            <description><![CDATA[我们有时候可能会误操作导致提交了一个不该提交的文件，当你发现的时候，在此之后已经堆砌了很多新的提交...]]></description>
+            <content:encoded><![CDATA[<p>我们有时候可能会误操作导致提交了一个不该提交的文件，当你发现的时候，在此之后已经堆砌了很多新的提交...</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/del-git-commit-1.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[WTF？！直接将Umami部署到EdgeOne Pages？扔掉VPS！直接跑在云函数！]]></title>
+            <link>https://2x.nz/posts/eo-umami/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/eo-umami/</guid>
+            <pubDate>Mon, 19 Jan 2026 02:14:32 GMT</pubDate>
+            <description><![CDATA[我们都知道，EdgeOne Pages有个完整的Node.js环境，那Umami是Next.js也基于Node.js，那我们是不是可以...]]></description>
+            <content:encoded><![CDATA[<p>我们都知道，EdgeOne Pages有个完整的Node.js环境，那Umami是Next.js也基于Node.js，那我们是不是可以...</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/eo-umami-1.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[静态网站也需要WAF？Cloudflare不需要但是EdgeOne/ESA需要！]]></title>
+            <link>https://2x.nz/posts/waf/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/waf/</guid>
+            <pubDate>Sat, 17 Jan 2026 16:00:00 GMT</pubDate>
+            <description><![CDATA[在几周前，我的网站累计被DDoS了约100TB的流量，哪怕我是静态网站，并不会被“打死”，但因为流量过大，还是被EdgeOne取消接入了，其实这件事本不会发生...]]></description>
+            <content:encoded><![CDATA[<p>在几周前，我的网站累计被DDoS了约100TB的流量，哪怕我是静态网站，并不会被“打死”，但因为流量过大，还是被EdgeOne取消接入了，其实这件事本不会发生...</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/waf.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[什么？4元每月200G的服务器？还是阿里的？还有联通9929精品回程？？]]></title>
+            <link>https://2x.nz/posts/aliyun-ecs-4rm/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/aliyun-ecs-4rm/</guid>
+            <pubDate>Fri, 16 Jan 2026 15:59:40 GMT</pubDate>
+            <description><![CDATA[通过创建抢占型实例+每月免费CDT 200G流量包，你几乎只需要付很少的硬盘费！]]></description>
+            <content:encoded><![CDATA[<p>通过创建抢占型实例+每月免费CDT 200G流量包，你几乎只需要付很少的硬盘费！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/aliyun-ecs-4rm.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[EO VS ESA，谁才是国内CDNの王？！]]></title>
+            <link>https://2x.nz/posts/eovsesa/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/eovsesa/</guid>
+            <pubDate>Fri, 16 Jan 2026 08:53:08 GMT</pubDate>
+            <description><![CDATA[EdgeOne和ESA都是非常好的免费国内CDN，常规用起来几乎一模一样，今天我们就来让他俩一决雌雄！]]></description>
+            <content:encoded><![CDATA[<p>EdgeOne和ESA都是非常好的免费国内CDN，常规用起来几乎一模一样，今天我们就来让他俩一决雌雄！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/eovsesa.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[完全免费！搭建一个自己的短链服务！]]></title>
+            <link>https://2x.nz/posts/static-redirect-group/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/static-redirect-group/</guid>
+            <pubDate>Wed, 14 Jan 2026 15:39:31 GMT</pubDate>
+            <description><![CDATA[利用 Cloudflare Worker 和 GitHub，可以搭建一个纯静态、可自动维护的短链服务]]></description>
+            <content:encoded><![CDATA[<p>利用 Cloudflare Worker 和 GitHub，可以搭建一个纯静态、可自动维护的短链服务</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/static-redirect-group.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[网站分流怎么做？全球秒开！有点坐牢，但是好玩！]]></title>
+            <link>https://2x.nz/posts/fenliu/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/fenliu/</guid>
+            <pubDate>Sun, 11 Jan 2026 18:09:05 GMT</pubDate>
+            <description><![CDATA[网站分流看着很难，实际上一点都不简单，如果你也感兴趣（想坐牢），那就来试试8！]]></description>
+            <content:encoded><![CDATA[<p>网站分流看着很难，实际上一点都不简单，如果你也感兴趣（想坐牢），那就来试试8！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/fenliu.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[试试Cloudflare IP优选！让Cloudflare在国内再也不是减速器！]]></title>
+            <link>https://2x.nz/posts/cf-fastip/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/cf-fastip/</guid>
+            <pubDate>Sat, 10 Jan 2026 16:00:00 GMT</pubDate>
+            <description><![CDATA[使用SaaS、Worker以及各种奇技淫巧来让你的网站解析的IP进行分流优选，提高网站可用性和速度]]></description>
+            <content:encoded><![CDATA[<p>使用SaaS、Worker以及各种奇技淫巧来让你的网站解析的IP进行分流优选，提高网站可用性和速度</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/cf-fastip-11.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[你有一个全球网站？如何做好监控？]]></title>
+            <link>https://2x.nz/posts/double-monitior/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/double-monitior/</guid>
+            <pubDate>Fri, 09 Jan 2026 03:26:02 GMT</pubDate>
+            <description><![CDATA[如果你正好在运营一个全球性的网站，它可能在不同地区有不同节点，我们要如何做好宕机提醒？]]></description>
+            <content:encoded><![CDATA[<p>如果你正好在运营一个全球性的网站，它可能在不同地区有不同节点，我们要如何做好宕机提醒？</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/double-monitior.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[无需服务器！从零教你自建一个短链服务！]]></title>
+            <link>https://2x.nz/posts/shorter-url/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/shorter-url/</guid>
+            <pubDate>Fri, 09 Jan 2026 02:55:33 GMT</pubDate>
+            <description><![CDATA[你是否有一个短域名？没有也没关系，马上教你从域名开始搭建一个短链服务！]]></description>
+            <content:encoded><![CDATA[<p>你是否有一个短域名？没有也没关系，马上教你从域名开始搭建一个短链服务！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/shorter-url.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[超高校级的监控服务：UptimeFlare！基于CF Worker！自托管！声明式！新手友好！]]></title>
+            <link>https://2x.nz/posts/uptimeflare/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/uptimeflare/</guid>
+            <pubDate>Fri, 02 Jan 2026 19:10:53 GMT</pubDate>
+            <description><![CDATA[谁不想拥有一个监控自己服务的服务呢？]]></description>
+            <content:encoded><![CDATA[<p>谁不想拥有一个监控自己服务的服务呢？</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/uptimeflare.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[完全免费！从架构，开发到部署，一条龙实打实的教你做一言/随机图等随机URL的最佳实践]]></title>
+            <link>https://2x.nz/posts/random-url-gen/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/random-url-gen/</guid>
+            <pubDate>Mon, 29 Dec 2025 02:10:40 GMT</pubDate>
+            <description><![CDATA[我曾于2024搭建了第一个随机图网站，最近几周又深度研究了类似项目，发现这类项目有很多坑也有很多神秘的捷径，并且某些架构还可以做到“永生”...]]></description>
+            <content:encoded><![CDATA[<p>我曾于2024搭建了第一个随机图网站，最近几周又深度研究了类似项目，发现这类项目有很多坑也有很多神秘的捷径，并且某些架构还可以做到“永生”...</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/random-url-gen.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[Umami Cloud迁移到本地踩坑记录]]></title>
+            <link>https://2x.nz/posts/umami-migration/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/umami-migration/</guid>
+            <pubDate>Fri, 05 Dec 2025 02:13:34 GMT</pubDate>
+            <description><![CDATA[早期的我很有先见之明，在使用Umami的时候是自建的，但是不久后因为想要全上云，又用回了Umami Cloud，但是现在访问记录激增，我又不得不迁移到本地...]]></description>
+            <content:encoded><![CDATA[<p>早期的我很有先见之明，在使用Umami的时候是自建的，但是不久后因为想要全上云，又用回了Umami Cloud，但是现在访问记录激增，我又不得不迁移到本地...</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/umami-migration.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[上手米哈游AI，然后把它逆了！]]></title>
+            <link>https://2x.nz/posts/anuneko/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/anuneko/</guid>
+            <pubDate>Tue, 02 Dec 2025 01:11:40 GMT</pubDate>
+            <description><![CDATA[AnuNeko是一只会哈气的橘猫...其实不是，AnuNeko是由米哈游创始人做的AI大模型，会哈气。于是便做个QQBot给群友玩]]></description>
+            <content:encoded><![CDATA[<p>AnuNeko是一只会哈气的橘猫...其实不是，AnuNeko是由米哈游创始人做的AI大模型，会哈气。于是便做个QQBot给群友玩</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/anuneko.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[盘点那些好用的Serverless（云函数）！]]></title>
+            <link>https://2x.nz/posts/serverless-function/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/serverless-function/</guid>
+            <pubDate>Tue, 25 Nov 2025 00:33:24 GMT</pubDate>
+            <description><![CDATA[你是否为了搭建一个网站而买了一台VPS，然后安装宝塔或1Panel再安装Nginx等等等等？现在这些统统不要！只需要稍加学习，你就可以得到一个免费的高可用的托管服务！]]></description>
+            <content:encoded><![CDATA[<p>你是否为了搭建一个网站而买了一台VPS，然后安装宝塔或1Panel再安装Nginx等等等等？现在这些统统不要！只需要稍加学习，你就可以得到一个免费的高可用的托管服务！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/serverless-function.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[出门在外，如何优雅、高效、流畅地远程自家电脑？]]></title>
+            <link>https://2x.nz/posts/remote/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/remote/</guid>
+            <pubDate>Mon, 24 Nov 2025 10:04:57 GMT</pubDate>
+            <description><![CDATA[出门在外时，身边未必没有电脑，但真正熟悉、完整的工作环境往往还是家里的那台主机。因此，如何高效远程访问自家电脑，就成了一个很实际的问题。]]></description>
+            <content:encoded><![CDATA[<p>出门在外时，身边未必没有电脑，但真正熟悉、完整的工作环境往往还是家里的那台主机。因此，如何高效远程访问自家电脑，就成了一个很实际的问题。</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/9207_112_29_106_130_rx7fsq.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[Win11保留数据无损降级Win10！]]></title>
+            <link>https://2x.nz/posts/win11-to-win10/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/win11-to-win10/</guid>
+            <pubDate>Sun, 23 Nov 2025 07:18:40 GMT</pubDate>
+            <description><![CDATA[我真的受够了Win11那黏黏的感觉了，什么？能降级？还是官方手段？还能保留数据？？?]]></description>
+            <content:encoded><![CDATA[<p>我真的受够了Win11那黏黏的感觉了，什么？能降级？还是官方手段？还能保留数据？？?</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/win11-to-win10.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[解决困扰我多时的JS重复请求问题]]></title>
+            <link>https://2x.nz/posts/swup-js/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/swup-js/</guid>
+            <pubDate>Tue, 18 Nov 2025 00:46:02 GMT</pubDate>
+            <description><![CDATA[这篇文章记录了博客在接入动态访问量统计后，因 Swup 处理不当而产生重复请求的问题，以及最终的排查与修复过程]]></description>
+            <content:encoded><![CDATA[<p>这篇文章记录了博客在接入动态访问量统计后，因 Swup 处理不当而产生重复请求的问题，以及最终的排查与修复过程</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/swup-js.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[来！让我们用Vercel来分享你的OneDrive！]]></title>
+            <link>https://2x.nz/posts/onedrive-index/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/onedrive-index/</guid>
+            <pubDate>Fri, 14 Nov 2025 07:03:46 GMT</pubDate>
+            <description><![CDATA[利用onedrive-index这个项目可以将你的OneDrive映射到公网，轻松分发资源！]]></description>
+            <content:encoded><![CDATA[<p>利用onedrive-index这个项目可以将你的OneDrive映射到公网，轻松分发资源！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/onedrive-index.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[永久免费OneDrive 5T，MS 365 E3保姆级拿下教程！]]></title>
+            <link>https://2x.nz/posts/ms-e3/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/ms-e3/</guid>
+            <pubDate>Fri, 14 Nov 2025 06:09:41 GMT</pubDate>
+            <description><![CDATA[曾经免费拿E5，但是封车很久了，现在E3又来了，快上车！]]></description>
+            <content:encoded><![CDATA[<p>曾经免费拿E5，但是封车很久了，现在E3又来了，快上车！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/ms-e3.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[微信，支付宝，储蓄卡与信用卡的爱恨情仇]]></title>
+            <link>https://2x.nz/posts/wx-zfb-card/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/wx-zfb-card/</guid>
+            <pubDate>Tue, 11 Nov 2025 00:20:44 GMT</pubDate>
+            <description><![CDATA[在中国，一卡并不能通刷，鉴于二维码的普及，大部分商户使用扫码付款而不是刷卡付款，这可能会导致一些问题...]]></description>
+            <content:encoded><![CDATA[<p>在中国，一卡并不能通刷，鉴于二维码的普及，大部分商户使用扫码付款而不是刷卡付款，这可能会导致一些问题...</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/wx-zfb-card.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[如何在安卓手机上优雅的写我的博客]]></title>
+            <link>https://2x.nz/posts/mobile-git/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/mobile-git/</guid>
+            <pubDate>Mon, 10 Nov 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[在桌面端，我们可以用 VS Code 和 Obsidian 写文章；那么到了手机上，是否也能保持同样顺手的写作体验？]]></description>
+            <content:encoded><![CDATA[<p>在桌面端，我们可以用 VS Code 和 Obsidian 写文章；那么到了手机上，是否也能保持同样顺手的写作体验？</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/Screenshot_2025-11-11-14-04-23-56_a2e3670364a4153bdb03dad30c8d4108.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[限制级笔记本电脑验机教程]]></title>
+            <link>https://2x.nz/posts/check-notebook/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/check-notebook/</guid>
+            <pubDate>Sun, 09 Nov 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[众所周知，笔记本电脑在激活后就不能七天无理由退了，但是不联网又很难测，那么有没有什么两全其美的办法呢？]]></description>
+            <content:encoded><![CDATA[<p>众所周知，笔记本电脑在激活后就不能七天无理由退了，但是不联网又很难测，那么有没有什么两全其美的办法呢？</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/Screenshot_2025-11-11-08-12-40-74_4fbb30eb7b71661.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[自建一个匿名文件上传终结点]]></title>
+            <link>https://2x.nz/posts/unknown-upload/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/unknown-upload/</guid>
+            <pubDate>Sat, 08 Nov 2025 03:02:04 GMT</pubDate>
+            <description><![CDATA[你有没有遇到过一种场景？在学校/公司电脑需要带一个文件走，但是又不想安装远程软件。那么今天，教你无需U盘，让你在任何地方将你想要的文件带回你家！]]></description>
+            <content:encoded><![CDATA[<p>你有没有遇到过一种场景？在学校/公司电脑需要带一个文件走，但是又不想安装远程软件。那么今天，教你无需U盘，让你在任何地方将你想要的文件带回你家！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/unknown-upload.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[ZTE光猫F450不拆机获取超密]]></title>
+            <link>https://2x.nz/posts/zte-f450-bridge/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/zte-f450-bridge/</guid>
+            <pubDate>Sat, 01 Nov 2025 06:42:54 GMT</pubDate>
+            <description><![CDATA[朋友老早之前就想将光猫改为桥接，今天终于整上了，但奈何没有超密，不过，在互联网的帮助下，我们最终找到了解决方案]]></description>
+            <content:encoded><![CDATA[<p>朋友老早之前就想将光猫改为桥接，今天终于整上了，但奈何没有超密，不过，在互联网的帮助下，我们最终找到了解决方案</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/zte-f450-bridge-4.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[如何绕过Steam直接启动Steam上的游戏？]]></title>
+            <link>https://2x.nz/posts/hook-steam-drm/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/hook-steam-drm/</guid>
+            <pubDate>Wed, 15 Oct 2025 06:39:40 GMT</pubDate>
+            <description><![CDATA[经常买Steam单机游戏的小伙伴们都知道，Steam上的大部分游戏在启动时都要求Steam在后台运行，那么如果我只是在玩一个单机游戏又不想带Steam启动要怎么办呢？这篇文章来帮你]]></description>
+            <content:encoded><![CDATA[<p>经常买Steam单机游戏的小伙伴们都知道，Steam上的大部分游戏在启动时都要求Steam在后台运行，那么如果我只是在玩一个单机游戏又不想带Steam启动要怎么办呢？这篇文章来帮你</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/hook-steam-drm.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[手把手教你AI翻唱！]]></title>
+            <link>https://2x.nz/posts/rvc/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/rvc/</guid>
+            <pubDate>Mon, 13 Oct 2025 06:23:12 GMT</pubDate>
+            <description><![CDATA[利用RVC训练音色模型然后使用Replay直出AI翻唱！]]></description>
+            <content:encoded><![CDATA[<p>利用RVC训练音色模型然后使用Replay直出AI翻唱！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/rvc-19.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[手把手教你克隆音色！]]></title>
+            <link>https://2x.nz/posts/index-tts2/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/index-tts2/</guid>
+            <pubDate>Mon, 13 Oct 2025 04:19:06 GMT</pubDate>
+            <description><![CDATA[仅需几秒的语音就能克隆音色，无需繁琐配置，一键启动！随时随地做蓝底神人小视频！]]></description>
+            <content:encoded><![CDATA[<p>仅需几秒的语音就能克隆音色，无需繁琐配置，一键启动！随时随地做蓝底神人小视频！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/index-tts2-4.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[人生中的第一台自己组装的台式！键盘亮显示器必亮！]]></title>
+            <link>https://2x.nz/posts/first-pc/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/first-pc/</guid>
+            <pubDate>Fri, 10 Oct 2025 21:15:38 GMT</pubDate>
+            <description><![CDATA[很早就想装一个台式常驻家里了，这次阴差阳错的获得了一个机会，至于为什么我称它为阴差阳错，请看VCR]]></description>
+            <content:encoded><![CDATA[<p>很早就想装一个台式常驻家里了，这次阴差阳错的获得了一个机会，至于为什么我称它为阴差阳错，请看VCR</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/IMG20251010160613.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[魔法少女的魔女审判解包（Unity通用解包方案）]]></title>
+            <link>https://2x.nz/posts/manosaba-unzip/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/manosaba-unzip/</guid>
+            <pubDate>Sun, 05 Oct 2025 08:09:36 GMT</pubDate>
+            <description><![CDATA[魔判这部作品真的很不错，大家可以去Steam搜索魔法少女的魔女审判下载下来玩玩]]></description>
+            <content:encoded><![CDATA[<p>魔判这部作品真的很不错，大家可以去Steam搜索魔法少女的魔女审判下载下来玩玩</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/212792e5-8634-4121-984b-c3477f463897.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[在Mac上玩GalGame竟如此简单！]]></title>
+            <link>https://2x.nz/posts/mac-gal/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/mac-gal/</guid>
+            <pubDate>Tue, 30 Sep 2025 11:29:21 GMT</pubDate>
+            <description><![CDATA[虽然说用了Mac就等于远离了所有游戏，但是偶尔还是想打打Gal放松放松的，那么有没有傻瓜式的方法让我们可以抱着Mac在床上嗯嗯啊啊呢，有的！]]></description>
+            <content:encoded><![CDATA[<p>虽然说用了Mac就等于远离了所有游戏，但是偶尔还是想打打Gal放松放松的，那么有没有傻瓜式的方法让我们可以抱着Mac在床上嗯嗯啊啊呢，有的！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/d5441bcd48dca4226efe40ba6d522551.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[我为什么要买个Mac]]></title>
+            <link>https://2x.nz/posts/mac/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/mac/</guid>
+            <pubDate>Tue, 30 Sep 2025 01:07:15 GMT</pubDate>
+            <description><![CDATA[Mac的好处是：便携、续航长、性能高。缺点是贵、要重新学一个新系统的操作。仅对我个人，我认为我从Win换到Mac是一个正确的决定]]></description>
+            <content:encoded><![CDATA[<p>Mac的好处是：便携、续航长、性能高。缺点是贵、要重新学一个新系统的操作。仅对我个人，我认为我从Win换到Mac是一个正确的决定</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/mac.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[现代！易上手！高效！且社区支持的超高校级的MarkDown编辑器！]]></title>
+            <link>https://2x.nz/posts/obsidian/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/obsidian/</guid>
+            <pubDate>Tue, 16 Sep 2025 18:20:34 GMT</pubDate>
+            <description><![CDATA[曾经我使用MarkText编写文章，今天收到朋友推荐，来尝试一下黑曜石（Obsidian），发现真的很好用，且社区完善！]]></description>
+            <content:encoded><![CDATA[<p>曾经我使用MarkText编写文章，今天收到朋友推荐，来尝试一下黑曜石（Obsidian），发现真的很好用，且社区完善！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/obsidian.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[Fuwari静态博客搭建教程]]></title>
+            <link>https://2x.nz/posts/fuwari/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/fuwari/</guid>
+            <pubDate>Tue, 16 Sep 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[Fuwari 是一个静态博客框架，配合 Cloudflare Pages 可以快速搭建一个轻量、安全且易维护的个人博客]]></description>
+            <content:encoded><![CDATA[<p>Fuwari 是一个静态博客框架，配合 Cloudflare Pages 可以快速搭建一个轻量、安全且易维护的个人博客</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/f286ef4d-326c-4c7c-8a1e-ed150937a12b.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[禁用Astro跟弱智一般的静态构建图像优化]]></title>
+            <link>https://2x.nz/posts/disable-astro-generating-optimized-images/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/disable-astro-generating-optimized-images/</guid>
+            <pubDate>Tue, 09 Sep 2025 22:16:30 GMT</pubDate>
+            <description><![CDATA[折腾了整整一天，终于解决了这傻逼Astro对于静态构建自作聪明的图片优化了，这不仅能提高构建速度，还可以减少无谓的CPU资源消耗，更环保，也更符合Unix哲学]]></description>
+            <content:encoded><![CDATA[<p>折腾了整整一天，终于解决了这傻逼Astro对于静态构建自作聪明的图片优化了，这不仅能提高构建速度，还可以减少无谓的CPU资源消耗，更环保，也更符合Unix哲学</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/2025-09-10-06-19-15-image.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[GoEdge自建CDN系统踩坑记录]]></title>
+            <link>https://2x.nz/posts/goedge/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/goedge/</guid>
+            <pubDate>Mon, 08 Sep 2025 22:28:06 GMT</pubDate>
+            <description><![CDATA[卧槽，一不小心搞到了3台免费VPS，可是不用容易被回收，这可咋办啊！欸？不如让他们都干点活吧！]]></description>
+            <content:encoded><![CDATA[<p>卧槽，一不小心搞到了3台免费VPS，可是不用容易被回收，这可咋办啊！欸？不如让他们都干点活吧！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/2025-09-09-06-29-44-image.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[Reality协议的代理服务端搭建教程]]></title>
+            <link>https://2x.nz/posts/reality/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/reality/</guid>
+            <pubDate>Mon, 08 Sep 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[Reality协议是目前最抗检测的一种代理协议]]></description>
+            <content:encoded><![CDATA[<p>Reality协议是目前最抗检测的一种代理协议</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/709453e8-3a6a-4e2c-8618-fcf542ee0d37.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[Oracle（甲骨文云）踩坑记录]]></title>
+            <link>https://2x.nz/posts/oci/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/oci/</guid>
+            <pubDate>Sun, 07 Sep 2025 16:01:25 GMT</pubDate>
+            <description><![CDATA[在钞能力的帮助下也是成功薅到了一个甲骨文账号，上手把玩发现坑点挺多的，遂记录]]></description>
+            <content:encoded><![CDATA[<p>在钞能力的帮助下也是成功薅到了一个甲骨文账号，上手把玩发现坑点挺多的，遂记录</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/2025-09-08-00-02-59-image.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[公开架构，我的二次元随机图API是怎么做的]]></title>
+            <link>https://2x.nz/posts/acg-randompic-api/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/acg-randompic-api/</guid>
+            <pubDate>Fri, 05 Sep 2025 18:22:00 GMT</pubDate>
+            <description><![CDATA[发现很多小伙伴也想搭建一个自己的随机图API，这里我就公开一下我的架构，打磨2年了，供大家参考~]]></description>
+            <content:encoded><![CDATA[<p>发现很多小伙伴也想搭建一个自己的随机图API，这里我就公开一下我的架构，打磨2年了，供大家参考~</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/2025-08-31-04-09-37-image.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[记录一下批量重命名插件咋写的]]></title>
+            <link>https://2x.nz/posts/rename/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/rename/</guid>
+            <pubDate>Fri, 05 Sep 2025 17:59:26 GMT</pubDate>
+            <description><![CDATA[因为重装系统了，一些小插件丢失了，要重写，然后又把之前的坑踩了一遍]]></description>
+            <content:encoded><![CDATA[<p>因为重装系统了，一些小插件丢失了，要重写，然后又把之前的坑踩了一遍</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/2025-09-06-02-01-14-image.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[UptimeRobot，无需自托管的服务监控！]]></title>
+            <link>https://2x.nz/posts/uptimerobot/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/uptimerobot/</guid>
+            <pubDate>Wed, 03 Sep 2025 20:03:56 GMT</pubDate>
+            <description><![CDATA[之前曾用过BetterStack这样的云端服务监控，但是免费计划的监控数量仅有10个，而今天推荐的这个支持高达50个！]]></description>
+            <content:encoded><![CDATA[<p>之前曾用过BetterStack这样的云端服务监控，但是免费计划的监控数量仅有10个，而今天推荐的这个支持高达50个！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/2025-09-04-04-08-47-image.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[想玩k3s？Zeabur来帮你！]]></title>
+            <link>https://2x.nz/posts/zeabur/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/zeabur/</guid>
+            <pubDate>Tue, 02 Sep 2025 22:49:16 GMT</pubDate>
+            <description><![CDATA[Zeabur是一个PaaS服务，它可以让你将自己的服务器托管上去，然后在网页上进行管理，就像传统服务器面板一样，这些都是免费！]]></description>
+            <content:encoded><![CDATA[<p>Zeabur是一个PaaS服务，它可以让你将自己的服务器托管上去，然后在网页上进行管理，就像传统服务器面板一样，这些都是免费！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/2025-09-03-06-49-30-image.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[哪吒监控搭建教程]]></title>
+            <link>https://2x.nz/posts/nezha/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/nezha/</guid>
+            <pubDate>Tue, 02 Sep 2025 20:58:25 GMT</pubDate>
+            <description><![CDATA[想不想在上帝视角监测你的服务器？顺便再把Uptime Kuma的活也干了！]]></description>
+            <content:encoded><![CDATA[<p>想不想在上帝视角监测你的服务器？顺便再把Uptime Kuma的活也干了！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/2025-09-03-05-00-43-image.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[给想买麦克风的朋友一些建议]]></title>
+            <link>https://2x.nz/posts/mic/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/mic/</guid>
+            <pubDate>Tue, 02 Sep 2025 02:34:12 GMT</pubDate>
+            <description><![CDATA[这几年我折腾过不少麦克风：从几千元的舒尔、RODE，到几百元的闪克、绿联，甚至一百出头的带麦半入耳耳机。这里就结合实际体验，给大家总结一些选购时常见的坑点。]]></description>
+            <content:encoded><![CDATA[<p>这几年我折腾过不少麦克风：从几千元的舒尔、RODE，到几百元的闪克、绿联，甚至一百出头的带麦半入耳耳机。这里就结合实际体验，给大家总结一些选购时常见的坑点。</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/2025-09-02-10-39-10-5f50a607bf666647544c19515aaa15f3.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[配置 Vercel.json 以支持服务器级别的重定向]]></title>
+            <link>https://2x.nz/posts/vercel-redirects/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/vercel-redirects/</guid>
+            <pubDate>Mon, 01 Sep 2025 22:33:27 GMT</pubDate>
+            <description><![CDATA[如果你的站点（无论静态/动态）正在使用Vercel，则配置重定向是一件非常轻松的事情]]></description>
+            <content:encoded><![CDATA[<p>如果你的站点（无论静态/动态）正在使用Vercel，则配置重定向是一件非常轻松的事情</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/2025-09-02-06-34-54-image.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[利用Astrov3的原生重定向来实现各种各样的高级重定向！]]></title>
+            <link>https://2x.nz/posts/astrov3-redirects/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/astrov3-redirects/</guid>
+            <pubDate>Mon, 01 Sep 2025 21:56:19 GMT</pubDate>
+            <description><![CDATA[曾经，我使用Cloudflare Pages Redirects来实现我的个人短链重定向，而现在我发现我可以直接将它集成到我的Astro博客]]></description>
+            <content:encoded><![CDATA[<p>曾经，我使用Cloudflare Pages Redirects来实现我的个人短链重定向，而现在我发现我可以直接将它集成到我的Astro博客</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/2025-09-02-05-59-33-image.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[Google最新的AI生图模型 Nano Banana！立绘转真人！一键P图！]]></title>
+            <link>https://2x.nz/posts/gemini-nano-banana/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/gemini-nano-banana/</guid>
+            <pubDate>Mon, 01 Sep 2025 08:25:34 GMT</pubDate>
+            <description><![CDATA[哎我造了村里孩子吃上城里货了，这你扯不扯，这AI生图方便好，无需部署不费脑，大口大口使劲造，鼻歪眼斜使劲笑]]></description>
+            <content:encoded><![CDATA[<p>哎我造了村里孩子吃上城里货了，这你扯不扯，这AI生图方便好，无需部署不费脑，大口大口使劲造，鼻歪眼斜使劲笑</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/2025-09-01-16-39-17-5976a1f7-3f14-4987-aa60-3257b05f8b7b.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[Cyberduck - 简洁好用的S3文件浏览器]]></title>
+            <link>https://2x.nz/posts/cyberduck/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/cyberduck/</guid>
+            <pubDate>Sat, 30 Aug 2025 19:38:24 GMT</pubDate>
+            <description><![CDATA[对象存储是一个非常好用的东西，但是要如何方便的上传文件呢？]]></description>
+            <content:encoded><![CDATA[<p>对象存储是一个非常好用的东西，但是要如何方便的上传文件呢？</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/2025-08-31-03-39-46-image.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[我给BetterStack的状态页面汉化了]]></title>
+            <link>https://2x.nz/posts/translations-betterstack/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/translations-betterstack/</guid>
+            <pubDate>Thu, 28 Aug 2025 10:46:27 GMT</pubDate>
+            <description><![CDATA[闲着没事打开 BetterStack 的状态页面时，我发现里面一会儿中文、一会儿英文，索性就把它整体汉化了一遍。]]></description>
+            <content:encoded><![CDATA[<p>闲着没事打开 BetterStack 的状态页面时，我发现里面一会儿中文、一会儿英文，索性就把它整体汉化了一遍。</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/2025-08-28-18-49-56-image.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[记录迁移Umami，从本地到云]]></title>
+            <link>https://2x.nz/posts/umami-local-2-render/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/umami-local-2-render/</guid>
+            <pubDate>Thu, 28 Aug 2025 01:57:16 GMT</pubDate>
+            <description><![CDATA[之前的站点统计部署在家里云NAS，通过IPv6回源，而现在我将他迁移到了Render+Supabase]]></description>
+            <content:encoded><![CDATA[<p>之前的站点统计部署在家里云NAS，通过IPv6回源，而现在我将他迁移到了Render+Supabase</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/2025-08-28-10-01-43-image.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[记录解包尘白禁区以获得涩涩（？）CG]]></title>
+            <link>https://2x.nz/posts/cbjq-unzip/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/cbjq-unzip/</guid>
+            <pubDate>Sat, 23 Aug 2025 17:11:44 GMT</pubDate>
+            <description><![CDATA[受人委托解包尘白禁区的加载图CG，记录一下流程，方便日后复习]]></description>
+            <content:encoded><![CDATA[<p>受人委托解包尘白禁区的加载图CG，记录一下流程，方便日后复习</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/2025-08-24-01-13-41-3824c5ece06cc56241688f4a4aacbcbd.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[记录破解兰空图床（Lsky-Pro）]]></title>
+            <link>https://2x.nz/posts/hack-lskypro/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/hack-lskypro/</guid>
+            <pubDate>Tue, 19 Aug 2025 13:09:47 GMT</pubDate>
+            <description><![CDATA[兰空图床是一个简洁易用（？）的图床框架，抓包了一下激活过程，这玩意居然没加密...记录一下]]></description>
+            <content:encoded><![CDATA[<p>兰空图床是一个简洁易用（？）的图床框架，抓包了一下激活过程，这玩意居然没加密...记录一下</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/2025-08-20-21-11-48-image.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[Typora免付费激活]]></title>
+            <link>https://2x.nz/posts/hack-typora/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/hack-typora/</guid>
+            <pubDate>Thu, 14 Aug 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[Typora是一个简洁易用（？）的MarkDown编辑器，不想交钱？改几行文件就破解！]]></description>
+            <content:encoded><![CDATA[<p>Typora是一个简洁易用（？）的MarkDown编辑器，不想交钱？改几行文件就破解！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/2025-08-20-21-08-22-image.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[atpx.com 一个有趣的神秘博客]]></title>
+            <link>https://2x.nz/posts/atpx-fun-blog/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/atpx-fun-blog/</guid>
+            <pubDate>Wed, 13 Aug 2025 10:41:24 GMT</pubDate>
+            <description><![CDATA[今天在床上打滚突然找到一个神秘博客，还挺有意思的]]></description>
+            <content:encoded><![CDATA[<p>今天在床上打滚突然找到一个神秘博客，还挺有意思的</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/2025-08-13-18-46-20-image.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[手把手教你进入e站里站（exhentai.org）]]></title>
+            <link>https://2x.nz/posts/exhentai/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/exhentai/</guid>
+            <pubDate>Tue, 12 Aug 2025 11:10:40 GMT</pubDate>
+            <description><![CDATA[上周也是突然想到e站这个神奇的网站，但是2年的账号居然进不了里站，这里总结一些进里站的心路历程~]]></description>
+            <content:encoded><![CDATA[<p>上周也是突然想到e站这个神奇的网站，但是2年的账号居然进不了里站，这里总结一些进里站的心路历程~</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/2025-08-12-19-13-14-image.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[你是我吗？]]></title>
+            <link>https://2x.nz/posts/you-is-me-huh/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/you-is-me-huh/</guid>
+            <pubDate>Tue, 12 Aug 2025 07:43:18 GMT</pubDate>
+            <description><![CDATA[博客开源了就会有很多小笨蛋Fork完改也改不全，导致评论也评论到我这来了，浏览量统计也来我这来了😅]]></description>
+            <content:encoded><![CDATA[<p>博客开源了就会有很多小笨蛋Fork完改也改不全，导致评论也评论到我这来了，浏览量统计也来我这来了😅</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/2025-08-12-15-44-06-image.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[教你制作自己的Telegram Emoji！]]></title>
+            <link>https://2x.nz/posts/tg-emoji/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/tg-emoji/</guid>
+            <pubDate>Mon, 11 Aug 2025 13:22:46 GMT</pubDate>
+            <description><![CDATA[欧呦不赖，开了个大会员终于可以戴上Netlify的表情咯~]]></description>
+            <content:encoded><![CDATA[<p>欧呦不赖，开了个大会员终于可以戴上Netlify的表情咯~</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/2025-08-11-22-19-55-image.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[认证为Folo的创作者]]></title>
+            <link>https://2x.nz/posts/folo-verification/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/folo-verification/</guid>
+            <pubDate>Sun, 10 Aug 2025 13:26:55 GMT</pubDate>
+            <description><![CDATA[Folo是一个RSS聚合平台，在上面不仅可以订阅很多优质的RSS源，也可以认领自己的RSS源]]></description>
+            <content:encoded><![CDATA[<p>Folo是一个RSS聚合平台，在上面不仅可以订阅很多优质的RSS源，也可以认领自己的RSS源</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/2025-08-10-21-31-04-image.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[有自己的开源项目？来申请Netlify的Open Source计划！]]></title>
+            <link>https://2x.nz/posts/netlify-oss/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/netlify-oss/</guid>
+            <pubDate>Fri, 08 Aug 2025 16:00:01 GMT</pubDate>
+            <description><![CDATA[昨天在乱翻Netlify的网站，突然发现了一个开源计划的申请入口，故申请，没想到今天就通过了😋]]></description>
+            <content:encoded><![CDATA[<p>昨天在乱翻Netlify的网站，突然发现了一个开源计划的申请入口，故申请，没想到今天就通过了😋</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/2025-08-09-05-14-11-image.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[IPv6反解域名是什么？嫩长一坨还能托管到Cloudflare？SSL签发也没问题？]]></title>
+            <link>https://2x.nz/posts/ip6-arpa/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/ip6-arpa/</guid>
+            <pubDate>Fri, 08 Aug 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[你是否见过类似 e.b.9.f.0.7.4.0.1.0.0.2.ip6.arpa 这样的域名，今天就教你搞一个！]]></description>
+            <content:encoded><![CDATA[<p>你是否见过类似 e.b.9.f.0.7.4.0.1.0.0.2.ip6.arpa 这样的域名，今天就教你搞一个！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/2025-08-09-04-50-44-image.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[Github学生认证 + GitHub Education福利大全]]></title>
+            <link>https://2x.nz/posts/github-edu/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/github-edu/</guid>
+            <pubDate>Thu, 07 Aug 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[Github学生认证教程，以及通过验证后可领取的各种免费福利，包括免费域名等！]]></description>
+            <content:encoded><![CDATA[<p>Github学生认证教程，以及通过验证后可领取的各种免费福利，包括免费域名等！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/2025-08-08-01-01-00-image.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[你说什么？企业微信能免费用Deepseek？！还能调成猫娘？！！]]></title>
+            <link>https://2x.nz/posts/qiyewx-deepseek/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/qiyewx-deepseek/</guid>
+            <pubDate>Wed, 06 Aug 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[今天无意中建了个企业微信群，然后就发现可以加智能体，然后就调了个猫娘出来...]]></description>
+            <content:encoded><![CDATA[<p>今天无意中建了个企业微信群，然后就发现可以加智能体，然后就调了个猫娘出来...</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/2025-08-07-04-10-58-image.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[你是否在寻找一个评论系统而又不想自托管？又饱受垃圾评论的叨扰？]]></title>
+            <link>https://2x.nz/posts/giscus-akismet/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/giscus-akismet/</guid>
+            <pubDate>Sun, 03 Aug 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[Giscus就是这样一个很好的评论区，它基于Github Discussion，无需自托管，无需你管理账号，仅需引入一个JS即可用！]]></description>
+            <content:encoded><![CDATA[<p>Giscus就是这样一个很好的评论区，它基于Github Discussion，无需自托管，无需你管理账号，仅需引入一个JS即可用！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/2025-08-04-12-14-21-image.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[平平无奇的一张图，拉高曝光就能显现另一张图？]]></title>
+            <link>https://2x.nz/posts/hideimg/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/hideimg/</guid>
+            <pubDate>Sun, 03 Aug 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[教你制作自己的“光棱坦克”！]]></description>
+            <content:encoded><![CDATA[<p>教你制作自己的“光棱坦克”！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/2025-08-04-12-05-21-image.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[大陆直连TG Web？触手可及！]]></title>
+            <link>https://2x.nz/posts/proxy-tgweb/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/proxy-tgweb/</guid>
+            <pubDate>Fri, 01 Aug 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[TG Web采用前后端分离，前端可以部署到静态托管平台，而后端可以用各种服务反代]]></description>
+            <content:encoded><![CDATA[<p>TG Web采用前后端分离，前端可以部署到静态托管平台，而后端可以用各种服务反代</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/2025-08-02-18-10-18-image.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[QQ微信不够私密？自建自己的聊天服务器！]]></title>
+            <link>https://2x.nz/posts/self-host-matrix/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/self-host-matrix/</guid>
+            <pubDate>Fri, 01 Aug 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[通过自建Synapse，用户可以通过Element等软件来直接在你的服务器上聊天]]></description>
+            <content:encoded><![CDATA[<p>通过自建Synapse，用户可以通过Element等软件来直接在你的服务器上聊天</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/2025-08-02-17-20-32-image.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[对标CF Worker？拿EdgeOne边缘函数做一个随机图API！]]></title>
+            <link>https://2x.nz/posts/eo-function/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/eo-function/</guid>
+            <pubDate>Thu, 31 Jul 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[很早就知道EdgeOne边缘函数，一直都没来得及体验，今天上手后发现它真的很强大]]></description>
+            <content:encoded><![CDATA[<p>很早就知道EdgeOne边缘函数，一直都没来得及体验，今天上手后发现它真的很强大</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/6c1b4054-0a9a-42dd-a72b-d179216ac61f.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[CSP标头是什么？为什么有人能神不知鬼不觉地盗走你的信息？]]></title>
+            <link>https://2x.nz/posts/csp/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/csp/</guid>
+            <pubDate>Wed, 30 Jul 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[CSP 是内容安全策略，它可以限制恶意脚本执行，从而降低 XSS 攻击带来的信息泄露风险]]></description>
+            <content:encoded><![CDATA[<p>CSP 是内容安全策略，它可以限制恶意脚本执行，从而降低 XSS 攻击带来的信息泄露风险</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/e245d917-2255-4d2d-85fb-aa7538a18022.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[如何提高网站的SEO？]]></title>
+            <link>https://2x.nz/posts/improve-seo/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/improve-seo/</guid>
+            <pubDate>Tue, 29 Jul 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[很多人把网站做出来之后就不再维护了，但如果你希望搜索引擎更快收录并获得更好的排名，其实还有不少细节值得优化。]]></description>
+            <content:encoded><![CDATA[<p>很多人把网站做出来之后就不再维护了，但如果你希望搜索引擎更快收录并获得更好的排名，其实还有不少细节值得优化。</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/f334c97b-bb75-4920-8bd1-e62c9e5c675c.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[关于本站为什么不进行ICP备案]]></title>
+            <link>https://2x.nz/posts/why-not-icp/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/why-not-icp/</guid>
+            <pubDate>Mon, 28 Jul 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[由于诸多原因，本站并未进行ICP备案，这里记录了一些原因]]></description>
+            <content:encoded><![CDATA[<p>由于诸多原因，本站并未进行ICP备案，这里记录了一些原因</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/d24c6c12-a8c9-4577-a4bc-0de768c23337.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[网易云音乐歌曲时间戳获取]]></title>
+            <link>https://2x.nz/posts/wyy-timestrap/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/wyy-timestrap/</guid>
+            <pubDate>Sat, 26 Jul 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[如果你需要歌词时间戳，且歌曲为网易云提供，那么获取它将无比简单]]></description>
+            <content:encoded><![CDATA[<p>如果你需要歌词时间戳，且歌曲为网易云提供，那么获取它将无比简单</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/3f73417c-f6a1-4715-bd1e-ee56a82c0ee6.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[记录人生中第一次破解软件！FKvocechat！]]></title>
+            <link>https://2x.nz/posts/fuck-vocechat/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/fuck-vocechat/</guid>
+            <pubDate>Tue, 22 Jul 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[感兴趣的可以先去voce.chat购买一个Pro版本后再阅读此文~本文也是一个使用REST API通信的软件通用的破解教程]]></description>
+            <content:encoded><![CDATA[<p>感兴趣的可以先去voce.chat购买一个Pro版本后再阅读此文~本文也是一个使用REST API通信的软件通用的破解教程</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/caa0d269-fc78-4352-8d71-0bc33c122ddd.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[国内对象存储免流量费？Cloudflare带宽联盟究竟是什么？]]></title>
+            <link>https://2x.nz/posts/cloudflare-bandwidth-alliance/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/cloudflare-bandwidth-alliance/</guid>
+            <pubDate>Mon, 21 Jul 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[Cloudflare带宽联盟是一个多云服务商联合构建的服务体系，在指定的云服务商中，如果流量通过Cloudflare路由则不收取流量费用，用户仅需要支付存储费用]]></description>
+            <content:encoded><![CDATA[<p>Cloudflare带宽联盟是一个多云服务商联合构建的服务体系，在指定的云服务商中，如果流量通过Cloudflare路由则不收取流量费用，用户仅需要支付存储费用</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/bf447f03-220b-494b-9f32-da71caa8b43d.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[都5202年了，还有人不会自建自己的Cloudflare/EdgeOne等各种CDN的优选？]]></title>
+            <link>https://2x.nz/posts/self-host-fastip/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/self-host-fastip/</guid>
+            <pubDate>Mon, 21 Jul 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[自建各大CDN服务的优选域名非常简单，只需要先这样，再这样...但是踩坑的地方也不少...]]></description>
+            <content:encoded><![CDATA[<p>自建各大CDN服务的优选域名非常简单，只需要先这样，再这样...但是踩坑的地方也不少...</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/5df07ad0-01cd-4541-9321-b0ded148a90f.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[教你搭建Chevereto这个超级强大的图床！]]></title>
+            <link>https://2x.nz/posts/chevereto/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/chevereto/</guid>
+            <pubDate>Tue, 15 Jul 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[被宝塔开心版的站长推荐了Chevereto这个图床，刚好刚刚嫖了个免费的虚拟主机，让我们开始折腾！]]></description>
+            <content:encoded><![CDATA[<p>被宝塔开心版的站长推荐了Chevereto这个图床，刚好刚刚嫖了个免费的虚拟主机，让我们开始折腾！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/f31ca517-8f5b-4e53-af08-c32aabc224ab.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[我用Claude10分钟写了个六子棋...?]]></title>
+            <link>https://2x.nz/posts/sixqi-py/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/sixqi-py/</guid>
+            <pubDate>Sun, 13 Jul 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[本来是不想写这种看起来就很简单的项目的，奈何群u苦苦哀求，只好实现]]></description>
+            <content:encoded><![CDATA[<p>本来是不想写这种看起来就很简单的项目的，奈何群u苦苦哀求，只好实现</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/d359734c-1415-4ebc-8caf-4d807282fad6.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[N款CDN/静态托管服务商的优缺点比较]]></title>
+            <link>https://2x.nz/posts/static-web/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/static-web/</guid>
+            <pubDate>Sun, 13 Jul 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[Serverless服务有很多，静态托管就是重中之重，来看看谁最稳定快速]]></description>
+            <content:encoded><![CDATA[<p>Serverless服务有很多，静态托管就是重中之重，来看看谁最稳定快速</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/da8b7a38-7247-43af-b272-f012f2dd024d.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[利用Cloudflare Page提供的重定向功能实现无损耗、不限数量的静态重定向！]]></title>
+            <link>https://2x.nz/posts/cfpage-redirect/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/cfpage-redirect/</guid>
+            <pubDate>Sat, 12 Jul 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[Cloudflare的重定向规则非常强大，但是如果直接使用重定向规则创建批量重定向会消耗很多的配额]]></description>
+            <content:encoded><![CDATA[<p>Cloudflare的重定向规则非常强大，但是如果直接使用重定向规则创建批量重定向会消耗很多的配额</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/530d7a11-c9ea-45ed-905a-1e3965f3e3b3.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[配置Vercel让ITDog测试全部403！]]></title>
+            <link>https://2x.nz/posts/vercel-deny/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/vercel-deny/</guid>
+            <pubDate>Wed, 09 Jul 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[很讨厌别人用ITDog等拨测服务疯狂测试你的站点？拒绝他们！]]></description>
+            <content:encoded><![CDATA[<p>很讨厌别人用ITDog等拨测服务疯狂测试你的站点？拒绝他们！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/d81562f3-8efb-45f3-8dd1-72cb9c032bc2.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[让你的网站对接高级的Umami统计！]]></title>
+            <link>https://2x.nz/posts/umami/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/umami/</guid>
+            <pubDate>Sat, 05 Jul 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[Umami是一个站点统计服务，只需要插入一行js即可获得高效，易读，可观察性的站点统计！]]></description>
+            <content:encoded><![CDATA[<p>Umami是一个站点统计服务，只需要插入一行js即可获得高效，易读，可观察性的站点统计！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/6eedb10a-08d3-4268-8caf-370bc093a668.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[分享一个IPFS图片API]]></title>
+            <link>https://2x.nz/posts/ipfs-api/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/ipfs-api/</guid>
+            <pubDate>Thu, 03 Jul 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[很早前我就用过xLog，这次逆向出了它的图床API，可以用来暂时存放图片！]]></description>
+            <content:encoded><![CDATA[<p>很早前我就用过xLog，这次逆向出了它的图床API，可以用来暂时存放图片！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/2a104c9e-195b-4f16-b080-ee76c763a80a.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[测评一下SecBit MCDN HK区域的质量]]></title>
+            <link>https://2x.nz/posts/secbit/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/secbit/</guid>
+            <pubDate>Tue, 01 Jul 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[在我哥们的帮助下也是成功通过我的博客拿到了Secbit的免费MCDN服务，再见EdgeOne（]]></description>
+            <content:encoded><![CDATA[<p>在我哥们的帮助下也是成功通过我的博客拿到了Secbit的免费MCDN服务，再见EdgeOne（</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/8fd87117-9ab0-4ae5-b9b5-8202f47fbc0b.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[meme-generator部署指南以及对接Koishi]]></title>
+            <link>https://2x.nz/posts/meme-api/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/meme-api/</guid>
+            <pubDate>Sun, 29 Jun 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[很早之前我就很好奇那些用群友的头像做的表情包真的是人工p的吗，实则不然！]]></description>
+            <content:encoded><![CDATA[<p>很早之前我就很好奇那些用群友的头像做的表情包真的是人工p的吗，实则不然！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/ee29b679-3355-453e-917b-2b85ae9106a0.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[EdgeOne + Cloudflare，我们天下无敌！]]></title>
+            <link>https://2x.nz/posts/eo-cf/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/eo-cf/</guid>
+            <pubDate>Thu, 26 Jun 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[EdgeOne的低延迟+Cloudflare的强大业务！我都不敢想这有多爽！]]></description>
+            <content:encoded><![CDATA[<p>EdgeOne的低延迟+Cloudflare的强大业务！我都不敢想这有多爽！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/50839e45-bb5c-4fd5-8e88-3959295fb9bb.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[关于我折腾了一晚上 EdgeOne]]></title>
+            <link>https://2x.nz/posts/edgeone/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/edgeone/</guid>
+            <pubDate>Sat, 21 Jun 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[本来对EdgeOne不感兴趣的，但是后来被引诱说没备案可以用国内节点，虽然好像当事者是开玩笑但是节点速度真的不错]]></description>
+            <content:encoded><![CDATA[<p>本来对EdgeOne不感兴趣的，但是后来被引诱说没备案可以用国内节点，虽然好像当事者是开玩笑但是节点速度真的不错</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/3a9096b2-cee8-448b-952a-d9f68cb01be6.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[静态博客也想展示文章浏览量？当然可以！]]></title>
+            <link>https://2x.nz/posts/static-view/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/static-view/</guid>
+            <pubDate>Tue, 17 Jun 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[利用Umami等站点分析软件可以让管理员了解站点活跃度，但是如果我们想向用户展示一些数据呢？]]></description>
+            <content:encoded><![CDATA[<p>利用Umami等站点分析软件可以让管理员了解站点活跃度，但是如果我们想向用户展示一些数据呢？</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/acacac41-e1e1-4a15-bdae-05683656916c.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[AI写不出优质的代码？其实是你引导错了！]]></title>
+            <link>https://2x.nz/posts/aicode-prompt/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/aicode-prompt/</guid>
+            <pubDate>Mon, 16 Jun 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[如今，大语言模型百花齐放，有开山鼻祖OpenAI的ChatGPT系列，也有Anthropic开发的代码神器Claude系列。但是，哪怕模型再先进再聪明，如果用它的人使用的方法不对，那再好的模型用起来也是笨笨的]]></description>
+            <content:encoded><![CDATA[<p>如今，大语言模型百花齐放，有开山鼻祖OpenAI的ChatGPT系列，也有Anthropic开发的代码神器Claude系列。但是，哪怕模型再先进再聪明，如果用它的人使用的方法不对，那再好的模型用起来也是笨笨的</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/65f8862e-2a66-4acc-8fef-c8b3dc7f5c29.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[NAT1开放内网网站]]></title>
+            <link>https://2x.nz/posts/nat1-web/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/nat1-web/</guid>
+            <pubDate>Fri, 30 May 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[利用CF动态重定向透过STUN+Lucky WebHook实时更新STUN端口实现NAT1家宽建站]]></description>
+            <content:encoded><![CDATA[<p>利用CF动态重定向透过STUN+Lucky WebHook实时更新STUN端口实现NAT1家宽建站</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/0aa77bad-482a-4b65-9a19-4f35acb570ba.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[关于Whois查询那点事]]></title>
+            <link>https://2x.nz/posts/whois/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/whois/</guid>
+            <pubDate>Tue, 27 May 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[你有没想过自己部署一个第三方的Whois查询服务？我做过，这里面全是坑！]]></description>
+            <content:encoded><![CDATA[<p>你有没想过自己部署一个第三方的Whois查询服务？我做过，这里面全是坑！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/16ab7a68-892e-429e-a0bc-02d829eead82.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[浏览器自带下载慢？你需要一个第三方下载器 Motrix！]]></title>
+            <link>https://2x.nz/posts/motrix/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/motrix/</guid>
+            <pubDate>Sun, 25 May 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[如果你觉得 Chromium 浏览器自带下载速度太慢，不妨试试免费开源、界面简洁且体验不错的第三方下载器 Motrix。]]></description>
+            <content:encoded><![CDATA[<p>如果你觉得 Chromium 浏览器自带下载速度太慢，不妨试试免费开源、界面简洁且体验不错的第三方下载器 Motrix。</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/ee0efba8-8c27-449f-86d0-3e9367d12463.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[加群向导]]></title>
+            <link>https://2x.nz/posts/pin/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/pin/</guid>
+            <pubDate>Fri, 23 May 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[关于如何联系二叉树树~]]></description>
+            <content:encoded><![CDATA[<p>关于如何联系二叉树树~</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/cute.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[利用WebHook来为你的订阅者推送文章更新信息]]></title>
+            <link>https://2x.nz/posts/github-webhook/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/github-webhook/</guid>
+            <pubDate>Sun, 18 May 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[针对于静态博客，博主在文章更新后一般需要手动通知订阅者阅读新的文章，本文通过WebHook来实现一个全自动的文章更新通知]]></description>
+            <content:encoded><![CDATA[<p>针对于静态博客，博主在文章更新后一般需要手动通知订阅者阅读新的文章，本文通过WebHook来实现一个全自动的文章更新通知</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/69389a6f-da33-4f53-be34-408b9f88d9e1.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[让Vercel对接你的S3对象存储（仅下载）]]></title>
+            <link>https://2x.nz/posts/s3cloudrive/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/s3cloudrive/</guid>
+            <pubDate>Sun, 04 May 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[可能很多小伙伴都使用过对象存储，但是他们大部分都没一个图形界面，虽然近年来有了AList这么一个非常全能的服务，但是仍然需要独立服务器，本篇将使用Vercel Function搭建一个精美的S3文件下载]]></description>
+            <content:encoded><![CDATA[<p>可能很多小伙伴都使用过对象存储，但是他们大部分都没一个图形界面，虽然近年来有了AList这么一个非常全能的服务，但是仍然需要独立服务器，本篇将使用Vercel Function搭建一个精美的S3文件下载</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/2025-05-05-07-45-06-image.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[手把手教你部署Discourse]]></title>
+            <link>https://2x.nz/posts/discourse/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/discourse/</guid>
+            <pubDate>Thu, 01 May 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[Discourse是一个开源的强大的论坛系统，让你马上就能拥有自己的BBS]]></description>
+            <content:encoded><![CDATA[<p>Discourse是一个开源的强大的论坛系统，让你马上就能拥有自己的BBS</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/2025-05-02-22-03-04-image.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[白嫖免费的3x-ui面板]]></title>
+            <link>https://2x.nz/posts/free-3xui/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/free-3xui/</guid>
+            <pubDate>Wed, 30 Apr 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[3x-ui面板是一个非常好用的代理面板，很多人都在使用他，如果有人使用的是默认密码...]]></description>
+            <content:encoded><![CDATA[<p>3x-ui面板是一个非常好用的代理面板，很多人都在使用他，如果有人使用的是默认密码...</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/8e3dd949-97f8-44b1-ab44-e29b64b6c1a8.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[浏览器JS运行原理]]></title>
+            <link>https://2x.nz/posts/browser-run-js/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/browser-run-js/</guid>
+            <pubDate>Thu, 24 Apr 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[本文深度剖析浏览器的JS运行原理以及浏览器内部事件处理的根本操作：事件循环]]></description>
+            <content:encoded><![CDATA[<p>本文深度剖析浏览器的JS运行原理以及浏览器内部事件处理的根本操作：事件循环</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/4b040799-eec9-457e-a04e-edf8b7e35b94.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[Github全站反向代理搭建指南]]></title>
+            <link>https://2x.nz/posts/gh-proxy/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/gh-proxy/</guid>
+            <pubDate>Mon, 14 Apr 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[搭建Github全站代理的完整指南，涵盖原理讲解与多种部署方案（Cloudflare Worker、EdgeOne Pages、Vercel、VPS+Go）]]></description>
+            <content:encoded><![CDATA[<p>搭建Github全站代理的完整指南，涵盖原理讲解与多种部署方案（Cloudflare Worker、EdgeOne Pages、Vercel、VPS+Go）</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/8bb2d8ae-1703-44e8-9f3b-10b46ab69913.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[崩坏星穹铁道全局加速]]></title>
+            <link>https://2x.nz/posts/starrail-fast/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/starrail-fast/</guid>
+            <pubDate>Mon, 14 Apr 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[因为本文涉猎敏感地带，所以仅供专业人士技术讨论，我也不会发布什么一键包，请按照教程自己动手]]></description>
+            <content:encoded><![CDATA[<p>因为本文涉猎敏感地带，所以仅供专业人士技术讨论，我也不会发布什么一键包，请按照教程自己动手</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/36f34153-b96f-43ec-911e-8c3d65bc8aa0.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[绕过USTC的浏览器JS验证]]></title>
+            <link>https://2x.nz/posts/bypass-ustc-verifying/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/bypass-ustc-verifying/</guid>
+            <pubDate>Thu, 03 Apr 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[USTC在下载一些资源的时候会使用JS验证，有没有不用无头浏览器绕过的方法呢...]]></description>
+            <content:encoded><![CDATA[<p>USTC在下载一些资源的时候会使用JS验证，有没有不用无头浏览器绕过的方法呢...</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/58e8e41a-0755-4e6a-ab1e-a9dbaa1042d5.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[Netlify、Vercel反代网站]]></title>
+            <link>https://2x.nz/posts/netlify-vercel-proxy/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/netlify-vercel-proxy/</guid>
+            <pubDate>Thu, 03 Apr 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[会用Netlify，家宽建站不是梦！]]></description>
+            <content:encoded><![CDATA[<p>会用Netlify，家宽建站不是梦！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/nvp.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[卧室布局整改记录]]></title>
+            <link>https://2x.nz/posts/reset-bedroom/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/reset-bedroom/</guid>
+            <pubDate>Thu, 03 Apr 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[起因只是凌晨苏醒的灵机一动，然后...]]></description>
+            <content:encoded><![CDATA[<p>起因只是凌晨苏醒的灵机一动，然后...</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/37fc1d0b-533f-4905-a7ff-ab906fcb1860.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[自建邮局太麻烦？两种免费域名邮箱方案任你选！]]></title>
+            <link>https://2x.nz/posts/domain-email/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/domain-email/</guid>
+            <pubDate>Tue, 11 Mar 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[想要一个域名邮箱？这里提供两种免费方案：网易免费企业邮和腾讯企业邮箱，各有优劣，按需选择！]]></description>
+            <content:encoded><![CDATA[<p>想要一个域名邮箱？这里提供两种免费方案：网易免费企业邮和腾讯企业邮箱，各有优劣，按需选择！</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/2025-05-02-21-04-48-image.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[Cloudflare R2+Workers！马上搭建自己的云上图床！]]></title>
+            <link>https://2x.nz/posts/cf-randompic/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/cf-randompic/</guid>
+            <pubDate>Tue, 04 Mar 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[使用R2存储图片，通过Workers连接，最后使用a标签或img标签在网页中嵌入展示，全链路上云]]></description>
+            <content:encoded><![CDATA[<p>使用R2存储图片，通过Workers连接，最后使用a标签或img标签在网页中嵌入展示，全链路上云</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/QmVgqgoC7G8NLS21WvR8j9gf5amu33XvuV68ZrgM5B9iFf.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[Hugo博客搭建教程以及配置调优]]></title>
+            <link>https://2x.nz/posts/hugo/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/hugo/</guid>
+            <pubDate>Sun, 02 Mar 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[Hugo是一个基于Golang的静态博客，相比于Nodejs的Hexo构建效率提升600%，同时也支持低JavaScript特性，SEO更加优化，爬虫更易获取]]></description>
+            <content:encoded><![CDATA[<p>Hugo是一个基于Golang的静态博客，相比于Nodejs的Hexo构建效率提升600%，同时也支持低JavaScript特性，SEO更加优化，爬虫更易获取</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/3d1b097d-7e31-4312-b3e5-d213e2903f4d.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[教你搭建自己的番剧库，实现自动追番！]]></title>
+            <link>https://2x.nz/posts/autobangumi/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/autobangumi/</guid>
+            <pubDate>Mon, 24 Feb 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[使用AutoBangumi连接qBittorrent下载番剧，然后使用刮削软件刮削，设置一遍，享受终身]]></description>
+            <content:encoded><![CDATA[<p>使用AutoBangumi连接qBittorrent下载番剧，然后使用刮削软件刮削，设置一遍，享受终身</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/QmXYf2u6BZMseAzjPUhcHsdfdhQpc3XkdjuEi4VvE1BkTn.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[我买了个新NAS...]]></title>
+            <link>https://2x.nz/posts/new-nas/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/new-nas/</guid>
+            <pubDate>Sat, 22 Feb 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[你可能不知道，我曾经购入过一台N100迷你主机，不久后便卖掉了，不过现在我又购入了，这是为什么呢？]]></description>
+            <content:encoded><![CDATA[<p>你可能不知道，我曾经购入过一台N100迷你主机，不久后便卖掉了，不过现在我又购入了，这是为什么呢？</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/b8b7d06a-1ca4-4786-a147-5275f57dfb3b.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[利用阿里云云函数 FC 搭建AList后端，每月仅需5毛！]]></title>
+            <link>https://2x.nz/posts/alist-for-aliyun/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/alist-for-aliyun/</guid>
+            <pubDate>Sun, 12 Jan 2025 16:00:00 GMT</pubDate>
+            <description><![CDATA[阿里云云函数 FC是一个弹性的计算平台，可托管多种服务。搭配AList的前后端分离部署，实现比VPS更低的价格，得到更好的体验]]></description>
+            <content:encoded><![CDATA[<p>阿里云云函数 FC是一个弹性的计算平台，可托管多种服务。搭配AList的前后端分离部署，实现比VPS更低的价格，得到更好的体验</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/47518d4403328a0fcb716f0e06fc7f608e6c65b7.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[使用ArchiSteamFarm进行Steam自动挂卡]]></title>
+            <link>https://2x.nz/posts/asf/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/asf/</guid>
+            <pubDate>Tue, 17 Dec 2024 16:00:00 GMT</pubDate>
+            <description><![CDATA[ArchiSteamFarm是一个Steam自动挂卡工具，它可以自动识别哪些游戏没有挂卡并且自动挂卡，高效率获得Steam集换式卡牌]]></description>
+            <content:encoded><![CDATA[<p>ArchiSteamFarm是一个Steam自动挂卡工具，它可以自动识别哪些游戏没有挂卡并且自动挂卡，高效率获得Steam集换式卡牌</p>]]></content:encoded>
+            <enclosure url="https://2x.nzhttps://eo-r2.2x.nz/myblog/img/QmPEHve8DdVZdwxAZ26BPgbc6cDCBaKC76VVijqVoMBY2k.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[关于Rewrite MV无法播放\没有画面的解决方法]]></title>
+            <link>https://2x.nz/posts/rewrite-qa/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/rewrite-qa/</guid>
+            <pubDate>Wed, 27 Nov 2024 16:00:00 GMT</pubDate>
+            <description><![CDATA[Rewrite打完才发现MV一个没看到]]></description>
+            <content:encoded><![CDATA[<p>Rewrite打完才发现MV一个没看到</p>]]></content:encoded>
+            <enclosure url="https://2x.nzhttps://eo-r2.2x.nz/myblog/img/bafybeihhyuk3zjqkisf66swxft4j5srv3g7wozy3zn4ykpsh3cuveuuwb4.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[自建正向代理服务器]]></title>
+            <link>https://2x.nz/posts/vpn/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/vpn/</guid>
+            <pubDate>Thu, 21 Nov 2024 16:00:00 GMT</pubDate>
+            <description><![CDATA[不要再买机场了！自建它不香吗？!]]></description>
+            <content:encoded><![CDATA[<p>不要再买机场了！自建它不香吗？!</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/2024-11-21-08-24-54-image.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[使用NoneBot2搭建你的QQBot！]]></title>
+            <link>https://2x.nz/posts/qqbot/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/qqbot/</guid>
+            <pubDate>Tue, 19 Nov 2024 16:00:00 GMT</pubDate>
+            <description><![CDATA[使用NapCat连接NoneBot2，打造自己的聊天机器人]]></description>
+            <content:encoded><![CDATA[<p>使用NapCat连接NoneBot2，打造自己的聊天机器人</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/QmcMSSKysZmgUCUk9W7hQUvZCtVSFH6hGKHctg99yo1yDE.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[Phira多人联机服务器搭建/使用教程]]></title>
+            <link>https://2x.nz/posts/phira-mp/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/phira-mp/</guid>
+            <pubDate>Tue, 05 Nov 2024 16:00:00 GMT</pubDate>
+            <description><![CDATA[懒人可以直接下载预构建的可执行文件，但如果想获得日志需要自备Rust环境]]></description>
+            <content:encoded><![CDATA[<p>懒人可以直接下载预构建的可执行文件，但如果想获得日志需要自备Rust环境</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/2024-11-06-08-20-39-image.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[究极喂饭教程，手把手教你内网穿透]]></title>
+            <link>https://2x.nz/posts/across-nat/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/across-nat/</guid>
+            <pubDate>Sun, 27 Oct 2024 16:00:00 GMT</pubDate>
+            <description><![CDATA[使用Zerotier，Tailscale，Cloudflare Tunnel可以实现多种内网穿透，其中有适用于个人访问的，也有适用于公众访问的]]></description>
+            <content:encoded><![CDATA[<p>使用Zerotier，Tailscale，Cloudflare Tunnel可以实现多种内网穿透，其中有适用于个人访问的，也有适用于公众访问的</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/2024-10-28-17-00-25-image.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[N100 - PVE（fnOS+Debian）基建记录]]></title>
+            <link>https://2x.nz/posts/n100-pve/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/n100-pve/</guid>
+            <pubDate>Sun, 27 Oct 2024 16:00:00 GMT</pubDate>
+            <description><![CDATA[在N100小主机上安装PVE，然后在其中安装飞牛NAS和Debian，实现追番建站分离，并且易扩展，易迁移]]></description>
+            <content:encoded><![CDATA[<p>在N100小主机上安装PVE，然后在其中安装飞牛NAS和Debian，实现追番建站分离，并且易扩展，易迁移</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/N100-PVE_cover.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[使用基于IPFS的Fleek部署静态网站、托管图床、部署服务]]></title>
+            <link>https://2x.nz/posts/ipfs/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/ipfs/</guid>
+            <pubDate>Wed, 16 Oct 2024 16:00:00 GMT</pubDate>
+            <description><![CDATA[IPFS是一个多节点的文件托管系统，你可以在上面共享文件、发布网站、而Fleek自动化了这个过程，并且可以链接你的Git存储库]]></description>
+            <content:encoded><![CDATA[<p>IPFS是一个多节点的文件托管系统，你可以在上面共享文件、发布网站、而Fleek自动化了这个过程，并且可以链接你的Git存储库</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/2024-10-17-09-55-55-image.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[教你把AList的前端部署到CF Pages！让你的AList秒加载！]]></title>
+            <link>https://2x.nz/posts/alist-web/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/alist-web/</guid>
+            <pubDate>Mon, 14 Oct 2024 16:00:00 GMT</pubDate>
+            <description><![CDATA[将AList Web部署到CF Pages可以显著提升访问者的浏览体验，因为静态资源都在CF的边缘节点，而后端使用API交互，而不是由源服务器路由所有流量，既能减轻源服务器的负载，又能使用CF Pages的不回源优势，一箭双雕]]></description>
+            <content:encoded><![CDATA[<p>将AList Web部署到CF Pages可以显著提升访问者的浏览体验，因为静态资源都在CF的边缘节点，而后端使用API交互，而不是由源服务器路由所有流量，既能减轻源服务器的负载，又能使用CF Pages的不回源优势，一箭双雕</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/QmSmcktDEJaWdDvFQeuNTJ9ps8R3PcLWyhSrbxoLEq2b2x.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[傻瓜式AI翻唱软件Replay！选歌！选模型！然后CREATE SONG！]]></title>
+            <link>https://2x.nz/posts/replay/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/replay/</guid>
+            <pubDate>Mon, 14 Oct 2024 16:00:00 GMT</pubDate>
+            <description><![CDATA[Replay是一个自动化的AI翻唱软件，用户仅需要提供想要翻唱的歌和RVC模型，Replay会自动进行人声分离，并生成AI翻唱音频，对于新手来说十分友好]]></description>
+            <content:encoded><![CDATA[<p>Replay是一个自动化的AI翻唱软件，用户仅需要提供想要翻唱的歌和RVC模型，Replay会自动进行人声分离，并生成AI翻唱音频，对于新手来说十分友好</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/e3b7630170caac0dc92e9f62d510c1a8.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[飞牛NAS玩机体验]]></title>
+            <link>https://2x.nz/posts/fnos/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/fnos/</guid>
+            <pubDate>Sun, 13 Oct 2024 16:00:00 GMT</pubDate>
+            <description><![CDATA[飞牛NAS系统是一个现代的开源的NAS系统。影视刮削在国内属于TOP1，并且刚需的Docker软件也功能全面易用，博主本人也在使用]]></description>
+            <content:encoded><![CDATA[<p>飞牛NAS系统是一个现代的开源的NAS系统。影视刮削在国内属于TOP1，并且刚需的Docker软件也功能全面易用，博主本人也在使用</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/QmUBuX9qmsNP1NHeEeUmuPNdS5ctvk4LchcSsFARDC4vZJ.webp" length="0" type="image/webp"/>
+        </item>
+        <item>
+            <title><![CDATA[隐私政策]]></title>
+            <link>https://2x.nz/posts/privacy-policy/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/privacy-policy/</guid>
+            <pubDate>Thu, 31 Dec 1998 19:20:15 GMT</pubDate>
+            <description><![CDATA[本隐私政策适用于AcoFork Blog（以下简称“我们”）。]]></description>
+            <content:encoded><![CDATA[<p>本隐私政策适用于AcoFork Blog（以下简称“我们”）。</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/privacy-policy.png" length="0" type="image/png"/>
+        </item>
+        <item>
+            <title><![CDATA[记录]]></title>
+            <link>https://2x.nz/posts/record/</link>
+            <guid isPermaLink="false">https://2x.nz/posts/record/</guid>
+            <pubDate>Thu, 31 Dec 1998 16:00:00 GMT</pubDate>
+            <description><![CDATA[一些记录，不定时更新]]></description>
+            <content:encoded><![CDATA[<p>一些记录，不定时更新</p>]]></content:encoded>
+            <enclosure url="https://2x.nzimg/record.png" length="0" type="image/png"/>
+        </item>
+    </channel>
+</rss>

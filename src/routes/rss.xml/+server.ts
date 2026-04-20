@@ -36,32 +36,25 @@ export const GET: RequestHandler = async () => {
 
 	// 添加文章到 feed
 	for (const post of publishedPosts) {
-		try {
-			const modulePath = `/src/content/posts/${post.slug}/index.md`;
-			const module = modules[modulePath] as any;
-			
-			let content = `<p>${post.metadata.description}</p>`;
-			
-			if (module && module.default && module.default.render) {
-				try {
-					content = module.default.render().html;
-				} catch (renderError) {
-					console.error(`Failed to render ${post.slug}:`, renderError);
-				}
-			}
-
-			feed.addItem({
-				title: post.metadata.title,
-				id: `${siteConfig.url}/posts/${post.slug}/`,
-				link: `${siteConfig.url}/posts/${post.slug}/`,
-				description: post.metadata.description,
-				content: content,
-				date: new Date(post.metadata.published),
-				image: post.metadata.image ? `${siteConfig.url}${post.metadata.image}` : undefined
-			});
-		} catch (error) {
-			console.error(`Failed to add post ${post.slug} to feed:`, error);
+		const modulePath = `/src/content/posts/${post.slug}/index.md`;
+		const module = modules[modulePath] as any;
+		
+		let content = '';
+		
+		if (module && module.default && module.default.render) {
+			const rendered = module.default.render();
+			content = rendered.html || rendered;
 		}
+
+		feed.addItem({
+			title: post.metadata.title,
+			id: `${siteConfig.url}/posts/${post.slug}/`,
+			link: `${siteConfig.url}/posts/${post.slug}/`,
+			description: post.metadata.description || '',
+			content: content,
+			date: new Date(post.metadata.published),
+			image: post.metadata.image ? `${siteConfig.url}${post.metadata.image}` : undefined
+		});
 	}
 
 	return new Response(feed.rss2(), {

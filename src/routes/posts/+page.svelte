@@ -10,6 +10,13 @@
 	let allPosts = $state<Array<{ title: string; link: string; description: string; date: string; content: string }>>([]);
 	let isLoading = $state(false);
 	let hasLoaded = $state(false);
+	
+	let searchFilters = $state({
+		title: true,
+		description: true,
+		content: true,
+		path: true
+	});
 
 	async function loadRSS() {
 		if (hasLoaded) return;
@@ -72,12 +79,13 @@
 			const rssPost = allPosts.find(rss => rss.link.includes(post.slug));
 			if (!rssPost) continue;
 			
-			const titleMatch = rssPost.title.toLowerCase().includes(query);
-			const descMatch = rssPost.description.toLowerCase().includes(query);
-			const contentMatch = rssPost.content.toLowerCase().includes(query);
+			const titleMatch = searchFilters.title && rssPost.title.toLowerCase().includes(query);
+			const descMatch = searchFilters.description && rssPost.description.toLowerCase().includes(query);
+			const contentMatch = searchFilters.content && rssPost.content.toLowerCase().includes(query);
+			const pathMatch = searchFilters.path && post.slug.toLowerCase().includes(query);
 			
-			if (titleMatch || descMatch || contentMatch) {
-				const matchedLines = contentMatch && !titleMatch && !descMatch 
+			if (titleMatch || descMatch || contentMatch || pathMatch) {
+				const matchedLines = contentMatch && !titleMatch && !descMatch && !pathMatch
 					? getMatchedContentLines(rssPost.content, query)
 					: [];
 				results.push({ post, matchedLines });
@@ -116,6 +124,42 @@
 			placeholder="搜索文章标题、描述或内容..."
 			class="w-full rounded-lg border border-input bg-background px-4 py-3 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
 		/>
+		
+		<div class="mt-3 flex flex-wrap gap-2">
+			<label class="flex items-center gap-2 cursor-pointer">
+				<input
+					type="checkbox"
+					bind:checked={searchFilters.title}
+					class="h-4 w-4 rounded border-input"
+				/>
+				<span class="text-sm">标题</span>
+			</label>
+			<label class="flex items-center gap-2 cursor-pointer">
+				<input
+					type="checkbox"
+					bind:checked={searchFilters.description}
+					class="h-4 w-4 rounded border-input"
+				/>
+				<span class="text-sm">简介</span>
+			</label>
+			<label class="flex items-center gap-2 cursor-pointer">
+				<input
+					type="checkbox"
+					bind:checked={searchFilters.content}
+					class="h-4 w-4 rounded border-input"
+				/>
+				<span class="text-sm">正文</span>
+			</label>
+			<label class="flex items-center gap-2 cursor-pointer">
+				<input
+					type="checkbox"
+					bind:checked={searchFilters.path}
+					class="h-4 w-4 rounded border-input"
+				/>
+				<span class="text-sm">路径</span>
+			</label>
+		</div>
+		
 		{#if searchQuery}
 			<div class="mt-2 min-h-[20px]">
 				{#if isLoading}

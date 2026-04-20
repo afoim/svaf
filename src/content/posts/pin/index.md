@@ -1,6 +1,6 @@
 ---
 title: 加群向导
-image: /public/assets/images/cute.webp
+image: ./img/cute.webp
 published: 2025-05-23T16:00:00
 pinned: true
 description: 关于如何联系二叉树树~
@@ -18,7 +18,7 @@ description: 关于如何联系二叉树树~
 请先 [赞助](/sponsors/) 至少 **10 CNY** 后加群。赞助时建议留备注，加群问题填写你留的备注或者交易订单号
 点击链接加入群聊【2x.nz】： [QQ群](https://qm.qq.com/q/I2Quch1uy6)
 
-![](/public/assets/images/2025-08-15-03-24-11-image.webp)
+![](./img/2025-08-15-03-24-11-image.webp)
 
 # 非官方
 

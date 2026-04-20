@@ -11,6 +11,38 @@ export const siteConfig = {
 		name: 'AcoFork',
 		url: 'https://2x.nz'
 	},
+	bio: {
+		avatar: 'https://q2.qlogo.cn/headimg_dl?dst_uin=2726730791&spec=0',
+		name: '二叉树树',
+		bio: 'Protect What You Love.',
+		links: [
+			{
+				name: 'QQ',
+				icon: 'simple-icons:qq',
+				url: 'https://qm.qq.com/q/FWqOHlwL2m'
+			},
+			{
+				name: 'Telegram',
+				icon: 'simple-icons:telegram',
+				url: 'https://t.me/+_07DERp7k1ljYTc1'
+			},
+			{
+				name: 'Bilibili',
+				icon: 'simple-icons:bilibili',
+				url: 'https://space.bilibili.com/325903362'
+			},
+			{
+				name: 'GitHub',
+				icon: 'simple-icons:github',
+				url: 'https://github.com/afoim'
+			},
+			{
+				name: 'Folo',
+				icon: 'simple-icons:folo',
+				url: 'https://app.folo.is/share/feeds/245004133358075904'
+			}
+		]
+	},
 	links: {
 		github: 'https://github.com/yourusername/svaf'
 	}

@@ -15,6 +15,7 @@
 		"@fontsource-variable/figtree": "^5.2.10",
 		"@hugeicons/core-free-icons": "^4.1.1",
 		"@hugeicons/svelte": "^1.1.2",
+		"@iconify/svelte": "^5.2.1",
 		"@sveltejs/adapter-auto": "latest",
 		"@sveltejs/adapter-static": "^3.0.10",
 		"@sveltejs/kit": "latest",

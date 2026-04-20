@@ -1,45 +1,7 @@
 import type { Post, PostMetadata } from '$lib/types/post';
 
-// 导入所有 markdown 文件
-const postFiles = import.meta.glob('/src/content/posts/*.md', { eager: true, query: '?raw', import: 'default' });
-
-/**
- * 解析 markdown 文件的 frontmatter
- */
-function parseFrontmatter(content: string): { metadata: PostMetadata; content: string } {
-	const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/;
-	const match = content.match(frontmatterRegex);
-
-	if (!match) {
-		throw new Error('Invalid markdown format: missing frontmatter');
-	}
-
-	const frontmatterText = match[1];
-	const markdownContent = match[2];
-
-	// 解析 YAML frontmatter
-	const metadata: Partial<PostMetadata> = {};
-	const lines = frontmatterText.split('\n');
-
-	for (const line of lines) {
-		const colonIndex = line.indexOf(':');
-		if (colonIndex === -1) continue;
-
-		const key = line.slice(0, colonIndex).trim();
-		let value: string | boolean = line.slice(colonIndex + 1).trim();
-
-		// 处理布尔值
-		if (value === 'true') value = true;
-		if (value === 'false') value = false;
-
-		metadata[key as keyof PostMetadata] = value as any;
-	}
-
-	return {
-		metadata: metadata as PostMetadata,
-		content: markdownContent.trim()
-	};
-}
+// 使用 mdsvex 导入所有 markdown 文件
+const postModules = import.meta.glob('/src/content/posts/*.md', { eager: true });
 
 /**
  * 获取所有文章
@@ -47,14 +9,17 @@ function parseFrontmatter(content: string): { metadata: PostMetadata; content: s
 export function getAllPosts(): Post[] {
 	const posts: Post[] = [];
 
-	for (const [path, content] of Object.entries(postFiles)) {
+	for (const [path, module] of Object.entries(postModules)) {
 		const slug = path.split('/').pop()?.replace('.md', '') || '';
-		const { metadata, content: markdownContent } = parseFrontmatter(content as string);
+		const mod = module as any;
+
+		// mdsvex 会将 frontmatter 导出为 metadata
+		const metadata = mod.metadata as PostMetadata;
 
 		posts.push({
 			slug,
 			metadata,
-			content: markdownContent
+			content: '' // mdsvex 处理的内容通过组件渲染
 		});
 	}
 
@@ -72,4 +37,23 @@ export function getAllPosts(): Post[] {
 export function getPostBySlug(slug: string): Post | undefined {
 	const posts = getAllPosts();
 	return posts.find((post) => post.slug === slug);
+}
+
+/**
+ * 获取文章组件
+ */
+export async function getPostComponent(slug: string) {
+	try {
+		const modules = import.meta.glob('/src/content/posts/*.md');
+		const path = `/src/content/posts/${slug}.md`;
+		
+		if (path in modules) {
+			const mod = await modules[path]();
+			return (mod as any).default;
+		}
+	} catch (error) {
+		console.error('Error loading post component:', error);
+	}
+	
+	return null;
 }

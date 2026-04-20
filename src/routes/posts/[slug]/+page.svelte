@@ -4,7 +4,7 @@
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
-	const { post, html } = data;
+	const { post, component } = data;
 
 	function formatDate(dateString: string) {
 		const date = new Date(dateString);
@@ -64,9 +64,9 @@
 		{/if}
 	</header>
 
-	<!-- 文章内容 -->
+	<!-- 文章内容 - 使用 mdsvex 组件 -->
 	<div class="prose prose-neutral dark:prose-invert max-w-none">
-		{@html html}
+		<svelte:component this={component} />
 	</div>
 
 	<!-- 文章底部 -->

@@ -1,20 +1,23 @@
-import { getPostBySlug } from '$lib/utils/posts';
+import { getPostBySlug, getPostComponent } from '$lib/utils/posts';
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
-import { marked } from 'marked';
 
-export const load: PageLoad = ({ params }) => {
+export const load: PageLoad = async ({ params }) => {
 	const post = getPostBySlug(params.slug);
 
 	if (!post) {
 		throw error(404, '文章不存在');
 	}
 
-	// 将 markdown 转换为 HTML
-	const html = marked(post.content);
+	// 获取 mdsvex 编译后的组件
+	const component = await getPostComponent(params.slug);
+
+	if (!component) {
+		throw error(404, '文章内容加载失败');
+	}
 
 	return {
 		post,
-		html
+		component
 	};
 };

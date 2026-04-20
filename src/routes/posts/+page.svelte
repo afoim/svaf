@@ -2,6 +2,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
 	import { Checkbox } from '$lib/components/ui/checkbox';
+	import * as Pagination from '$lib/components/ui/pagination';
 	import { siteConfig } from '$lib/config/site';
 	import type { PageData } from './$types';
 
@@ -12,6 +13,9 @@
 	let allPosts = $state<Array<{ title: string; link: string; description: string; date: string; content: string; wordCount: number; readTime: number }>>([]);
 	let isLoading = $state(false);
 	let hasLoaded = $state(false);
+	
+	let currentPage = $state(1);
+	const postsPerPage = 10;
 	
 	let searchFilters = $state({
 		title: true,
@@ -129,6 +133,25 @@
 		return results;
 	});
 	
+	let paginatedPosts = $derived(() => {
+		const allResults = filteredPostsWithMatches();
+		const startIndex = (currentPage - 1) * postsPerPage;
+		const endIndex = startIndex + postsPerPage;
+		return allResults.slice(startIndex, endIndex);
+	});
+	
+	let totalPages = $derived(Math.ceil(filteredPostsWithMatches().length / postsPerPage));
+	
+	// 当搜索条件改变时重置到第一页
+	$effect(() => {
+		searchQuery;
+		searchFilters.title;
+		searchFilters.description;
+		searchFilters.content;
+		searchFilters.path;
+		currentPage = 1;
+	});
+	
 	let hasAnyFilter = $derived(searchFilters.title || searchFilters.description || searchFilters.content || searchFilters.path);
 	
 	let totalStats = $derived(() => {
@@ -213,7 +236,7 @@
 	</div>
 
 	<div class="space-y-6">
-		{#each filteredPostsWithMatches() as { post, matchedLines }}
+		{#each paginatedPosts() as { post, matchedLines }}
 			<article class="group relative overflow-hidden rounded-lg bg-card transition-all hover:shadow-lg" style="border: 1px solid rgba(0,0,0,0.1);">
 				<a href="/posts/{post.slug}" class="block">
 					<div class="flex flex-col gap-4 p-6 md:flex-row">
@@ -272,9 +295,37 @@
 		{/each}
 	</div>
 
-	{#if filteredPostsWithMatches().length === 0 && !searchQuery}
+	{#if paginatedPosts().length === 0 && !searchQuery}
 		<div class="py-12 text-center">
 			<p class="text-muted-foreground">暂无文章</p>
+		</div>
+	{/if}
+	
+	{#if totalPages > 1}
+		<div class="mt-8 flex justify-center">
+			<Pagination.Root count={filteredPostsWithMatches().length} perPage={postsPerPage} bind:page={currentPage} let:pages>
+				<Pagination.Content>
+					<Pagination.Item>
+						<Pagination.PrevButton />
+					</Pagination.Item>
+					{#each pages as page (page.key)}
+						{#if page.type === 'ellipsis'}
+							<Pagination.Item>
+								<Pagination.Ellipsis />
+							</Pagination.Item>
+						{:else}
+							<Pagination.Item>
+								<Pagination.Link {page} isActive={currentPage === page.value}>
+									{page.value}
+								</Pagination.Link>
+							</Pagination.Item>
+						{/if}
+					{/each}
+					<Pagination.Item>
+						<Pagination.NextButton />
+					</Pagination.Item>
+				</Pagination.Content>
+			</Pagination.Root>
 		</div>
 	{/if}
 </div>

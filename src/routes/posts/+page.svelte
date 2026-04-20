@@ -15,6 +15,9 @@
 	let isLoading = $state(false);
 	let hasLoaded = $state(false);
 	
+	let pageViews = $state<Record<string, number>>({});
+	let isLoadingViews = $state(false);
+	
 	let currentPage = $state(1);
 	const postsPerPage = 10;
 	
@@ -71,6 +74,35 @@
 			console.error('Failed to load RSS:', error);
 		} finally {
 			isLoading = false;
+		}
+	}
+	
+	async function loadPageViews() {
+		if (isLoadingViews) return;
+		
+		isLoadingViews = true;
+		try {
+			const pathnames = posts.map(post => `/posts/${post.slug}/`);
+			const response = await fetch('https://t.2x.nz/batch', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'text/plain'
+				},
+				body: JSON.stringify(pathnames)
+			});
+			
+			if (response.ok) {
+				const views = await response.json() as number[];
+				const viewsMap: Record<string, number> = {};
+				posts.forEach((post, index) => {
+					viewsMap[post.slug] = views[index] || 0;
+				});
+				pageViews = viewsMap;
+			}
+		} catch (error) {
+			console.error('Failed to load page views:', error);
+		} finally {
+			isLoadingViews = false;
 		}
 	}
 
@@ -174,6 +206,7 @@
 	import { onMount } from 'svelte';
 	onMount(() => {
 		loadRSS();
+		loadPageViews();
 	});
 </script>
 
@@ -269,6 +302,10 @@
 										<span class="text-sm text-muted-foreground">·</span>
 										<span class="text-sm text-muted-foreground">约 {stats.readTime} 分钟</span>
 									{/if}
+								{/if}
+								{#if pageViews[post.slug]}
+									<span class="text-sm text-muted-foreground">·</span>
+									<span class="text-sm text-muted-foreground">{pageViews[post.slug].toLocaleString()} 次浏览</span>
 								{/if}
 							</div>
 							

@@ -17,12 +17,12 @@ export const siteConfig = {
 		bio: 'Protect What You Love.',
 		links: [
 			{
-				name: 'QQ',
+				name: 'QQ群',
 				icon: 'simple-icons:qq',
 				url: 'https://qm.qq.com/q/FWqOHlwL2m'
 			},
 			{
-				name: 'Telegram',
+				name: 'Telegram群',
 				icon: 'simple-icons:telegram',
 				url: 'https://t.me/+_07DERp7k1ljYTc1'
 			},

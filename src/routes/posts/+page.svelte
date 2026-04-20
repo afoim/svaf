@@ -303,28 +303,30 @@
 	
 	{#if totalPages > 1}
 		<div class="mt-8 flex justify-center">
-			<Pagination.Root count={filteredPostsWithMatches().length} perPage={postsPerPage} bind:page={currentPage} let:pages>
-				<Pagination.Content>
-					<Pagination.Item>
-						<Pagination.PrevButton />
-					</Pagination.Item>
-					{#each pages as page (page.key)}
-						{#if page.type === 'ellipsis'}
-							<Pagination.Item>
-								<Pagination.Ellipsis />
-							</Pagination.Item>
-						{:else}
-							<Pagination.Item>
-								<Pagination.Link {page} isActive={currentPage === page.value}>
-									{page.value}
-								</Pagination.Link>
-							</Pagination.Item>
-						{/if}
-					{/each}
-					<Pagination.Item>
-						<Pagination.NextButton />
-					</Pagination.Item>
-				</Pagination.Content>
+			<Pagination.Root count={filteredPostsWithMatches().length} perPage={postsPerPage} bind:page={currentPage}>
+				{#snippet children({ pages })}
+					<Pagination.Content>
+						<Pagination.Item>
+							<Pagination.PrevButton />
+						</Pagination.Item>
+						{#each pages as page (page.key)}
+							{#if page.type === 'ellipsis'}
+								<Pagination.Item>
+									<Pagination.Ellipsis />
+								</Pagination.Item>
+							{:else}
+								<Pagination.Item>
+									<Pagination.Link {page} isActive={currentPage === page.value}>
+										{page.value}
+									</Pagination.Link>
+								</Pagination.Item>
+							{/if}
+						{/each}
+						<Pagination.Item>
+							<Pagination.NextButton />
+						</Pagination.Item>
+					</Pagination.Content>
+				{/snippet}
 			</Pagination.Root>
 		</div>
 	{/if}

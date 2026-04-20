@@ -283,7 +283,7 @@
 
 	<div class="space-y-6">
 		{#each paginatedPosts() as { post, matchedLines }}
-			<article class="group relative overflow-hidden rounded-lg bg-card shadow transition-all hover:shadow-lg">
+			<article class="group relative overflow-hidden rounded-lg border border-border/50 bg-card shadow transition-all hover:shadow-lg">
 				<a href="/posts/{post.slug}" class="block">
 					<div class="flex flex-col gap-4 p-6 md:flex-row">
 						{#if post.metadata.image}

@@ -82,7 +82,10 @@
 		
 		isLoadingViews = true;
 		try {
-			const pathnames = posts.map(post => `/posts/${post.slug}/`);
+			// 只加载当前页面显示的文章
+			const currentPosts = paginatedPosts();
+			const pathnames = currentPosts.map(({ post }) => `/posts/${post.slug}/`);
+			
 			const response = await fetch('https://t.2x.nz/batch', {
 				method: 'POST',
 				headers: {
@@ -93,8 +96,8 @@
 			
 			if (response.ok) {
 				const views = await response.json() as number[];
-				const viewsMap: Record<string, number> = {};
-				posts.forEach((post, index) => {
+				const viewsMap: Record<string, number> = { ...pageViews };
+				currentPosts.forEach(({ post }, index) => {
 					viewsMap[post.slug] = views[index] || 0;
 				});
 				pageViews = viewsMap;
@@ -185,6 +188,12 @@
 		currentPage = 1;
 	});
 	
+	// 当页码改变时重新加载访问量
+	$effect(() => {
+		currentPage;
+		loadPageViews();
+	});
+	
 	let hasAnyFilter = $derived(searchFilters.title || searchFilters.description || searchFilters.content || searchFilters.path);
 	
 	let totalStats = $derived(() => {
@@ -206,7 +215,6 @@
 	import { onMount } from 'svelte';
 	onMount(() => {
 		loadRSS();
-		loadPageViews();
 	});
 </script>
 

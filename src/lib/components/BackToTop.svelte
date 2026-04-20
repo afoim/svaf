@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { fade, fly } from 'svelte/transition';
 	import Icon from '@iconify/svelte';
 
 	let showButton = $state(false);
@@ -27,38 +28,11 @@
 
 {#if showButton}
 	<button
+		transition:fly={{ y: 20, duration: 300 }}
 		onclick={scrollToTop}
-		class="back-to-top fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl"
+		class="fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl"
 		aria-label="回到顶部"
 	>
 		<Icon icon="mdi:chevron-up" class="w-5 h-5" />
 	</button>
 {/if}
-
-<style>
-	.back-to-top {
-		animation: fadeIn 0.3s ease-in-out;
-	}
-
-	@keyframes fadeIn {
-		from {
-			opacity: 0;
-			transform: translateY(20px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
-	}
-	
-	@keyframes fadeOut {
-		from {
-			opacity: 1;
-			transform: translateY(0);
-		}
-		to {
-			opacity: 0;
-			transform: translateY(20px);
-		}
-	}
-</style>

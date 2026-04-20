@@ -75,8 +75,8 @@
 	{/if}
 
 	<div class="mt-12 text-center">
-		<Button variant="outline" onclick={() => window.history.back()}>
-			返回首页
-		</Button>
+		<a href="/">
+			<Button variant="outline">返回首页</Button>
+		</a>
 	</div>
 </div>

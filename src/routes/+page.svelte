@@ -19,7 +19,9 @@
 	</p>
 	
 	<div class="flex gap-2">
-		<Button onclick={() => window.location.href = '/posts'}>博客</Button>
+		<a href="/posts">
+			<Button>博客</Button>
+		</a>
 		<Button variant="secondary">Secondary</Button>
 		<Button variant="destructive">Destructive</Button>
 		<Button variant="outline">Outline</Button>

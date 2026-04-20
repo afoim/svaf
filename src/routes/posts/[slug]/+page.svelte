@@ -29,9 +29,9 @@
 <article class="container mx-auto max-w-3xl px-4 py-12">
 	<!-- 返回按钮 -->
 	<div class="mb-8">
-		<Button variant="ghost" onclick={() => window.history.back()}>
-			← 返回博客列表
-		</Button>
+		<a href="/posts">
+			<Button variant="ghost">← 返回文章列表</Button>
+		</a>
 	</div>
 
 	<!-- 文章头部 -->
@@ -72,9 +72,9 @@
 	<!-- 文章底部 -->
 	<footer class="mt-12 border-t pt-8">
 		<div class="flex justify-center">
-			<Button onclick={() => window.history.back()}>
-				← 返回博客列表
-			</Button>
+			<a href="/posts">
+				<Button>← 返回文章列表</Button>
+			</a>
 		</div>
 	</footer>
 </article>

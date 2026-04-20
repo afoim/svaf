@@ -7,7 +7,7 @@
 	const { posts } = data;
 
 	let searchQuery = $state('');
-	let allPosts = $state<Array<{ title: string; link: string; description: string; date: string; content: string }>>([]);
+	let allPosts = $state<Array<{ title: string; link: string; description: string; date: string; content: string; wordCount: number; readTime: number }>>([]);
 	let isLoading = $state(false);
 	let hasLoaded = $state(false);
 	
@@ -17,6 +17,21 @@
 		content: true,
 		path: true
 	});
+
+	function calculateWordCount(text: string): number {
+		// 移除 HTML 标签
+		const plainText = text.replace(/<[^>]*>/g, '');
+		// 计算中文字符
+		const chineseChars = plainText.match(/[\u4e00-\u9fa5]/g) || [];
+		// 计算英文单词
+		const englishWords = plainText.match(/[a-zA-Z]+/g) || [];
+		return chineseChars.length + englishWords.length;
+	}
+
+	function calculateReadTime(wordCount: number): number {
+		// 假设每分钟阅读 300 字
+		return Math.ceil(wordCount / 300);
+	}
 
 	async function loadRSS() {
 		if (hasLoaded) return;
@@ -29,13 +44,21 @@
 			const xml = parser.parseFromString(text, 'text/xml');
 			const items = xml.querySelectorAll('item');
 			
-			allPosts = Array.from(items).map(item => ({
-				title: item.querySelector('title')?.textContent || '',
-				link: item.querySelector('link')?.textContent || '',
-				description: item.querySelector('description')?.textContent || '',
-				date: item.querySelector('pubDate')?.textContent || '',
-				content: item.querySelector('content\\:encoded, encoded')?.textContent || ''
-			}));
+			allPosts = Array.from(items).map(item => {
+				const content = item.querySelector('content\\:encoded, encoded')?.textContent || '';
+				const wordCount = calculateWordCount(content);
+				const readTime = calculateReadTime(wordCount);
+				
+				return {
+					title: item.querySelector('title')?.textContent || '',
+					link: item.querySelector('link')?.textContent || '',
+					description: item.querySelector('description')?.textContent || '',
+					date: item.querySelector('pubDate')?.textContent || '',
+					content,
+					wordCount,
+					readTime
+				};
+			});
 			hasLoaded = true;
 		} catch (error) {
 			console.error('Failed to load RSS:', error);
@@ -67,6 +90,11 @@
 		}
 		
 		return matched;
+	}
+
+	function getPostStats(slug: string): { wordCount: number; readTime: number } | null {
+		const rssPost = allPosts.find(rss => rss.link.includes(slug));
+		return rssPost ? { wordCount: rssPost.wordCount, readTime: rssPost.readTime } : null;
 	}
 
 	let filteredPostsWithMatches = $derived(() => {
@@ -109,6 +137,12 @@
 			day: 'numeric'
 		});
 	}
+	
+	// 页面加载时自动加载 RSS 以获取字数统计
+	import { onMount } from 'svelte';
+	onMount(() => {
+		loadRSS();
+	});
 </script>
 
 <svelte:head>
@@ -206,6 +240,15 @@
 								<time class="text-sm text-muted-foreground">
 									{formatDate(post.metadata.published)}
 								</time>
+								{#if hasLoaded}
+									{@const stats = getPostStats(post.slug)}
+									{#if stats}
+										<span class="text-sm text-muted-foreground">·</span>
+										<span class="text-sm text-muted-foreground">{stats.wordCount} 字</span>
+										<span class="text-sm text-muted-foreground">·</span>
+										<span class="text-sm text-muted-foreground">约 {stats.readTime} 分钟</span>
+									{/if}
+								{/if}
 							</div>
 							
 							<h2 class="mb-2 text-2xl font-semibold group-hover:text-primary">

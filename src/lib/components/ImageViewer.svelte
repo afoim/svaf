@@ -1,88 +1,75 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import Icon from '@iconify/svelte';
-
-	let showViewer = $state(false);
-	let currentImage = $state('');
-	let currentAlt = $state('');
+	import PhotoSwipeLightbox from 'photoswipe/lightbox';
+	import 'photoswipe/style.css';
 
 	onMount(() => {
-		// 为所有文章图片添加点击事件
-		const images = document.querySelectorAll('.prose img');
-		
-		images.forEach((img) => {
-			img.style.cursor = 'pointer';
-			img.addEventListener('click', () => {
-				currentImage = img.src;
-				currentAlt = img.alt || '';
-				showViewer = true;
+		// 初始化 PhotoSwipe
+		const lightbox = new PhotoSwipeLightbox({
+			gallery: '.prose',
+			children: 'img',
+			pswpModule: () => import('photoswipe'),
+			// 配置选项
+			showHideAnimationType: 'fade',
+			bgOpacity: 0.8,
+			spacing: 0.1,
+			allowPanToNext: false,
+			zoom: true,
+			close: true,
+			arrowKeys: true,
+		});
+
+		// 动态设置图片数据
+		lightbox.addFilter('itemData', (itemData, index) => {
+			const img = itemData.element;
+			return {
+				src: img.src,
+				width: img.naturalWidth || 800,
+				height: img.naturalHeight || 600,
+				alt: img.alt || ''
+			};
+		});
+
+		// 为图片添加样式
+		lightbox.on('uiRegister', () => {
+			const images = document.querySelectorAll('.prose img');
+			images.forEach((img) => {
+				img.style.cursor = 'pointer';
+				img.style.transition = 'transform 0.2s ease, box-shadow 0.2s ease';
 			});
 		});
 
-		// ESC 键关闭查看器
-		const handleKeydown = (e: KeyboardEvent) => {
-			if (e.key === 'Escape') {
-				showViewer = false;
-			}
-		};
+		lightbox.init();
 
-		document.addEventListener('keydown', handleKeydown);
-		
 		return () => {
-			document.removeEventListener('keydown', handleKeydown);
+			lightbox.destroy();
 		};
 	});
-
-	const closeViewer = () => {
-		showViewer = false;
-	};
 </script>
 
-{#if showViewer}
-	<div 
-		class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
-		onclick={closeViewer}
-		role="dialog"
-		aria-modal="true"
-		aria-label="图片查看器"
-	>
-		<!-- 关闭按钮 -->
-		<button
-			onclick={closeViewer}
-			class="absolute top-4 right-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
-			aria-label="关闭图片查看器"
-		>
-			<Icon icon="mdi:close" class="w-6 h-6" />
-		</button>
-
-		<!-- 图片容器 -->
-		<div 
-			class="relative max-h-[90vh] max-w-[90vw] p-4"
-			onclick={(e) => e.stopPropagation()}
-		>
-			<img
-				src={currentImage}
-				alt={currentAlt}
-				class="max-h-full max-w-full object-contain rounded-lg shadow-2xl"
-			/>
-			
-			{#if currentAlt}
-				<div class="absolute bottom-0 left-0 right-0 bg-black/70 text-white p-3 rounded-b-lg">
-					<p class="text-sm text-center">{currentAlt}</p>
-				</div>
-			{/if}
-		</div>
-	</div>
-{/if}
-
 <style>
-	/* 为文章图片添加悬停效果 */
+	/* 图片悬停效果 */
 	:global(.prose img) {
-		transition: transform 0.2s ease, box-shadow 0.2s ease;
+		cursor: pointer !important;
+		transition: transform 0.2s ease, box-shadow 0.2s ease !important;
 	}
 
 	:global(.prose img:hover) {
 		transform: scale(1.02);
 		box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+	}
+
+	/* PhotoSwipe 自定义样式 */
+	:global(.pswp) {
+		--pswp-bg: rgba(0, 0, 0, 0.85);
+	}
+
+	:global(.pswp__button) {
+		background-color: rgba(0, 0, 0, 0.5) !important;
+		border-radius: 50% !important;
+	}
+
+	:global(.pswp__button:hover) {
+		background-color: rgba(0, 0, 0, 0.7) !important;
 	}
 </style>

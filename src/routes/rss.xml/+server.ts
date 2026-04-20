@@ -5,8 +5,8 @@ import type { RequestHandler } from './$types';
 
 export const prerender = true;
 
-// 预加载所有文章模块
-const modules = import.meta.glob('/src/content/posts/*/index.md', { eager: true });
+// 预加载所有文章模块 - 使用与 getAllPosts 相同的模式
+const modules = import.meta.glob('/src/content/posts/**/index.md', { eager: true });
 
 export const GET: RequestHandler = async () => {
 	const posts = await getAllPosts();
@@ -43,7 +43,11 @@ export const GET: RequestHandler = async () => {
 			let content = `<p>${post.metadata.description}</p>`;
 			
 			if (module && module.default && module.default.render) {
-				content = module.default.render().html;
+				try {
+					content = module.default.render().html;
+				} catch (renderError) {
+					console.error(`Failed to render ${post.slug}:`, renderError);
+				}
 			}
 
 			feed.addItem({

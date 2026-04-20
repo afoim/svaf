@@ -80,76 +80,112 @@
 </article>
 
 <style>
-	@reference "tailwindcss";
+	@import "tailwindcss";
 	
 	/* Markdown 样式 */
 	:global(.prose) {
-		@apply text-foreground;
+		color: var(--foreground);
 	}
 
 	:global(.prose h1) {
-		@apply mb-4 mt-8 text-3xl font-bold;
+		margin-bottom: 1rem;
+		margin-top: 2rem;
+		font-size: 1.875rem;
+		font-weight: 700;
 	}
 
 	:global(.prose h2) {
-		@apply mb-3 mt-6 text-2xl font-semibold;
+		margin-bottom: 0.75rem;
+		margin-top: 1.5rem;
+		font-size: 1.5rem;
+		font-weight: 600;
 	}
 
 	:global(.prose h3) {
-		@apply mb-2 mt-4 text-xl font-semibold;
+		margin-bottom: 0.5rem;
+		margin-top: 1rem;
+		font-size: 1.25rem;
+		font-weight: 600;
 	}
 
 	:global(.prose p) {
-		@apply mb-4 leading-7;
+		margin-bottom: 1rem;
+		line-height: 1.75;
 	}
 
 	:global(.prose a) {
-		@apply text-primary underline underline-offset-4 hover:text-primary/80;
+		color: var(--primary);
+		text-decoration: underline;
+		text-underline-offset: 4px;
+	}
+
+	:global(.prose a:hover) {
+		opacity: 0.8;
 	}
 
 	:global(.prose ul),
 	:global(.prose ol) {
-		@apply mb-4 ml-6;
+		margin-bottom: 1rem;
+		margin-left: 1.5rem;
 	}
 
 	:global(.prose li) {
-		@apply mb-2;
+		margin-bottom: 0.5rem;
 	}
 
 	:global(.prose blockquote) {
-		@apply border-l-4 border-primary pl-4 italic text-muted-foreground;
+		border-left: 4px solid var(--primary);
+		padding-left: 1rem;
+		font-style: italic;
+		color: var(--muted-foreground);
 	}
 
 	:global(.prose code) {
-		@apply rounded bg-muted px-1.5 py-0.5 font-mono text-sm;
+		border-radius: 0.25rem;
+		background-color: var(--muted);
+		padding: 0.125rem 0.375rem;
+		font-family: monospace;
+		font-size: 0.875rem;
 	}
 
 	:global(.prose pre) {
-		@apply mb-4 overflow-x-auto rounded-lg bg-muted p-4;
+		margin-bottom: 1rem;
+		overflow-x: auto;
+		border-radius: 0.5rem;
+		background-color: var(--muted);
+		padding: 1rem;
 	}
 
 	:global(.prose pre code) {
-		@apply bg-transparent p-0;
+		background-color: transparent;
+		padding: 0;
 	}
 
 	:global(.prose img) {
-		@apply my-4 rounded-lg;
+		margin-top: 1rem;
+		margin-bottom: 1rem;
+		border-radius: 0.5rem;
 	}
 
 	:global(.prose hr) {
-		@apply my-8 border-border;
+		margin-top: 2rem;
+		margin-bottom: 2rem;
+		border-color: var(--border);
 	}
 
 	:global(.prose table) {
-		@apply w-full border-collapse;
+		width: 100%;
+		border-collapse: collapse;
 	}
 
 	:global(.prose th),
 	:global(.prose td) {
-		@apply border border-border px-4 py-2;
+		border: 1px solid var(--border);
+		padding: 0.5rem 1rem;
 	}
 
 	:global(.prose th) {
-		@apply bg-muted font-semibold;
+		background-color: var(--muted);
+		font-weight: 600;
 	}
 </style>

@@ -1,8 +1,5 @@
 import { writeFileSync, mkdirSync } from 'fs';
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
+import { join } from 'path';
 
 const siteUrl = 'https://2x.nz';
 const hostname = new URL(siteUrl).hostname;
@@ -46,18 +43,42 @@ function generateRedirectHTML(destination) {
 </html>`;
 }
 
-// 生成重定向文件
-for (const [path, destination] of Object.entries(redirects)) {
-	const outputPath = join(__dirname, '..', 'static', path.slice(1));
-	
-	// 创建目录（包括父目录）
-	mkdirSync(outputPath, { recursive: true });
-	
-	// 写入 index.html
-	const htmlPath = join(outputPath, 'index.html');
-	writeFileSync(htmlPath, generateRedirectHTML(destination));
-	
-	console.log(`✓ Generated redirect: ${path} -> ${destination}`);
+export default function redirectsPlugin() {
+	return {
+		name: 'vite-plugin-redirects',
+		
+		// 开发模式：配置中间件处理重定向
+		configureServer(server) {
+			server.middlewares.use((req, res, next) => {
+				const path = req.url?.split('?')[0];
+				
+				if (path && path in redirects) {
+					const destination = redirects[path];
+					res.writeHead(302, { Location: destination });
+					res.end();
+					return;
+				}
+				
+				next();
+			});
+		},
+		
+		// 构建模式：生成静态重定向文件
+		closeBundle() {
+			const outputDir = 'build';
+			
+			for (const [path, destination] of Object.entries(redirects)) {
+				const outputPath = join(outputDir, path.slice(1));
+				
+				// 创建目录
+				mkdirSync(outputPath, { recursive: true });
+				
+				// 写入 index.html
+				const htmlPath = join(outputPath, 'index.html');
+				writeFileSync(htmlPath, generateRedirectHTML(destination));
+				
+				console.log(`✓ Generated redirect: ${path} -> ${destination}`);
+			}
+		}
+	};
 }
-
-console.log('\n✓ All redirects generated successfully!');

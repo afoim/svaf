@@ -3,6 +3,7 @@
 	import { Input } from '$lib/components/ui/input';
 	import { Checkbox } from '$lib/components/ui/checkbox';
 	import * as Pagination from '$lib/components/ui/pagination';
+	import Icon from '@iconify/svelte';
 	import { siteConfig } from '$lib/config/site';
 	import type { PageData } from './$types';
 
@@ -307,7 +308,12 @@
 				{#snippet children({ pages })}
 					<Pagination.Content>
 						<Pagination.Item>
-							<Pagination.PrevButton />
+							<Pagination.PrevButton>
+								{#snippet children()}
+									<Icon icon="mdi:chevron-left" class="w-4 h-4" />
+									<span>上一页</span>
+								{/snippet}
+							</Pagination.PrevButton>
 						</Pagination.Item>
 						{#each pages as page (page.key)}
 							{#if page.type === 'ellipsis'}
@@ -323,7 +329,12 @@
 							{/if}
 						{/each}
 						<Pagination.Item>
-							<Pagination.NextButton />
+							<Pagination.NextButton>
+								{#snippet children()}
+									<span>下一页</span>
+									<Icon icon="mdi:chevron-right" class="w-4 h-4" />
+								{/snippet}
+							</Pagination.NextButton>
 						</Pagination.Item>
 					</Pagination.Content>
 				{/snippet}

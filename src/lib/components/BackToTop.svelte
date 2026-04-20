@@ -28,7 +28,7 @@
 {#if showButton}
 	<button
 		onclick={scrollToTop}
-		class="fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl"
+		class="back-to-top fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl"
 		aria-label="回到顶部"
 	>
 		<Icon icon="mdi:chevron-up" class="w-5 h-5" />
@@ -36,7 +36,7 @@
 {/if}
 
 <style>
-	button {
+	.back-to-top {
 		animation: fadeIn 0.3s ease-in-out;
 	}
 
@@ -48,6 +48,17 @@
 		to {
 			opacity: 1;
 			transform: translateY(0);
+		}
+	}
+	
+	@keyframes fadeOut {
+		from {
+			opacity: 1;
+			transform: translateY(0);
+		}
+		to {
+			opacity: 0;
+			transform: translateY(20px);
 		}
 	}
 </style>

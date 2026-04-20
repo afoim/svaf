@@ -18,6 +18,9 @@
 	<meta property="og:description" content={siteConfig.description} />
 	<meta property="og:title" content={siteConfig.title} />
 	<link rel="canonical" href={siteConfig.url} />
+	
+	<!-- RSS Feed -->
+	<link rel="alternate" type="application/rss+xml" title="{siteConfig.title} RSS Feed" href="/rss.xml" />
 </svelte:head>
 
 <NavBar />

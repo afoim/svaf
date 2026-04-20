@@ -178,7 +178,7 @@
 	
 	let totalPages = $derived(Math.ceil(filteredPostsWithMatches().length / postsPerPage));
 	
-	// 当搜索条件改变时重置到第一页
+	// 当搜索条件改变时重置到第一页并加载访问量
 	$effect(() => {
 		searchQuery;
 		searchFilters.title;
@@ -188,10 +188,14 @@
 		currentPage = 1;
 	});
 	
-	// 当页码改变时重新加载访问量
+	// 监听页码变化，加载对应页面的访问量
 	$effect(() => {
-		currentPage;
-		loadPageViews();
+		const page = currentPage; // 读取 currentPage 以触发 effect
+		// 使用 setTimeout 避免在同一个 tick 内多次调用
+		const timer = setTimeout(() => {
+			loadPageViews();
+		}, 0);
+		return () => clearTimeout(timer);
 	});
 	
 	let hasAnyFilter = $derived(searchFilters.title || searchFilters.description || searchFilters.content || searchFilters.path);

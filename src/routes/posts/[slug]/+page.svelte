@@ -2,6 +2,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import { siteConfig } from '$lib/config/site';
 	import ImageViewer from '$lib/components/ImageViewer.svelte';
+	import Giscus from '$lib/components/Giscus.svelte';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
@@ -69,6 +70,9 @@
 	<div class="prose prose-neutral dark:prose-invert max-w-none">
 		<svelte:component this={component} />
 	</div>
+
+	<!-- 评论区 -->
+	<Giscus />
 
 	<!-- 文章底部 -->
 	<footer class="mt-12 border-t pt-8">

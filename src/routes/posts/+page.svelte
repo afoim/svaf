@@ -2,6 +2,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
 	import { Checkbox } from '$lib/components/ui/checkbox';
+	import * as Card from '$lib/components/ui/card';
 	import * as Pagination from '$lib/components/ui/pagination';
 	import Icon from '@iconify/svelte';
 	import { siteConfig } from '$lib/config/site';
@@ -283,65 +284,67 @@
 
 	<div class="space-y-6">
 		{#each paginatedPosts() as { post, matchedLines }}
-			<article class="group relative overflow-hidden rounded-lg border border-border/50 bg-card shadow transition-all hover:shadow-lg">
-				<a href="/posts/{post.slug}" class="block">
-					<div class="flex flex-col gap-4 p-6 md:flex-row">
-						{#if post.metadata.image}
-							<div class="md:w-48 md:flex-shrink-0">
-								<img
-									src={post.metadata.image}
-									alt={post.metadata.title}
-									class="h-48 w-full rounded-md object-cover md:h-32"
-								/>
-							</div>
-						{/if}
-						
-						<div class="flex-1">
-							<div class="mb-2 flex items-center gap-2">
-								{#if post.metadata.pinned}
-									<span class="rounded-full bg-primary px-2 py-1 text-xs text-primary-foreground">
-										置顶
-									</span>
-								{/if}
-								<time class="text-sm text-muted-foreground">
-									{formatDate(post.metadata.published)}
-								</time>
-								{#if hasLoaded}
-									{@const stats = getPostStats(post.slug)}
-									{#if stats}
-										<span class="text-sm text-muted-foreground">·</span>
-										<span class="text-sm text-muted-foreground">{stats.wordCount} 字</span>
-										<span class="text-sm text-muted-foreground">·</span>
-										<span class="text-sm text-muted-foreground">约 {stats.readTime} 分钟</span>
-									{/if}
-								{/if}
-								{#if pageViews[post.slug]}
-									<span class="text-sm text-muted-foreground">·</span>
-									<span class="text-sm text-muted-foreground">{pageViews[post.slug].toLocaleString()} 次浏览</span>
-								{/if}
-							</div>
-							
-							<h2 class="mb-2 text-2xl font-semibold group-hover:text-primary">
-								{@html highlightText(post.metadata.title, searchQuery)}
-							</h2>
-							
-							<p class="text-muted-foreground">
-								{@html highlightText(post.metadata.description, searchQuery)}
-							</p>
-							
-							{#if matchedLines.length > 0}
-								<div class="mt-3 space-y-1 border-l-2 border-primary/30 pl-3">
-									{#each matchedLines as line}
-										<p class="text-sm text-muted-foreground">
-											{@html highlightText(line, searchQuery)}
-										</p>
-									{/each}
+			<a href="/posts/{post.slug}" class="block">
+				<Card.Root class="group transition-all hover:shadow-lg">
+					<Card.Content class="p-6">
+						<div class="flex flex-col gap-4 md:flex-row">
+							{#if post.metadata.image}
+								<div class="md:w-48 md:flex-shrink-0">
+									<img
+										src={post.metadata.image}
+										alt={post.metadata.title}
+										class="h-48 w-full rounded-md object-cover md:h-32"
+									/>
 								</div>
 							{/if}
+							
+							<div class="flex-1">
+								<div class="mb-2 flex items-center gap-2">
+									{#if post.metadata.pinned}
+										<span class="rounded-full bg-primary px-2 py-1 text-xs text-primary-foreground">
+											置顶
+										</span>
+									{/if}
+									<time class="text-sm text-muted-foreground">
+										{formatDate(post.metadata.published)}
+									</time>
+									{#if hasLoaded}
+										{@const stats = getPostStats(post.slug)}
+										{#if stats}
+											<span class="text-sm text-muted-foreground">·</span>
+											<span class="text-sm text-muted-foreground">{stats.wordCount} 字</span>
+											<span class="text-sm text-muted-foreground">·</span>
+											<span class="text-sm text-muted-foreground">约 {stats.readTime} 分钟</span>
+										{/if}
+									{/if}
+									{#if pageViews[post.slug]}
+										<span class="text-sm text-muted-foreground">·</span>
+										<span class="text-sm text-muted-foreground">{pageViews[post.slug].toLocaleString()} 次浏览</span>
+									{/if}
+								</div>
+								
+								<h2 class="mb-2 text-2xl font-semibold group-hover:text-primary">
+									{@html highlightText(post.metadata.title, searchQuery)}
+								</h2>
+								
+								<p class="text-muted-foreground">
+									{@html highlightText(post.metadata.description, searchQuery)}
+								</p>
+								
+								{#if matchedLines.length > 0}
+									<div class="mt-3 space-y-1 border-l-2 border-primary/30 pl-3">
+										{#each matchedLines as line}
+											<p class="text-sm text-muted-foreground">
+												{@html highlightText(line, searchQuery)}
+											</p>
+										{/each}
+									</div>
+								{/if}
+							</div>
 						</div>
-					</div>
-				</a>
-			</article>
+					</Card.Content>
+				</Card.Root>
+			</a>
 		{/each}
 	</div>
 

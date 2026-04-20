@@ -6,6 +6,50 @@
 	let { data }: { data: PageData } = $props();
 	const { posts } = data;
 
+	let searchQuery = $state('');
+	let allPosts = $state<Array<{ title: string; link: string; description: string; date: string; content: string }>>([]);
+	let isLoading = $state(false);
+
+	async function loadRSS() {
+		if (allPosts.length > 0) return;
+		
+		isLoading = true;
+		try {
+			const response = await fetch('/rss.xml');
+			const text = await response.text();
+			const parser = new DOMParser();
+			const xml = parser.parseFromString(text, 'text/xml');
+			const items = xml.querySelectorAll('item');
+			
+			allPosts = Array.from(items).map(item => ({
+				title: item.querySelector('title')?.textContent || '',
+				link: item.querySelector('link')?.textContent || '',
+				description: item.querySelector('description')?.textContent || '',
+				date: item.querySelector('pubDate')?.textContent || '',
+				content: item.querySelector('content\\:encoded, encoded')?.textContent || ''
+			}));
+		} catch (error) {
+			console.error('Failed to load RSS:', error);
+		} finally {
+			isLoading = false;
+		}
+	}
+
+	let filteredPosts = $derived(() => {
+		if (!searchQuery.trim()) return posts;
+		
+		const query = searchQuery.toLowerCase();
+		const rssResults = allPosts.filter(post => 
+			post.title.toLowerCase().includes(query) ||
+			post.description.toLowerCase().includes(query) ||
+			post.content.toLowerCase().includes(query)
+		);
+		
+		return posts.filter(post => 
+			rssResults.some(rss => rss.link.includes(post.slug))
+		);
+	});
+
 	function formatDate(dateString: string) {
 		const date = new Date(dateString);
 		return date.toLocaleDateString('zh-CN', {
@@ -27,8 +71,24 @@
 		<p class="text-muted-foreground">分享技术、想法和经验</p>
 	</div>
 
+	<div class="mb-8">
+		<input
+			type="text"
+			bind:value={searchQuery}
+			onfocus={loadRSS}
+			placeholder="搜索文章标题、描述或内容..."
+			class="w-full rounded-lg border border-input bg-background px-4 py-3 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+		/>
+		{#if isLoading}
+			<p class="mt-2 text-sm text-muted-foreground">加载搜索数据中...</p>
+		{/if}
+		{#if searchQuery && filteredPosts().length === 0}
+			<p class="mt-2 text-sm text-muted-foreground">未找到匹配的文章</p>
+		{/if}
+	</div>
+
 	<div class="space-y-6">
-		{#each posts as post}
+		{#each filteredPosts() as post}
 			<article class="group relative overflow-hidden rounded-lg bg-card transition-all hover:shadow-lg" style="border: 1px solid rgba(0,0,0,0.1);">
 				<a href="/posts/{post.slug}" class="block">
 					<div class="flex flex-col gap-4 p-6 md:flex-row">
@@ -68,7 +128,7 @@
 		{/each}
 	</div>
 
-	{#if posts.length === 0}
+	{#if filteredPosts().length === 0 && !searchQuery}
 		<div class="py-12 text-center">
 			<p class="text-muted-foreground">暂无文章</p>
 		</div>

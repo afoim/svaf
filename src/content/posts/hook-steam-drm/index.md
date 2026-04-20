@@ -15,7 +15,7 @@ lang: ""
 
 前往 `Steam\steamapps` 你会发现有很多的 `appmanifest_xxx.acf` 文件。
 
-![](/public/assets/images/hook-steam-drm-3.webp)
+![](img/hook-steam-drm-3.webp)
 
 使用 **记事本** 挨个打开，知道找到你需要Hook的游戏，记录以下信息
 

@@ -13,7 +13,7 @@ title: 绕过USTC的浏览器JS验证
 
 当我们去下载类似于 https://mirrors.ustc.edu.cn/debian-cd/12.10.0/amd64/iso-dvd/debian-12.10.0-amd64-DVD-1.iso 这样的大文件时，USTC大概率会给你一个这样的：正在验证你的浏览器 的页面
 
-![](/public/assets/images/58e8e41a-0755-4e6a-ab1e-a9dbaa1042d5.webp)
+![](img/58e8e41a-0755-4e6a-ab1e-a9dbaa1042d5.webp)
 
 如果你正在使用一个浏览器，比如Chrome、FireFox等，那过几秒你就能看到文件被成功开始下载
 

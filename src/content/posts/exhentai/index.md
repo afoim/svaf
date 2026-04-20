@@ -14,7 +14,7 @@ lang: ''
 
 - 欧美家宽IP。可以前往 https://2x.nz/ak 买一个
 
-![](/public/assets/images/2025-08-12-19-24-21-image.webp)
+![](img/2025-08-12-19-24-21-image.webp)
 
 # 正式开始
 

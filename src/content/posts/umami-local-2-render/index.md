@@ -18,7 +18,7 @@ lang: ''
 
 连接到本地的PostgreSQL实例
 
-![](/public/assets/images/2025-08-28-10-03-34-image.webp)
+![](img/2025-08-28-10-03-34-image.webp)
 
 右键需要备份的数据库，点击 **备份**
 

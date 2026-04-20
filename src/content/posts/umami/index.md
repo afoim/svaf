@@ -16,7 +16,7 @@ lang: ''
 
 点击右上角的 `Sign UP` 注册账号
 
-![](/public/assets/images/3486d3c9-ab00-46d2-b8bf-4916fe8045bf.webp)
+![](img/3486d3c9-ab00-46d2-b8bf-4916fe8045bf.webp)
 
 按需填写相关信息进行注册
 

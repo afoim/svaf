@@ -15,7 +15,7 @@ lang: ""
 
 那我们肯定不能让他这样，怎么办呢，所以我们需要让我们的图片在被拉取时返回一个 **CORP 响应头**，并且值为 **same-site** ，这样，只要不是你的域名写 `<img>` ，浏览器会统统阻断加载
 
-![](/public/assets/images/coxp-1.webp)
+![](img/coxp-1.webp)
 
 这就是 **CORP（Cross-Origin-Resource-Policy） - 跨域资源策略**，它管的是 **资源给不给用** 
 

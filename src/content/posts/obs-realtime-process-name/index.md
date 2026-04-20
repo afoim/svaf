@@ -35,7 +35,7 @@ ai_level: 1
 
 只要让 OBS 持续读取一个 TXT 文件，再写一个小程序不断更新这个 TXT，不就可以了吗？
 
-![](/public/assets/images/obs-realtime-process-name.png)
+![](img/obs-realtime-process-name.png)
 
 这个思路完全可行。实测下来，OBS 会每隔几秒重新读取一次 TXT 内容。虽然它不是即时 Hook，而是简单轮询，但对于“当前正在使用什么软件”这类信息来说，已经完全够用了。
 

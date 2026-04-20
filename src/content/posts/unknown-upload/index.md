@@ -42,7 +42,7 @@ https://www.bilibili.com/video/BV1Hz1DBZEov/
 
 借助对象存储，我只需要找一个云函数连接到我的对象存储，然后提供一个上传端点即可。
 
-![](/public/assets/images/unknown-upload-1.webp)
+![](img/unknown-upload-1.webp)
 
 ## 正式开始
 

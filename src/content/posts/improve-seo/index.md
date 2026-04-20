@@ -91,7 +91,7 @@ Lighthouse 是一个常用的浏览器工具，可以分析站点的性能、无
 
 注意，最好在无痕模式下进行测试，以免其他浏览器插件影响 Lighthouse 的结果。
 
-![](/public/assets/images/579087ce-3a48-4390-8ba3-e42dea60135e.webp)
+![](img/579087ce-3a48-4390-8ba3-e42dea60135e.webp)
 
 对于每一项出现的问题，Lighthouse 都会给出相对明确的说明。你可以根据这些提示逐项优化自己的网站。
 

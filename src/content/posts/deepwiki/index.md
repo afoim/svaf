@@ -10,7 +10,7 @@ lang: ""
 
 在AI大道当行的时代，DeepWiki提供免费的AI用以分析全球的Github仓库，只要你的仓库有一些Star，稍微流行一些，就有可能被DeepWiki收录，并且自动通过AI大模型创建专属于你的Github仓库的强大Wiki！
 
-![](/public/assets/images/deepwiki.png)
+![](img/deepwiki.png)
 
 # 如何查看我的仓库是否被收录？
 

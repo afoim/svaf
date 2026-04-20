@@ -30,7 +30,7 @@ lang: ''
 
 我们搜索 `Cloudflare IP段` 即可找到
 
-![](/public/assets/images/9e79e4ab-ce0c-434a-84f7-3b8a9f3a0886.webp)
+![](img/9e79e4ab-ce0c-434a-84f7-3b8a9f3a0886.webp)
 
 对于其他CDN，他们可能并没有直接在网页上公开IP，你需要自行寻找客服咨询
 

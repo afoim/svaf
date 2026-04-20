@@ -20,7 +20,7 @@ lang: ""
 
 然后在仓库设置中 **启用** `Discussion` 功能
 
-![](/public/assets/images/2025-08-04-12-16-36-image.webp)
+![](img/2025-08-04-12-16-36-image.webp)
 
 前往 https://giscus.app/zh-CN
 

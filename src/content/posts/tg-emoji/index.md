@@ -20,7 +20,7 @@ lang: ''
 
 发送 `/newemojipack` 
 
-![](/public/assets/images/2025-08-11-21-28-30-image.webp)
+![](img/2025-08-11-21-28-30-image.webp)
 
 这里使用静态表情，即 `static` 
 

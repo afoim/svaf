@@ -17,7 +17,7 @@ lang: ""
 
 打开F12控制台，我去！这玩意怎么有10个G！不对！它还在加载！
 
-![](/public/assets/images/web-bomb.png)
+![](img/web-bomb.png)
 
 随后得知这就是个Web压缩炸弹，今天又想起来这件事了，就尝试折腾了一下
 

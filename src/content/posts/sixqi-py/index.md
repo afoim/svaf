@@ -20,7 +20,7 @@ lang: ''
 
 然后被委托做一个**神经小项目**
 
-![](/public/assets/images/29afe2b7-db53-4707-81ef-173befb84a06.webp)
+![](img/29afe2b7-db53-4707-81ef-173befb84a06.webp)
 
 ![](img/f7b3b7b6-a462-4c1a-b8cf-665cc4df824c.webp)
 

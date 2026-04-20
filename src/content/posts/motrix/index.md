@@ -23,7 +23,7 @@ ai_level: 1
 
 安装完成后，大概就是这个样子：
 
-![](/public/assets/images/6a10d31c-0c39-456c-8402-ff3190a80dcc.webp)
+![](img/6a10d31c-0c39-456c-8402-ff3190a80dcc.webp)
 
 # 配置 Motrix
 

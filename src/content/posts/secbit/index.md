@@ -24,7 +24,7 @@ https://secbit.ai
 
 ## 直连Cloudflare R2
 
-![](/public/assets/images/5eaa947d-9363-4eac-b375-0c3830614571.webp)
+![](img/5eaa947d-9363-4eac-b375-0c3830614571.webp)
 
 ## Secbit回源Cloudflare R2
 

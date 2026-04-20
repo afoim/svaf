@@ -13,7 +13,7 @@ ai_level: 1
 
 AI IDE 的优势很明显：在保留 Git、代码高亮等高效手动工具的同时，把最耗时的代码编写交给 AI，我们只需要用自然语言描述目标即可。*图为 Trae*
 
-![](/public/assets/images/ai-agent-1.png)
+![](img/ai-agent-1.png)
 
 # AI Agent 是什么？
 

@@ -21,7 +21,7 @@ lang: ""
 
 但是，该网站情况非常不同，它是一个 **由CDN直接应答的静态网站**
 
-![](/public/assets/images/review-ddos.png)
+![](img/review-ddos.png)
 
 也就是说，**攻击该网站 = 攻击CDN**
 

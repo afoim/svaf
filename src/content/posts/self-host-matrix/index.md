@@ -20,7 +20,7 @@ lang: ''
 
 前往应用商店安装 `PGAdmin4`
 
-![](/public/assets/images/2025-08-02-17-24-58-image.webp)
+![](img/2025-08-02-17-24-58-image.webp)
 
 接着点击添加服务器
 

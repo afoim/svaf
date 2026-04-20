@@ -13,7 +13,7 @@ lang: ''
 
 今天收到一封小邮件
 
-![](/public/assets/images/2025-08-12-15-45-18-image.webp)
+![](img/2025-08-12-15-45-18-image.webp)
 
 我一眼就看出来了
 

@@ -168,7 +168,7 @@ flowchart TB
 # 奇技淫巧1：利用Cloudflare Origin Rules实现无计费的随机URL
 > Video: https://www.bilibili.com/video/BV19ZBzB8EDQ/
 起因于有一天一位粉丝在我视频下留言
-![](/public/assets/images/random-url-gen-9.webp)
+![](img/random-url-gen-9.webp)
 
 他提到的仓库为
 

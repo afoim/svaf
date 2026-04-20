@@ -42,9 +42,9 @@ lang: ''
 
 这会遇到一个经典问题，这是我询问 OpenAI ChatGPT 的原话
 
-*我遇到了一个两难的问题 我使用Astro 我的文章在./src/content/posts/xxx.md 我的图片之前在./src/contentimg/xxx.webp 由于我不想要Astro默认的图片优化，因为构建太慢了，于是我将图片放到了.//public/assets/images/xxx.webp 然后我将MarkDown引用的图片从 /public/assets/images/xxx.webp 改为了 .//public/assets/images/xxx.webp 但是现在新的问题出现了，我的MarkText（一个MarkDown编辑器）去寻找了 ./src/content/posts//public/assets/images/xxx.webp 导致我在编辑器中看不到任何图片 有没有什么好的解决方案？*
+*我遇到了一个两难的问题 我使用Astro 我的文章在./src/content/posts/xxx.md 我的图片之前在./src/contentimg/xxx.webp 由于我不想要Astro默认的图片优化，因为构建太慢了，于是我将图片放到了./img/xxx.webp 然后我将MarkDown引用的图片从 img/xxx.webp 改为了 ./img/xxx.webp 但是现在新的问题出现了，我的MarkText（一个MarkDown编辑器）去寻找了 ./src/content/posts/img/xxx.webp 导致我在编辑器中看不到任何图片 有没有什么好的解决方案？*
 
-如果反其道而行之，使用类似 `../..//public/assets/images/xxx.webp` 会导致部分组件无法获得真实图片，导致 `astro build` 直接报错退出，比如每篇文章开头的 YAML 元数据中的 `image` 字段
+如果反其道而行之，使用类似 `../../img/xxx.webp` 会导致部分组件无法获得真实图片，导致 `astro build` 直接报错退出，比如每篇文章开头的 YAML 元数据中的 `image` 字段
 
 **结论：** 该方案并不完美。要不无法即写即看，要不构建失败
 

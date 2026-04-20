@@ -14,7 +14,7 @@ lang: ""
 
 让我们将时间轴拨动到我还持有着 **极光X笔记本** 的时候，虽然前几期文章大致讲过了，我把极光X卖了换了Mac，但是就仅止于此了，实际上这仅仅只是一个平庸的开始
 
-![](/public/assets/images/Screenshot_2025-10-11-05-45-03-97_e41039de8eaacf2.webp)
+![](img/Screenshot_2025-10-11-05-45-03-97_e41039de8eaacf2.webp)
 
 ![](img/Screenshot_2025-10-11-05-47-07-88_c03b3f779c2dfd4.webp)
 

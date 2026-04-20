@@ -17,7 +17,7 @@ lang: ''
 > Netlify OSS计划不受理个人博客
 
 确保你有一个开源项目，并且已经托管在了Netlify，Github的也有你网站的链接
-![](/public/assets/images/2025-08-09-12-30-32-image.webp)
+![](img/2025-08-09-12-30-32-image.webp)
 
 前往 https://opensource-form.netlify.com/
 

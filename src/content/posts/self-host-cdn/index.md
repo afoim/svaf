@@ -12,7 +12,7 @@ lang: ""
 
 然后最近偶然发现甲骨文上托管HTML很绿
 
-![](/public/assets/images/self-host-cdn.png)
+![](img/self-host-cdn.png)
 
 于是就想着是否能在我的俩甲骨文上托管我的静态博客？
 

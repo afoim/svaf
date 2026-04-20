@@ -12,7 +12,7 @@ ai_level: 2
 
 正如很多站长都会遇到的那样，如果你通过 PR 来处理友链申请，尤其是在完全没有自动化的情况下，大概率会遇到下面这种场面：
 
-![](/public/assets/images/auto-pr-link-1.png)
+![](img/auto-pr-link-1.png)
 
 数量多其实还不是最麻烦的，真正麻烦的是：
 

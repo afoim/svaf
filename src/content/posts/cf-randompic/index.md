@@ -12,7 +12,7 @@ title: Cloudflare R2+Workers！马上搭建自己的云上图床！
 ---
 ### **结果图**
 
-![QmVgqgoC7G8NLS21WvR8j9gf5amu33XvuV68ZrgM5B9iFf.webp](/public/assets/images/408795f3ec1a5a9baf91b6cd7564d6f1d7dbc5bd.webp)
+![QmVgqgoC7G8NLS21WvR8j9gf5amu33XvuV68ZrgM5B9iFf.webp](img/408795f3ec1a5a9baf91b6cd7564d6f1d7dbc5bd.webp)
 
 ### **原理**
 

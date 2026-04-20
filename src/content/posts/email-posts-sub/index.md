@@ -15,7 +15,7 @@ https://www.bilibili.com/video/BV1hpDKBbES9/
 众所周知，目前如果你想订阅本博客，可以采用以下几种方式
 - **瞪眼法** 在多次浏览中通过大脑的逻辑中枢来判断有哪些新文章，或有哪些文章更新了
 - **简易瞪眼法** 在多次浏览中，若文章状态变化，右下角的小铃铛则会显示相应通知，点击后甚至可以看到高级的DIFF
-	![](/public/assets/images/email-posts-sub.png)
+	![](img/email-posts-sub.png)
 - **RSS** 通过RSS订阅器订阅本博客的RSS XML文件，由第三方告知文章更新状态
 	![](img/email-posts-sub-1.png)
 - **加入群组** 通过置顶文章加入群组，群内会有Bot在文章更新时广播一条消息

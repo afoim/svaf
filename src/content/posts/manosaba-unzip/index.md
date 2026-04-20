@@ -16,7 +16,7 @@ lang: ""
 这会自动调用浏览器并导向 `http://127.0.0.1:64203` 暂时放一边
 
 接下来在Steam页面对游戏右键并选择 `管理 - 浏览本地文件`
-![](/public/assets/images/manosaba-unzip-1.webp)
+![](img/manosaba-unzip-1.webp)
 会打开你的文件资源管理器并导向该游戏位于系统中的实际路径 ![](img/manosaba-unzip-2.webp)
 点击 `地址栏` 然后复制
 ![](img/manosaba-unzip-3.webp)

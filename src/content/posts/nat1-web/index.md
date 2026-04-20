@@ -16,7 +16,7 @@ lang: ''
 
 # 原理
 
-![](/public/assets/images/7c517b72-8287-4707-8dff-12690a71d592.webp)
+![](img/7c517b72-8287-4707-8dff-12690a71d592.webp)
 
 # 正式开始
 

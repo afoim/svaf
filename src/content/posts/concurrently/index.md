@@ -16,7 +16,7 @@ lang: ""
 
 前端是一坨React
 
-![](/public/assets/images/concurrently-1.png)
+![](img/concurrently-1.png)
 
 后端是一坨 Typescript
 

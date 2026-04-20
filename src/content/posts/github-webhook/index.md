@@ -31,7 +31,7 @@ lang: ''
 
 我使用Koishi编写一个插件创建一个HTTP服务器用于接受WebHook，并且在接收到指定提交信息的WebHook后将在2分钟后在我的群里广播文章更新消息
 
-![](/public/assets/images/53b434e4-cf0e-4cfc-a688-054d13f1c01a.webp)
+![](img/53b434e4-cf0e-4cfc-a688-054d13f1c01a.webp)
 
 如果你的服务在内网，可以使用Cloudflared将WebHook接收服务器开放到公网。否则Github将无法将WebHook信息发送到你的服务
 

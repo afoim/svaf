@@ -18,7 +18,7 @@ ai_level: 1
 首先，我们需要挑选一个手机上的 Git 客户端。这里我使用的是：https://github.com/catpuppyapp/PuppyGit
 
 安装之后，点击右上角的加号，点击克隆，即可克隆仓库
-![](/public/assets/images/Screenshot_2025-11-11-14-11-13-56_a2e3670364a4153bdb03dad30c8d4108.webp)
+![](img/Screenshot_2025-11-11-14-11-13-56_a2e3670364a4153bdb03dad30c8d4108.webp)
 
 创建 GitHub Token
 ![](img/Screenshot_2025-11-24-07-55-54-35_df198e732186825c8df26e3c5a10d7cd1.webp)

@@ -26,7 +26,7 @@ title: 让我们来探讨一下如何绕过GFW
 
 - 首先尝试访问 `www.baidu.com` 这是一个没有被GFW封锁的域名
   
-  1. 我们先ping一下![](/public/assets/images/2024-10-21-20-16-48-image.webp)
+  1. 我们先ping一下![](img/2024-10-21-20-16-48-image.webp)
   
   2. 得到ip： `2408:873d:22:18ac:0:ff:b021:1393` 
   

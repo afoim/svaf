@@ -40,7 +40,7 @@ git-filter-repo --force --path src/secret.txt --invert-paths
 
 比如这里我们一不小心提交了个 **微信密码** 
 
-![](/public/assets/images/del-git-commit-2.webp)
+![](img/del-git-commit-2.webp)
 
 我们可以用该命令将其 **剔除** 
 

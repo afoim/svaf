@@ -10,7 +10,7 @@ lang: ""
 
 简单来说，Windows为了兼容性，始终都在让我们的NVMe固态硬盘模拟为SCSI跑
 
-![](/public/assets/images/win11-native-nvme-1.png)
+![](img/win11-native-nvme-1.png)
 
 但是就在前不久，微软为新版Windows11提供了一个开关，允许将NVMe固态硬盘使用原生的NVMe驱动
 

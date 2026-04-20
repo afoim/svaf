@@ -21,7 +21,7 @@ https://b23.tv/E8Z34KM
 
 你就会得到这一坨
 
-![](/public/assets/images/dcb4d5ec-412f-4008-980b-b4f4ac1bc2d2.webp)
+![](img/dcb4d5ec-412f-4008-980b-b4f4ac1bc2d2.webp)
 
 这里开始分支！如果你是Apache请什么都不要动，它会自动检测 `.htaccess` 。如果你是Nginx请配置 `nginx.txt` 里面的伪静态规则
 

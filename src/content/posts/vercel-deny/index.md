@@ -22,7 +22,7 @@ https://www.bilibili.com/video/BV1w7GTzMEy7
 
 结论，你已经获得了你要屏蔽的拨测网站的IP
 
-![](/public/assets/images/91daff1e-b248-4f90-9b97-31bff7fa2c14.webp)
+![](img/91daff1e-b248-4f90-9b97-31bff7fa2c14.webp)
 
 # 创建Vercel API Token
 

@@ -100,7 +100,7 @@
 		data-cookie-consent="strictly-necessary"
 		defer
 		src="https://static.cloudflareinsights.com/beacon.min.js"
-		data-cf-beacon='{"token": "15fe148e91b34f10a15652e1a74ab26c"}'
+		data-cf-beacon={JSON.stringify({ token: '15fe148e91b34f10a15652e1a74ab26c' })}
 	></script>
 
 	<!-- Clarity -->

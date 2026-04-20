@@ -66,8 +66,7 @@
 
 	<!-- 文章内容 - 使用 mdsvex 组件 -->
 	<div class="prose prose-neutral dark:prose-invert max-w-none">
-		{@const Component = component}
-		<Component />
+		<svelte:component this={component} />
 	</div>
 
 	<!-- 文章底部 -->

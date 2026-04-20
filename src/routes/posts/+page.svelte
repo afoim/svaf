@@ -37,6 +37,12 @@
 		}
 	}
 
+	function highlightText(text: string, query: string): string {
+		if (!query.trim()) return text;
+		const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+		return text.replace(regex, '<mark class="bg-yellow-200 dark:bg-yellow-800">$1</mark>');
+	}
+
 	let filteredPosts = $derived(() => {
 		if (!searchQuery.trim()) return posts;
 		
@@ -122,11 +128,11 @@
 							</div>
 							
 							<h2 class="mb-2 text-2xl font-semibold group-hover:text-primary">
-								{post.metadata.title}
+								{@html highlightText(post.metadata.title, searchQuery)}
 							</h2>
 							
 							<p class="text-muted-foreground">
-								{post.metadata.description}
+								{@html highlightText(post.metadata.description, searchQuery)}
 							</p>
 						</div>
 					</div>

@@ -30,7 +30,10 @@
 	
 	<div class="mt-4">
 		<a href="/posts">
-			<Button>查看博客</Button>
+			<Button class="flex items-center gap-2">
+				<Icon icon="mdi:post-outline" class="w-5 h-5" />
+				博客
+			</Button>
 		</a>
 	</div>
 </div>

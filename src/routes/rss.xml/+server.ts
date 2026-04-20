@@ -1,8 +1,12 @@
+import { Feed } from 'feed';
 import { siteConfig } from '$lib/config/site';
 import { getAllPosts } from '$lib/utils/posts';
 import type { RequestHandler } from './$types';
 
 export const prerender = true;
+
+// 预加载所有文章模块
+const modules = import.meta.glob('/src/content/posts/*/index.md', { eager: true });
 
 export const GET: RequestHandler = async () => {
 	const posts = await getAllPosts();
@@ -12,54 +16,54 @@ export const GET: RequestHandler = async () => {
 		.filter(post => !post.metadata.draft)
 		.sort((a, b) => new Date(b.metadata.published).getTime() - new Date(a.metadata.published).getTime());
 
-	// 动态导入文章内容并渲染为 HTML
-	const postsWithContent = await Promise.all(
-		publishedPosts.map(async (post) => {
-			try {
-				// 导入文章的 mdsvex 组件
-				const module = await import(`../../../content/posts/${post.slug}/index.md`);
-				// 获取渲染后的 HTML
-				const html = module.default.render().html;
-				return { ...post, html };
-			} catch (error) {
-				console.error(`Failed to load content for ${post.slug}:`, error);
-				return { ...post, html: post.metadata.description };
+	// 创建 Feed 实例
+	const feed = new Feed({
+		title: siteConfig.title,
+		description: siteConfig.bio.bio,
+		id: siteConfig.url,
+		link: siteConfig.url,
+		language: 'zh-CN',
+		favicon: `${siteConfig.url}${siteConfig.icon}`,
+		copyright: `All rights reserved ${new Date().getFullYear()}, ${siteConfig.bio.name}`,
+		feedLinks: {
+			rss: `${siteConfig.url}/rss.xml`,
+		},
+		author: {
+			name: siteConfig.bio.name,
+			link: siteConfig.url
+		}
+	});
+
+	// 添加文章到 feed
+	for (const post of publishedPosts) {
+		try {
+			const modulePath = `/src/content/posts/${post.slug}/index.md`;
+			const module = modules[modulePath] as any;
+			
+			let content = `<p>${post.metadata.description}</p>`;
+			
+			if (module && module.default && module.default.render) {
+				content = module.default.render().html;
 			}
-		})
-	);
 
-	const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<rss xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0">
-	<channel>
-		<title>${escapeXml(siteConfig.title)}</title>
-		<description>${escapeXml(siteConfig.bio.bio)}</description>
-		<link>${siteConfig.url}/</link>
-		<language>zh_CN</language>
-		${postsWithContent.map(post => `
-		<item>
-			<title>${escapeXml(post.metadata.title)}</title>
-			<link>${siteConfig.url}/posts/${post.slug}/</link>
-			<guid isPermaLink="true">${siteConfig.url}/posts/${post.slug}/</guid>
-			<description>${escapeXml(post.metadata.description)}</description>
-			<pubDate>${new Date(post.metadata.published).toUTCString()}</pubDate>
-			<content:encoded><![CDATA[${post.html}]]></content:encoded>
-		</item>`).join('')}
-	</channel>
-</rss>`;
+			feed.addItem({
+				title: post.metadata.title,
+				id: `${siteConfig.url}/posts/${post.slug}/`,
+				link: `${siteConfig.url}/posts/${post.slug}/`,
+				description: post.metadata.description,
+				content: content,
+				date: new Date(post.metadata.published),
+				image: post.metadata.image ? `${siteConfig.url}${post.metadata.image}` : undefined
+			});
+		} catch (error) {
+			console.error(`Failed to add post ${post.slug} to feed:`, error);
+		}
+	}
 
-	return new Response(xml, {
+	return new Response(feed.rss2(), {
 		headers: {
 			'Content-Type': 'application/xml; charset=utf-8',
 			'Cache-Control': 'max-age=0, s-maxage=3600'
 		}
 	});
 };
-
-function escapeXml(unsafe: string): string {
-	return unsafe
-		.replace(/&/g, '&amp;')
-		.replace(/</g, '&lt;')
-		.replace(/>/g, '&gt;')
-		.replace(/"/g, '&quot;')
-		.replace(/'/g, '&apos;');
-}

@@ -32,7 +32,8 @@ const config = defineConfig({
 		dashes: 'oldschool'
 	},
 	remarkPlugins: [],
-	rehypePlugins: [[rehypePrettyCode, prettyCodeOptions]]
+	rehypePlugins: [[rehypePrettyCode, prettyCodeOptions]],
+	highlight: false // 禁用默认的 Prism.js 高亮
 });
 
 console.log('[mdsvex] 配置加载完成');

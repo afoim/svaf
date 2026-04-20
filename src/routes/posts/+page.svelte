@@ -77,7 +77,7 @@
 		<input
 			type="text"
 			bind:value={searchQuery}
-			oninput={loadRSS}
+			onfocus={loadRSS}
 			placeholder="搜索文章标题、描述或内容..."
 			class="w-full rounded-lg border border-input bg-background px-4 py-3 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
 		/>

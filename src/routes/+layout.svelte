@@ -2,6 +2,7 @@
 	import '../app.css';
 	import { siteConfig } from '$lib/config/site';
 	import BackToTop from '$lib/components/BackToTop.svelte';
+	import NavBar from '$lib/components/NavBar.svelte';
 
 	let { children } = $props();
 </script>
@@ -18,6 +19,8 @@
 	<meta property="og:title" content={siteConfig.title} />
 	<link rel="canonical" href={siteConfig.url} />
 </svelte:head>
+
+<NavBar />
 
 {@render children()}
 

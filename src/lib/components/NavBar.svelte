@@ -4,7 +4,7 @@
 	import { Button } from '$lib/components/ui/button';
 
 	// 检查是否为首页
-	$: isHomePage = $page.route.id === '/';
+	const isHomePage = $derived($page.route.id === '/');
 </script>
 
 {#if !isHomePage}

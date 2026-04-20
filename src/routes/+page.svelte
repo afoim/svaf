@@ -58,7 +58,7 @@
 						style={link.name === 'QQ' ? 'color: #333333' : 
 						       link.name === 'Telegram' ? 'color: #0088cc' : 
 						       link.name === 'Bilibili' ? 'color: #fb7299' : 
-						       link.name === 'GitHub' ? 'color: #2ea44f' : 
+						       link.name === 'GitHub' ? 'color: #333333' : 
 						       link.name === 'Folo' ? 'color: #ff6b35' : ''}
 					/>
 					<span class="text-sm font-medium">{link.name}</span>

@@ -8,9 +8,6 @@ importers:
 
   .:
     devDependencies:
-      '@fontsource-variable/figtree':
-        specifier: ^5.2.10
-        version: 5.2.10
       '@iconify/svelte':
         specifier: ^5.2.1
         version: 5.2.1(svelte@5.55.4)
@@ -73,9 +70,6 @@ packages:
 
   '@emnapi/wasi-threads@1.2.1':
     resolution: {integrity: sha512-uTII7OYF+/Mes/MrcIOYp5yOtSMLBWSIoLPpcgwipoiKbli6k322tcoFsxoIIxPDqW01SQGAgko4EzZi2BNv2w==}
-
-  '@fontsource-variable/figtree@5.2.10':
-    resolution: {integrity: sha512-a5Gumbpy3mdd+Yg31g6Qb7CmjYbrfyutJa3bWfP5q8A4GclIOwX7mI+ZuSHsJnw/mHvW6r9oh1AHJcJTIxK4JA==}
 
   '@iconify/svelte@5.2.1':
     resolution: {integrity: sha512-zHmsIPmnIhGd5gc95bNN5FL+GifwMZv7M2rlZEpa7IXYGFJm/XGHdWf6PWQa6OBoC+R69WyiPO9NAj5wjfjbow==}
@@ -736,8 +730,6 @@ snapshots:
     dependencies:
       tslib: 2.8.1
     optional: true
-
-  '@fontsource-variable/figtree@5.2.10': {}
 
   '@iconify/svelte@5.2.1(svelte@5.55.4)':
     dependencies:

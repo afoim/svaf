@@ -93,6 +93,21 @@
 
 		// Microsoft Clarity（仅在用户同意 tracking 后加载）
 		const loadClarity = () => {
+			// 检查用户是否同意 tracking cookies
+			const checkConsent = () => {
+				const cc = window.cookieconsent;
+				if (!cc) return false;
+				
+				// 获取用户的同意级别
+				const consent = cc.get?.() || {};
+				return consent.level?.includes?.('tracking') || false;
+			};
+			
+			if (!checkConsent()) {
+				console.log('[Analytics] Clarity 未加载：用户未同意 tracking cookies');
+				return;
+			}
+			
 			if (window.__clarityLoaded) return;
 			window.__clarityLoaded = true;
 			
@@ -111,13 +126,14 @@
 			window.requestIdleCallback(() => {
 				loadBaidu();
 				loadGoogle();
-				loadClarity();
+				// 延迟加载 Clarity，确保 Cookie Consent 已初始化
+				setTimeout(loadClarity, 1000);
 			}, { timeout: 4000 });
 		} else {
 			setTimeout(() => {
 				loadBaidu();
 				loadGoogle();
-				loadClarity();
+				setTimeout(loadClarity, 1000);
 			}, 2000);
 		}
 	});

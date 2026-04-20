@@ -2,13 +2,13 @@
 	import { onMount } from 'svelte';
 	import Icon from '@iconify/svelte';
 
-	let showButton = false;
-	let scrollY = 0;
+	let showButton = $state(false);
+	let scrollY = $state(0);
 
 	onMount(() => {
 		const handleScroll = () => {
 			scrollY = window.scrollY;
-			showButton = scrollY > 300; // 滚动超过300px时显示按钮
+			showButton = scrollY > 100; // 滚动超过100px时显示按钮
 		};
 
 		window.addEventListener('scroll', handleScroll);
@@ -27,7 +27,7 @@
 
 {#if showButton}
 	<button
-		on:click={scrollToTop}
+		onclick={scrollToTop}
 		class="fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl"
 		aria-label="回到顶部"
 	>

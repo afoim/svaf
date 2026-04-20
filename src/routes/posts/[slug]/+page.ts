@@ -1,4 +1,5 @@
 import { getPostBySlug, getPostComponent } from '$lib/utils/posts';
+import { resolvePostAssetPath } from '$lib/utils/markdown';
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
@@ -16,8 +17,18 @@ export const load: PageLoad = async ({ params }) => {
 		throw error(404, '文章内容加载失败');
 	}
 
+	// 处理元数据中的图片路径
+	const metadata = {
+		...post.metadata,
+		image: resolvePostAssetPath(params.slug, post.metadata.image)
+	};
+
 	return {
-		post,
-		component
+		post: {
+			...post,
+			metadata
+		},
+		component,
+		slug: params.slug
 	};
 };

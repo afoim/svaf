@@ -79,12 +79,13 @@
 			placeholder="搜索文章标题、描述或内容..."
 			class="w-full rounded-lg border border-input bg-background px-4 py-3 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
 		/>
-		{#if isLoading}
-			<p class="mt-2 text-sm text-muted-foreground">加载搜索数据中...</p>
-		{/if}
-		{#if searchQuery && filteredPosts().length === 0}
-			<p class="mt-2 text-sm text-muted-foreground">未找到匹配的文章</p>
-		{/if}
+		<div class="mt-2 min-h-[20px]">
+			{#if isLoading}
+				<p class="text-sm text-muted-foreground">加载搜索数据中...</p>
+			{:else if searchQuery && filteredPosts().length === 0}
+				<p class="text-sm text-muted-foreground">未找到匹配的文章</p>
+			{/if}
+		</div>
 	</div>
 
 	<div class="space-y-6">

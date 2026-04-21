@@ -13,6 +13,8 @@ const config = {
 	onwarn: (warning, handler) => {
 		// 忽略 a11y 警告
 		if (warning.code.startsWith('a11y_')) return;
+		// 忽略 context="module" 废弃警告（来自 markdown 文件中的代码示例）
+		if (warning.code === 'script_context_deprecated') return;
 		handler(warning);
 	},
 	kit: {

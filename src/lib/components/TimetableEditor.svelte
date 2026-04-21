@@ -64,7 +64,7 @@
 	let newCourseDraft = $state<NewCourseDraft>(createNewCourseDraft());
 
 	function cloneParsedData(data: ParsedTimetableData): ParsedTimetableData {
-		return structuredClone(data);
+		return JSON.parse(JSON.stringify(data));
 	}
 
 	function createNewCourseDraft(): NewCourseDraft {

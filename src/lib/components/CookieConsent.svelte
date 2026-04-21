@@ -174,9 +174,13 @@
 					<Checkbox checked={true} disabled={true} class="mt-1" />
 					<div class="flex-1">
 						<h3 class="font-semibold">必要 Cookie</h3>
-						<p class="text-sm text-muted-foreground mt-1">
-							这些 Cookie 对于网站的基本功能是必需的，无法禁用。包括：Umami Analytics（网站统计）、Cloudflare Insights（性能监控）。
+						<p class="text-sm text-muted-foreground mt-1 mb-2">
+							这些 Cookie 对于网站的基本功能是必需的，无法禁用。
 						</p>
+						<ul class="text-sm text-muted-foreground space-y-1 list-disc list-inside">
+							<li>Umami Analytics - 网站统计</li>
+							<li>Cloudflare Insights - 性能监控</li>
+						</ul>
 					</div>
 				</div>
 			</div>
@@ -187,9 +191,12 @@
 					<Checkbox bind:checked={preferences.functional} class="mt-1" />
 					<div class="flex-1">
 						<h3 class="font-semibold">功能性 Cookie</h3>
-						<p class="text-sm text-muted-foreground mt-1">
-							这些 Cookie 用于增强网站功能和个性化体验，例如记住您的偏好设置。
+						<p class="text-sm text-muted-foreground mt-1 mb-2">
+							这些 Cookie 用于增强网站功能和个性化体验。
 						</p>
+						<ul class="text-sm text-muted-foreground space-y-1 list-disc list-inside">
+							<li>Giscus - 评论系统</li>
+						</ul>
 					</div>
 				</div>
 			</div>
@@ -200,9 +207,14 @@
 					<Checkbox bind:checked={preferences.analytics} class="mt-1" />
 					<div class="flex-1">
 						<h3 class="font-semibold">分析 Cookie</h3>
-						<p class="text-sm text-muted-foreground mt-1">
-							这些 Cookie 帮助我们了解访问者如何使用网站，以便改进用户体验。包括：百度统计、Google Analytics、Microsoft Clarity。
+						<p class="text-sm text-muted-foreground mt-1 mb-2">
+							这些 Cookie 帮助我们了解访问者如何使用网站，以便改进用户体验。
 						</p>
+						<ul class="text-sm text-muted-foreground space-y-1 list-disc list-inside">
+							<li>百度统计 - 访问分析</li>
+							<li>Google Analytics - 用户行为分析</li>
+							<li>Microsoft Clarity - 用户体验分析</li>
+						</ul>
 					</div>
 				</div>
 			</div>
@@ -213,9 +225,12 @@
 					<Checkbox bind:checked={preferences.marketing} class="mt-1" />
 					<div class="flex-1">
 						<h3 class="font-semibold">营销 Cookie</h3>
-						<p class="text-sm text-muted-foreground mt-1">
-							这些 Cookie 用于跟踪访问者并显示相关广告。包括：Google AdSense。
+						<p class="text-sm text-muted-foreground mt-1 mb-2">
+							这些 Cookie 用于跟踪访问者并显示相关广告。
 						</p>
+						<ul class="text-sm text-muted-foreground space-y-1 list-disc list-inside">
+							<li>Google AdSense - 广告投放</li>
+						</ul>
 					</div>
 				</div>
 			</div>

@@ -197,6 +197,11 @@
 		}
 	}
 
+	function handleSystemFontSelect(fontName: string) {
+		customFontName = fontName;
+		customFont = null;
+	}
+
 	async function handleSearch() {
 		if (!searchQuery) {
 			searchResults = [];
@@ -507,6 +512,7 @@
 			<FontSettings
 				bind:customFontName
 				onFontUpload={handleFontUpload}
+				onSystemFontSelect={handleSystemFontSelect}
 				onRemoveFont={() => {
 					customFont = null;
 					customFontName = '';

@@ -30,12 +30,7 @@
 
 		<div class="flex flex-wrap items-center gap-3">
 			<div class="inline-flex items-center gap-1">
-				<a
-					href={`/timetable/${Math.max(1, viewModel.currentWeek - 1)}/`}
-					class:list={[
-						{ 'pointer-events-none opacity-50': viewModel.currentWeek <= 1 }
-					]}
-				>
+				<a href={`/timetable/${Math.max(1, viewModel.currentWeek - 1)}/`}>
 					<Button variant="outline" size="icon" disabled={viewModel.currentWeek <= 1}>
 						<Icon icon="mdi:chevron-left" class="h-5 w-5" />
 					</Button>
@@ -43,12 +38,7 @@
 				<span class="min-w-[4.5rem] px-3 text-center font-medium">
 					第 {viewModel.currentWeek} 周
 				</span>
-				<a
-					href={`/timetable/${Math.min(viewModel.maxWeek, viewModel.currentWeek + 1)}/`}
-					class:list={[
-						{ 'pointer-events-none opacity-50': viewModel.currentWeek >= viewModel.maxWeek }
-					]}
-				>
+				<a href={`/timetable/${Math.min(viewModel.maxWeek, viewModel.currentWeek + 1)}/`}>
 					<Button variant="outline" size="icon" disabled={viewModel.currentWeek >= viewModel.maxWeek}>
 						<Icon icon="mdi:chevron-right" class="h-5 w-5" />
 					</Button>

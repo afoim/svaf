@@ -116,7 +116,7 @@
 			{#if totalPages > 1}
 				<div class="mt-8 flex justify-center">
 					<Pagination count={totalPages} perPage={1}>
-						{#snippet default({ pages, currentPage: activePage })}
+						{#snippet children({ pages, currentPage: activePage })}
 							<PaginationContent>
 								<PaginationItem>
 									<PaginationPrevious

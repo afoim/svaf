@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import { Button } from '$lib/components/ui/button';
 	import { Card, CardContent, CardHeader, CardTitle } from '$lib/components/ui/card';
 	import { Badge } from '$lib/components/ui/badge';
@@ -10,22 +9,6 @@
 	const { viewModel, isCurrentWeek } = data;
 
 	console.log('[Timetable] 页面加载，当前周:', viewModel.currentWeek, '最大周:', viewModel.maxWeek);
-
-	function goToPreviousWeek() {
-		const targetWeek = viewModel.currentWeek - 1;
-		console.log('[Timetable] 点击上一周，目标周:', targetWeek);
-		if (viewModel.currentWeek > 1) {
-			goto(`/timetable/${targetWeek}/`);
-		}
-	}
-
-	function goToNextWeek() {
-		const targetWeek = viewModel.currentWeek + 1;
-		console.log('[Timetable] 点击下一周，目标周:', targetWeek);
-		if (viewModel.currentWeek < viewModel.maxWeek) {
-			goto(`/timetable/${targetWeek}/`);
-		}
-	}
 </script>
 
 <svelte:head>
@@ -49,25 +32,34 @@
 
 		<div class="flex flex-wrap items-center gap-3">
 			<div class="inline-flex items-center gap-1">
-				<Button 
-					variant="outline" 
-					size="icon" 
-					disabled={viewModel.currentWeek <= 1}
-					onclick={goToPreviousWeek}
-				>
-					<Icon icon="mdi:chevron-left" class="h-5 w-5" />
-				</Button>
+				{#if viewModel.currentWeek > 1}
+					<a href={`/timetable/${viewModel.currentWeek - 1}/`}>
+						<Button variant="outline" size="icon">
+							<Icon icon="mdi:chevron-left" class="h-5 w-5" />
+						</Button>
+					</a>
+				{:else}
+					<Button variant="outline" size="icon" disabled>
+						<Icon icon="mdi:chevron-left" class="h-5 w-5" />
+					</Button>
+				{/if}
+				
 				<span class="min-w-[4.5rem] px-3 text-center font-medium">
 					第 {viewModel.currentWeek} 周
 				</span>
-				<Button 
-					variant="outline" 
-					size="icon" 
-					disabled={viewModel.currentWeek >= viewModel.maxWeek}
-					onclick={goToNextWeek}
-				>
-					<Icon icon="mdi:chevron-right" class="h-5 w-5" />
-				</Button>
+				
+				{#if viewModel.currentWeek < viewModel.maxWeek}
+					<a href={`/timetable/${viewModel.currentWeek + 1}/`}>
+						<Button variant="outline" size="icon">
+							<Icon icon="mdi:chevron-right" class="h-5 w-5" />
+						</Button>
+					</a>
+				{:else}
+					<Button variant="outline" size="icon" disabled>
+						<Icon icon="mdi:chevron-right" class="h-5 w-5" />
+					</Button>
+				{/if}
+				
 				{#if isCurrentWeek}
 					<Badge variant="default" class="ml-2">当前周</Badge>
 				{/if}

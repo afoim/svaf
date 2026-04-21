@@ -439,7 +439,7 @@
 <div class="flex flex-col lg:flex-row gap-6 w-full">
 	<!-- 左侧：预览区域 -->
 	<div class="flex-1 lg:max-w-[55%]">
-		<div class="lg:sticky lg:top-6">
+		<div class="lg:fixed lg:top-20 lg:left-4 lg:right-[45%] lg:max-w-[55%]">
 			<CoverPreview
 				bind:svgContainer
 				{canvasWidth}

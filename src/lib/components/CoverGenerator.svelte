@@ -485,14 +485,101 @@
 
 	<!-- 右侧：控制面板 -->
 	<div class="w-full lg:flex-1">
-		<Tabs.Root value="content" class="w-full">
-			<Tabs.List class="grid w-full grid-cols-3">
-				<Tabs.Trigger value="content">内容</Tabs.Trigger>
-				<Tabs.Trigger value="style">样式</Tabs.Trigger>
-				<Tabs.Trigger value="export">导出</Tabs.Trigger>
-			</Tabs.List>
+		<!-- 移动端使用 Tabs，桌面端并列显示 -->
+		<div class="lg:hidden">
+			<Tabs.Root value="content" class="w-full">
+				<Tabs.List class="grid w-full grid-cols-3">
+					<Tabs.Trigger value="content">内容</Tabs.Trigger>
+					<Tabs.Trigger value="style">样式</Tabs.Trigger>
+					<Tabs.Trigger value="export">导出</Tabs.Trigger>
+				</Tabs.List>
 
-			<Tabs.Content value="content" class="space-y-6 mt-6">
+				<Tabs.Content value="content" class="space-y-6 mt-6">
+					<TextSettings bind:leftText bind:rightText bind:fontWeight />
+					<IconSettings
+						bind:showIcon
+						bind:localIcon
+						bind:searchQuery
+						bind:searchResults
+						bind:iconName
+						onLocalIconUpload={handleLocalIconUpload}
+						{onSearchInput}
+						onSelectIcon={selectIcon}
+					/>
+					<BackgroundSettings
+						bind:bgImage
+						bind:bgBlur
+						bind:bgOpacity
+						bind:isBgDragOver
+						onBgImageUpload={handleBgImageUpload}
+						onBgDragOver={handleBgDragOver}
+						onBgDragLeave={handleBgDragLeave}
+						onBgDrop={handleBgDrop}
+					/>
+					<FontSettings
+						bind:customFontName
+						onFontUpload={handleFontUpload}
+						onSystemFontSelect={handleSystemFontSelect}
+						onRemoveFont={() => {
+							customFont = null;
+							customFontName = '';
+						}}
+					/>
+				</Tabs.Content>
+
+				<Tabs.Content value="style" class="space-y-6 mt-6">
+					<SizeSettings
+						bind:fontSize
+						bind:iconSize
+						bind:iconRadius
+						bind:gap
+						bind:linkScale
+						onFontSizeChange={handleFontSizeChange}
+						onIconSizeChange={handleIconSizeChange}
+					/>
+					<ColorSettings
+						bind:color
+						bind:iconColor
+						bind:bgColor
+						bind:bgColorOpacity
+						bind:linkColor
+						bind:useOriginalIconColor
+						onColorChange={handleColorChange}
+					/>
+					<IconBackgroundSettings
+						bind:iconBgEnabled
+						bind:iconBgColor
+						bind:iconBgPadding
+						bind:iconBgRadius
+						bind:iconBgBlur
+						bind:iconBgOpacity
+					/>
+					<ShadowSettings
+						bind:shadowTarget
+						{textShadow}
+						{iconShadow}
+						onUpdateShadow={updateShadow}
+					/>
+				</Tabs.Content>
+
+				<Tabs.Content value="export" class="space-y-6 mt-6">
+					<ExportSettings
+						bind:ratios
+						bind:exportConfig
+						{canvasWidth}
+						{canvasHeight}
+						{activeRatios}
+						onExport={doExport}
+					/>
+				</Tabs.Content>
+			</Tabs.Root>
+		</div>
+
+		<!-- 桌面端并列显示 -->
+		<div class="hidden lg:grid lg:grid-cols-3 gap-6">
+			<!-- 内容列 -->
+			<div class="space-y-6">
+				<h2 class="text-lg font-semibold mb-4">内容</h2>
 				<TextSettings bind:leftText bind:rightText bind:fontWeight />
 				<IconSettings
 					bind:showIcon
@@ -523,9 +610,11 @@
 						customFontName = '';
 					}}
 				/>
-			</Tabs.Content>
+			</div>
 
-			<Tabs.Content value="style" class="space-y-6 mt-6">
+			<!-- 样式列 -->
+			<div class="space-y-6">
+				<h2 class="text-lg font-semibold mb-4">样式</h2>
 				<SizeSettings
 					bind:fontSize
 					bind:iconSize
@@ -558,9 +647,11 @@
 					{iconShadow}
 					onUpdateShadow={updateShadow}
 				/>
-			</Tabs.Content>
+			</div>
 
-			<Tabs.Content value="export" class="space-y-6 mt-6">
+			<!-- 导出列 -->
+			<div class="space-y-6">
+				<h2 class="text-lg font-semibold mb-4">导出</h2>
 				<ExportSettings
 					bind:ratios
 					bind:exportConfig
@@ -569,7 +660,7 @@
 					{activeRatios}
 					onExport={doExport}
 				/>
-			</Tabs.Content>
-		</Tabs.Root>
+			</div>
+		</div>
 	</div>
 </div>

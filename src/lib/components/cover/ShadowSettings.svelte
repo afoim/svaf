@@ -51,7 +51,7 @@
 					type="text"
 					value={shadowTarget === 'icon' ? iconShadow.color : textShadow.color}
 					oninput={(e) => onUpdateShadow('color', e.currentTarget.value)}
-					class="w-20 h-6 text-xs"
+					class="w-24 h-6 text-xs"
 				/>
 				<input
 					type="color"

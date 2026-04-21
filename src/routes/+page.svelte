@@ -75,6 +75,13 @@
 			</Button>
 		</a>
 		
+		<a href="/friends">
+			<Button variant="outline" class="flex items-center gap-2">
+				<Icon icon="mdi:link-variant" class="w-5 h-5" />
+				友链
+			</Button>
+		</a>
+		
 		<a href="/sponsors">
 			<Button variant="outline" class="flex items-center gap-2">
 				<Icon icon="mdi:heart" class="w-5 h-5" />

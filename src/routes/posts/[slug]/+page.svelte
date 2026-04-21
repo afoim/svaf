@@ -3,13 +3,10 @@
 	import { siteConfig } from '$lib/config/site';
 	import ImageViewer from '$lib/components/ImageViewer.svelte';
 	import Giscus from '$lib/components/Giscus.svelte';
+	import PageViews from '$lib/components/PageViews.svelte';
 	import type { PageData } from './$types';
-	import { onMount } from 'svelte';
-	import { spaCache } from '$lib/utils/spaCache';
 
 	let { data }: { data: PageData } = $props();
-	
-	let pageViews = $state<number | null>(null);
 
 	function formatDate(dateString: string) {
 		const date = new Date(dateString);
@@ -19,28 +16,6 @@
 			day: 'numeric'
 		});
 	}
-	
-	async function loadPageViews() {
-		pageViews = await spaCache.get(`post-pageviews-${data.slug}`, async () => {
-			const response = await fetch('https://t.2x.nz/batch', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'text/plain'
-				},
-				body: JSON.stringify([`/posts/${data.slug}/`])
-			});
-			
-			if (response.ok) {
-				const views = await response.json() as number[];
-				return views[0] || 0;
-			}
-			return 0;
-		}, 60000); // 1分钟过期
-	}
-	
-	onMount(() => {
-		loadPageViews();
-	});
 </script>
 
 <svelte:head>
@@ -72,10 +47,12 @@
 			<time class="text-sm text-muted-foreground">
 				{formatDate(data.post.metadata.published)}
 			</time>
-			{#if pageViews !== null}
-				<span class="text-sm text-muted-foreground">·</span>
-				<span class="text-sm text-muted-foreground">{pageViews.toLocaleString()} 次浏览</span>
-			{/if}
+			<span class="text-sm text-muted-foreground">·</span>
+			<PageViews
+				pathname="/posts/{data.slug}/"
+				cacheKey="post-pageviews-{data.slug}"
+				class="text-sm text-muted-foreground"
+			/>
 		</div>
 
 		<h1 class="mb-4 text-4xl font-bold">{data.post.metadata.title}</h1>

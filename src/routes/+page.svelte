@@ -4,27 +4,9 @@
 	import Icon from '@iconify/svelte';
 	import { onMount } from 'svelte';
 	import { spaCache } from '$lib/utils/spaCache';
+	import PageViews from '$lib/components/PageViews.svelte';
 	
-	let totalPageViews = $state<number | null>(null);
 	let isLive = $state<boolean>(false);
-	
-	async function loadTotalPageViews() {
-		totalPageViews = await spaCache.get('homepage-pageviews', async () => {
-			const response = await fetch('https://t.2x.nz/batch', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'text/plain'
-				},
-				body: JSON.stringify(['/'])
-			});
-			
-			if (response.ok) {
-				const views = await response.json() as number[];
-				return views[0] || 0;
-			}
-			return 0;
-		});
-	}
 	
 	async function checkLiveStatus() {
 		isLive = await spaCache.get('live-status', async () => {
@@ -38,7 +20,6 @@
 	}
 	
 	onMount(() => {
-		loadTotalPageViews();
 		checkLiveStatus();
 		
 		// 每 30 秒更新一次直播状态
@@ -142,11 +123,9 @@
 	<div class="text-center">
 		<h1 class="text-4xl font-bold mb-2">{siteConfig.bio.name}</h1>
 		<p class="text-lg text-muted-foreground mb-4">{siteConfig.bio.bio}</p>
-		{#if totalPageViews !== null}
-			<p class="text-sm text-muted-foreground">
-				全站浏览量: {totalPageViews.toLocaleString()}
-			</p>
-		{/if}
+		<p class="text-sm text-muted-foreground">
+			全站浏览量: <PageViews pathname="/" cacheKey="homepage-pageviews" />
+		</p>
 	</div>
 
 	<!-- 社交媒体链接 -->

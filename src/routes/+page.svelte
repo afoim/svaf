@@ -31,7 +31,10 @@
 			const response = await fetch('https://b-live.2x.nz');
 			if (response.ok) {
 				const status = await response.text();
-				isLive = status.trim() === '1';
+				const liveStatus = status.trim() === '1';
+				isLive = liveStatus;
+				sessionStorage.setItem('liveStatus', liveStatus ? '1' : '0');
+				sessionStorage.setItem('liveStatusTime', Date.now().toString());
 			}
 		} catch (error) {
 			console.error('Failed to check live status:', error);
@@ -40,7 +43,20 @@
 	
 	onMount(() => {
 		loadTotalPageViews();
+		
+		// 从 sessionStorage 读取缓存的直播状态
+		const cachedStatus = sessionStorage.getItem('liveStatus');
+		const cachedTime = sessionStorage.getItem('liveStatusTime');
+		const now = Date.now();
+		
+		// 如果缓存存在且在 30 秒内，使用缓存
+		if (cachedStatus && cachedTime && (now - parseInt(cachedTime)) < 30000) {
+			isLive = cachedStatus === '1';
+		}
+		
+		// 立即检查一次
 		checkLiveStatus();
+		
 		// 每 30 秒检查一次直播状态
 		const interval = setInterval(checkLiveStatus, 30000);
 		return () => clearInterval(interval);

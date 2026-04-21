@@ -169,7 +169,7 @@
 		{/each}
 	</div>
 	
-	<div class="mt-4 flex gap-3">
+	<div class="mt-4 flex flex-wrap gap-3">
 		<a href="/posts">
 			<Button class="flex items-center gap-2">
 				<Icon icon="mdi:post-outline" class="w-5 h-5" />
@@ -202,6 +202,13 @@
 			<Button variant="outline" class="flex items-center gap-2">
 				<Icon icon="mdi:chart-line" class="w-5 h-5" />
 				统计
+			</Button>
+		</a>
+		
+		<a href="#" id="open_preferences_center">
+			<Button variant="outline" class="flex items-center gap-2">
+				<Icon icon="mdi:cookie-settings" class="w-5 h-5" />
+				Cookie 设置
 			</Button>
 		</a>
 	</div>

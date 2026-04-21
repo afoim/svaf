@@ -7,7 +7,6 @@
 	import { onMount } from 'svelte';
 
 	let { data }: { data: PageData } = $props();
-	const { post, component, slug } = data;
 	
 	let pageViews = $state<number | null>(null);
 
@@ -27,7 +26,7 @@
 				headers: {
 					'Content-Type': 'text/plain'
 				},
-				body: JSON.stringify([`/posts/${slug}/`])
+				body: JSON.stringify([`/posts/${data.slug}/`])
 			});
 			
 			if (response.ok) {
@@ -45,12 +44,12 @@
 </script>
 
 <svelte:head>
-	<title>{post.metadata.title} - {siteConfig.title}</title>
-	<meta name="description" content={post.metadata.description} />
-	<meta property="og:title" content={post.metadata.title} />
-	<meta property="og:description" content={post.metadata.description} />
-	{#if post.metadata.image}
-		<meta property="og:image" content={post.metadata.image} />
+	<title>{data.post.metadata.title} - {siteConfig.title}</title>
+	<meta name="description" content={data.post.metadata.description} />
+	<meta property="og:title" content={data.post.metadata.title} />
+	<meta property="og:description" content={data.post.metadata.description} />
+	{#if data.post.metadata.image}
+		<meta property="og:image" content={data.post.metadata.image} />
 	{/if}
 </svelte:head>
 
@@ -65,13 +64,13 @@
 	<!-- 文章头部 -->
 	<header class="mb-8">
 		<div class="mb-4 flex items-center gap-2">
-			{#if post.metadata.pinned}
+			{#if data.post.metadata.pinned}
 				<span class="rounded-full bg-primary px-3 py-1 text-sm text-primary-foreground">
 					置顶
 				</span>
 			{/if}
 			<time class="text-sm text-muted-foreground">
-				{formatDate(post.metadata.published)}
+				{formatDate(data.post.metadata.published)}
 			</time>
 			{#if pageViews !== null}
 				<span class="text-sm text-muted-foreground">·</span>
@@ -79,17 +78,17 @@
 			{/if}
 		</div>
 
-		<h1 class="mb-4 text-4xl font-bold">{post.metadata.title}</h1>
+		<h1 class="mb-4 text-4xl font-bold">{data.post.metadata.title}</h1>
 		
 		<p class="text-lg text-muted-foreground">
-			{post.metadata.description}
+			{data.post.metadata.description}
 		</p>
 
-		{#if post.metadata.image}
+		{#if data.post.metadata.image}
 			<div class="mt-6">
 				<img
-					src={post.metadata.image}
-					alt={post.metadata.title}
+					src={data.post.metadata.image}
+					alt={data.post.metadata.title}
 					class="w-full rounded-lg object-cover"
 				/>
 			</div>
@@ -98,7 +97,7 @@
 
 	<!-- 文章内容 - 使用 mdsvex 组件 -->
 	<div class="prose prose-neutral dark:prose-invert max-w-none">
-		<svelte:component this={component} />
+		<data.component />
 	</div>
 
 	<!-- 评论区 -->

@@ -4,6 +4,7 @@
 	import { Card, CardContent, CardHeader, CardTitle } from '$lib/components/ui/card';
 	import { Badge } from '$lib/components/ui/badge';
 	import Icon from '@iconify/svelte';
+	import TimetableEditor from '$lib/components/TimetableEditor.svelte';
 	import type { PageData } from './$types';
 	
 	let { data }: { data: PageData } = $props();
@@ -33,9 +34,17 @@
 
 <div class="container mx-auto max-w-7xl px-4 py-12">
 	<div class="mb-8">
-		<div class="mb-4">
-			<h1 class="text-4xl font-bold mb-2">{data.viewModel.tableName}</h1>
-			<p class="text-muted-foreground">共 {data.viewModel.maxWeek} 周</p>
+		<div class="mb-4 flex items-center justify-between">
+			<div>
+				<h1 class="text-4xl font-bold mb-2">{data.viewModel.tableName}</h1>
+				<p class="text-muted-foreground">共 {data.viewModel.maxWeek} 周</p>
+			</div>
+			<a href="/">
+				<Button variant="outline">
+					<Icon icon="mdi:home" class="mr-2 h-4 w-4" />
+					返回首页
+				</Button>
+			</a>
 		</div>
 
 		<div class="flex flex-wrap items-center gap-3">
@@ -65,6 +74,9 @@
 			</div>
 		</div>
 	</div>
+
+	<!-- 编辑器 -->
+	<TimetableEditor viewModel={data.viewModel} baselineText={data.baselineText} />
 
 	<!-- 桌面端网格视图 -->
 	<div class="hidden md:block mb-8">

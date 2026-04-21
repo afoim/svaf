@@ -4,6 +4,7 @@
 	import { Tabs, TabsContent, TabsList, TabsTrigger } from '$lib/components/ui/tabs';
 	import Icon from '@iconify/svelte';
 	import { onMount } from 'svelte';
+	import { spaCache } from '$lib/utils/spaCache';
 
 	interface Sponsor {
 		name: string;
@@ -15,14 +16,13 @@
 	let sponsors = $state<Sponsor[]>([]);
 
 	onMount(async () => {
-		try {
+		sponsors = await spaCache.get('sponsors-list', async () => {
 			const response = await fetch('/api/sponsors');
 			if (response.ok) {
-				sponsors = await response.json();
+				return await response.json();
 			}
-		} catch (error) {
-			console.error('Failed to load sponsors:', error);
-		}
+			return [];
+		});
 	});
 </script>
 

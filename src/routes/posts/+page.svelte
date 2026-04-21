@@ -48,14 +48,14 @@
 		if (hasLoaded) return;
 		
 		isLoading = true;
-		try {
+		allPosts = await spaCache.get('posts-rss', async () => {
 			const response = await fetch('/rss.xml');
 			const text = await response.text();
 			const parser = new DOMParser();
 			const xml = parser.parseFromString(text, 'text/xml');
 			const items = xml.querySelectorAll('item');
 			
-			allPosts = Array.from(items).map(item => {
+			return Array.from(items).map(item => {
 				const content = item.querySelector('content\\:encoded, encoded')?.textContent || '';
 				const wordCount = calculateWordCount(content);
 				const readTime = calculateReadTime(wordCount);
@@ -70,23 +70,20 @@
 					readTime
 				};
 			});
-			hasLoaded = true;
-		} catch (error) {
-			console.error('Failed to load RSS:', error);
-		} finally {
-			isLoading = false;
-		}
+		});
+		hasLoaded = true;
+		isLoading = false;
 	}
 	
 	async function loadPageViews() {
 		if (isLoadingViews) return;
 		
 		isLoadingViews = true;
-		try {
-			// 只加载当前页面显示的文章
-			const currentPosts = paginatedPosts();
-			const pathnames = currentPosts.map(({ post }) => `/posts/${post.slug}/`);
-			
+		const currentPosts = paginatedPosts();
+		const pathnames = currentPosts.map(({ post }) => `/posts/${post.slug}/`);
+		const cacheKey = `pageviews-${pathnames.join(',')}`;
+		
+		const views = await spaCache.get(cacheKey, async () => {
 			const response = await fetch('https://t.2x.nz/batch', {
 				method: 'POST',
 				headers: {
@@ -96,18 +93,17 @@
 			});
 			
 			if (response.ok) {
-				const views = await response.json() as number[];
-				const viewsMap: Record<string, number> = { ...pageViews };
-				currentPosts.forEach(({ post }, index) => {
-					viewsMap[post.slug] = views[index] || 0;
-				});
-				pageViews = viewsMap;
+				return await response.json() as number[];
 			}
-		} catch (error) {
-			console.error('Failed to load page views:', error);
-		} finally {
-			isLoadingViews = false;
-		}
+			return [];
+		}, 60000); // 1分钟过期
+		
+		const viewsMap: Record<string, number> = { ...pageViews };
+		currentPosts.forEach(({ post }, index) => {
+			viewsMap[post.slug] = views[index] || 0;
+		});
+		pageViews = viewsMap;
+		isLoadingViews = false;
 	}
 
 	function highlightText(text: string, query: string): string {
@@ -216,8 +212,9 @@
 		});
 	}
 	
-	// 页面加载时自动加载 RSS 以获取字数统计
 	import { onMount } from 'svelte';
+	import { spaCache } from '$lib/utils/spaCache';
+	
 	onMount(() => {
 		loadRSS();
 	});

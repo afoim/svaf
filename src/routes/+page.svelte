@@ -3,12 +3,13 @@
 	import { siteConfig } from '$lib/config/site';
 	import Icon from '@iconify/svelte';
 	import { onMount } from 'svelte';
+	import { spaCache } from '$lib/utils/spaCache';
 	
 	let totalPageViews = $state<number | null>(null);
 	let isLive = $state<boolean>(false);
 	
 	async function loadTotalPageViews() {
-		try {
+		totalPageViews = await spaCache.get('homepage-pageviews', async () => {
 			const response = await fetch('https://t.2x.nz/batch', {
 				method: 'POST',
 				headers: {
@@ -19,57 +20,28 @@
 			
 			if (response.ok) {
 				const views = await response.json() as number[];
-				const pageViews = views[0] || 0;
-				totalPageViews = pageViews;
-				sessionStorage.setItem('totalPageViews', pageViews.toString());
-				sessionStorage.setItem('pageViewsTime', Date.now().toString());
+				return views[0] || 0;
 			}
-		} catch (error) {
-			console.error('Failed to load total page views:', error);
-		}
+			return 0;
+		});
 	}
 	
 	async function checkLiveStatus() {
-		try {
+		isLive = await spaCache.get('live-status', async () => {
 			const response = await fetch('https://b-live.2x.nz');
 			if (response.ok) {
 				const status = await response.text();
-				const liveStatus = status.trim() === '1';
-				isLive = liveStatus;
-				sessionStorage.setItem('liveStatus', liveStatus ? '1' : '0');
-				sessionStorage.setItem('liveStatusTime', Date.now().toString());
+				return status.trim() === '1';
 			}
-		} catch (error) {
-			console.error('Failed to check live status:', error);
-		}
+			return false;
+		}, 30000); // 30秒过期
 	}
 	
 	onMount(() => {
-		// 从 sessionStorage 读取缓存的浏览量
-		const cachedPageViews = sessionStorage.getItem('totalPageViews');
-		const cachedPageViewsTime = sessionStorage.getItem('pageViewsTime');
-		const now = Date.now();
-		
-		// 如果缓存存在且在 5 分钟内，使用缓存
-		if (cachedPageViews && cachedPageViewsTime && (now - parseInt(cachedPageViewsTime)) < 300000) {
-			totalPageViews = parseInt(cachedPageViews);
-		} else {
-			loadTotalPageViews();
-		}
-		
-		// 从 sessionStorage 读取缓存的直播状态
-		const cachedStatus = sessionStorage.getItem('liveStatus');
-		const cachedTime = sessionStorage.getItem('liveStatusTime');
-		
-		// 如果缓存存在且在 30 秒内，使用缓存
-		if (cachedStatus && cachedTime && (now - parseInt(cachedTime)) < 30000) {
-			isLive = cachedStatus === '1';
-		}
-		
-		// 立即检查一次
+		loadTotalPageViews();
 		checkLiveStatus();
 		
-		// 每 30 秒检查一次直播状态
+		// 每 30 秒更新一次直播状态
 		const interval = setInterval(checkLiveStatus, 30000);
 		return () => clearInterval(interval);
 	});

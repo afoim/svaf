@@ -4,6 +4,7 @@
 	import * as Pagination from '$lib/components/ui/pagination';
 	import Icon from '@iconify/svelte';
 	import { onMount } from 'svelte';
+	import { spaCache } from '$lib/utils/spaCache';
 
 	interface Friend {
 		name: string;
@@ -22,14 +23,13 @@
 	);
 
 	onMount(async () => {
-		try {
+		friends = await spaCache.get('friends-list', async () => {
 			const response = await fetch('/api/friends');
 			if (response.ok) {
-				friends = await response.json();
+				return await response.json();
 			}
-		} catch (error) {
-			console.error('Failed to load friends:', error);
-		}
+			return [];
+		});
 	});
 </script>
 

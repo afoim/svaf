@@ -5,6 +5,7 @@
 	import Giscus from '$lib/components/Giscus.svelte';
 	import type { PageData } from './$types';
 	import { onMount } from 'svelte';
+	import { spaCache } from '$lib/utils/spaCache';
 
 	let { data }: { data: PageData } = $props();
 	
@@ -20,7 +21,7 @@
 	}
 	
 	async function loadPageViews() {
-		try {
+		pageViews = await spaCache.get(`post-pageviews-${data.slug}`, async () => {
 			const response = await fetch('https://t.2x.nz/batch', {
 				method: 'POST',
 				headers: {
@@ -31,11 +32,10 @@
 			
 			if (response.ok) {
 				const views = await response.json() as number[];
-				pageViews = views[0] || 0;
+				return views[0] || 0;
 			}
-		} catch (error) {
-			console.error('Failed to load page views:', error);
-		}
+			return 0;
+		}, 60000); // 1分钟过期
 	}
 	
 	onMount(() => {

@@ -5,7 +5,6 @@
 	import TextSettings from './cover/TextSettings.svelte';
 	import IconSettings from './cover/IconSettings.svelte';
 	import BackgroundSettings from './cover/BackgroundSettings.svelte';
-	import FontSettings from './cover/FontSettings.svelte';
 	import SizeSettings from './cover/SizeSettings.svelte';
 	import ColorSettings from './cover/ColorSettings.svelte';
 	import IconBackgroundSettings from './cover/IconBackgroundSettings.svelte';
@@ -497,7 +496,18 @@
 				</Tabs.List>
 
 				<Tabs.Content value="content" class="space-y-6 mt-6">
-					<TextSettings bind:leftText bind:rightText bind:fontWeight />
+					<TextSettings
+						bind:leftText
+						bind:rightText
+						bind:fontWeight
+						bind:customFontName
+						{onFontUpload}
+						{onSystemFontSelect}
+						onRemoveFont={() => {
+							customFont = null;
+							customFontName = '';
+						}}
+					/>
 					<IconSettings
 						bind:showIcon
 						bind:localIcon
@@ -517,15 +527,6 @@
 						onBgDragOver={handleBgDragOver}
 						onBgDragLeave={handleBgDragLeave}
 						onBgDrop={handleBgDrop}
-					/>
-					<FontSettings
-						bind:customFontName
-						onFontUpload={handleFontUpload}
-						onSystemFontSelect={handleSystemFontSelect}
-						onRemoveFont={() => {
-							customFont = null;
-							customFontName = '';
-						}}
 					/>
 				</Tabs.Content>
 
@@ -582,7 +583,18 @@
 			<!-- 内容列 -->
 			<div class="space-y-6">
 				<h2 class="text-lg font-semibold mb-4">内容</h2>
-				<TextSettings bind:leftText bind:rightText bind:fontWeight />
+				<TextSettings
+					bind:leftText
+					bind:rightText
+					bind:fontWeight
+					bind:customFontName
+					{onFontUpload}
+					{onSystemFontSelect}
+					onRemoveFont={() => {
+						customFont = null;
+						customFontName = '';
+					}}
+				/>
 				<IconSettings
 					bind:showIcon
 					bind:localIcon
@@ -602,15 +614,6 @@
 					onBgDragOver={handleBgDragOver}
 					onBgDragLeave={handleBgDragLeave}
 					onBgDrop={handleBgDrop}
-				/>
-				<FontSettings
-					bind:customFontName
-					onFontUpload={handleFontUpload}
-					onSystemFontSelect={handleSystemFontSelect}
-					onRemoveFont={() => {
-						customFont = null;
-						customFontName = '';
-					}}
 				/>
 			</div>
 

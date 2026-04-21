@@ -1,10 +1,13 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
+	import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '$lib/components/ui/dialog';
+	import { Tabs, TabsContent, TabsList, TabsTrigger } from '$lib/components/ui/tabs';
 	import { siteConfig } from '$lib/config/site';
 	import Icon from '@iconify/svelte';
 	import { onMount } from 'svelte';
 	
 	let totalPageViews = $state<number | null>(null);
+	let sponsors = $state<any[]>([]);
 	
 	async function loadTotalPageViews() {
 		try {
@@ -25,8 +28,22 @@
 		}
 	}
 	
+	async function loadSponsors() {
+		try {
+			// 模拟加载赞助列表
+			sponsors = [
+				{ name: '赞助者1', amount: '¥50' },
+				{ name: '赞助者2', amount: '¥100' },
+				{ name: '赞助者3', amount: '¥200' }
+			];
+		} catch (error) {
+			console.error('Failed to load sponsors:', error);
+		}
+	}
+	
 	onMount(() => {
 		loadTotalPageViews();
+		loadSponsors();
 	});
 </script>
 
@@ -74,6 +91,55 @@
 				博客
 			</Button>
 		</a>
+		
+		<Dialog>
+			<DialogTrigger asChild>
+				<Button class="flex items-center gap-2">
+					<Icon icon="mdi:heart-outline" class="w-5 h-5" />
+					赞助
+				</Button>
+			</DialogTrigger>
+			<DialogContent class="sm:max-w-md">
+				<DialogHeader>
+					<DialogTitle>赞助支持</DialogTitle>
+					<DialogDescription>
+						感谢您的支持，您的赞助将帮助我继续创作优质内容
+					</DialogDescription>
+				</DialogHeader>
+				<Tabs defaultValue="wechat">
+					<TabsList class="grid w-full grid-cols-3">
+						<TabsTrigger value="wechat">微信支付</TabsTrigger>
+						<TabsTrigger value="alipay">支付宝</TabsTrigger>
+						<TabsTrigger value="sponsors">赞助列表</TabsTrigger>
+					</TabsList>
+					<TabsContent value="wechat" class="mt-4">
+						<div class="flex flex-col items-center justify-center p-4">
+							<img src="/sponsors/qrcode/wechat.svg" alt="微信支付" class="w-48 h-48 mb-4" />
+							<p class="text-center">微信扫码支付</p>
+						</div>
+					</TabsContent>
+					<TabsContent value="alipay" class="mt-4">
+						<div class="flex flex-col items-center justify-center p-4">
+							<img src="/sponsors/qrcode/alipay.svg" alt="支付宝" class="w-48 h-48 mb-4" />
+							<p class="text-center">支付宝扫码支付</p>
+						</div>
+					</TabsContent>
+					<TabsContent value="sponsors" class="mt-4">
+						<div class="space-y-2">
+							{#each sponsors as sponsor}
+								<div class="flex justify-between items-center p-2 border rounded">
+									<span>{sponsor.name}</span>
+									<span>{sponsor.amount}</span>
+								</div>
+							{/each}
+							{#if sponsors.length === 0}
+								<p class="text-center text-muted-foreground">暂无赞助记录</p>
+							{/if}
+						</div>
+					</TabsContent>
+				</Tabs>
+			</DialogContent>
+		</Dialog>
 		
 		<Button
 			variant="outline"

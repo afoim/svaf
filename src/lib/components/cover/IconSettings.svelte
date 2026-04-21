@@ -64,7 +64,7 @@
 
 		{#if searchResults.length > 0}
 			<div class="max-h-48 overflow-y-auto border rounded-lg p-2">
-				<div class="grid grid-cols-8 gap-2">
+				<div class="grid grid-cols-4 lg:grid-cols-5 gap-2">
 					{#each searchResults as icon}
 						<button
 							onclick={() => onSelectIcon(icon)}

@@ -19,7 +19,10 @@
 			
 			if (response.ok) {
 				const views = await response.json() as number[];
-				totalPageViews = views[0] || 0;
+				const pageViews = views[0] || 0;
+				totalPageViews = pageViews;
+				sessionStorage.setItem('totalPageViews', pageViews.toString());
+				sessionStorage.setItem('pageViewsTime', Date.now().toString());
 			}
 		} catch (error) {
 			console.error('Failed to load total page views:', error);
@@ -42,12 +45,21 @@
 	}
 	
 	onMount(() => {
-		loadTotalPageViews();
+		// 从 sessionStorage 读取缓存的浏览量
+		const cachedPageViews = sessionStorage.getItem('totalPageViews');
+		const cachedPageViewsTime = sessionStorage.getItem('pageViewsTime');
+		const now = Date.now();
+		
+		// 如果缓存存在且在 5 分钟内，使用缓存
+		if (cachedPageViews && cachedPageViewsTime && (now - parseInt(cachedPageViewsTime)) < 300000) {
+			totalPageViews = parseInt(cachedPageViews);
+		} else {
+			loadTotalPageViews();
+		}
 		
 		// 从 sessionStorage 读取缓存的直播状态
 		const cachedStatus = sessionStorage.getItem('liveStatus');
 		const cachedTime = sessionStorage.getItem('liveStatusTime');
-		const now = Date.now();
 		
 		// 如果缓存存在且在 30 秒内，使用缓存
 		if (cachedStatus && cachedTime && (now - parseInt(cachedTime)) < 30000) {

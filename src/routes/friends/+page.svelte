@@ -115,32 +115,34 @@
 
 			{#if totalPages > 1}
 				<div class="mt-8 flex justify-center">
-					<Pagination count={totalPages} perPage={1} let:pages let:currentPage>
-						<PaginationContent>
-							<PaginationItem>
-								<PaginationPrevious
-									onclick={() => currentPage > 1 && goToPage(currentPage - 1)}
-								/>
-							</PaginationItem>
-
-							{#each pages as page}
+					<Pagination count={totalPages} perPage={1}>
+						{#snippet default({ pages, currentPage: activePage })}
+							<PaginationContent>
 								<PaginationItem>
-									<PaginationLink
-										{page}
-										isActive={currentPage === page.value}
-										onclick={() => goToPage(page.value)}
-									>
-										{page.value}
-									</PaginationLink>
+									<PaginationPrevious
+										onclick={() => currentPage > 1 && goToPage(currentPage - 1)}
+									/>
 								</PaginationItem>
-							{/each}
 
-							<PaginationItem>
-								<PaginationNext
-									onclick={() => currentPage < totalPages && goToPage(currentPage + 1)}
-								/>
-							</PaginationItem>
-						</PaginationContent>
+								{#each pages as page}
+									<PaginationItem>
+										<PaginationLink
+											{page}
+											isActive={currentPage === page.value}
+											onclick={() => goToPage(page.value)}
+										>
+											{page.value}
+										</PaginationLink>
+									</PaginationItem>
+								{/each}
+
+								<PaginationItem>
+									<PaginationNext
+										onclick={() => currentPage < totalPages && goToPage(currentPage + 1)}
+									/>
+								</PaginationItem>
+							</PaginationContent>
+						{/snippet}
 					</Pagination>
 				</div>
 			{/if}

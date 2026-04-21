@@ -62,26 +62,6 @@
 	};
 
 	let newCourseDraft = $state<NewCourseDraft>(createNewCourseDraft());
-	let newCourseDaySelected = $state<{ value: number; label: string } | undefined>(undefined);
-	let selectedArrangementDaySelected = $state<{ value: number; label: string } | undefined>(
-		undefined
-	);
-
-	$effect(() => {
-		newCourseDaySelected = {
-			value: newCourseDraft.day,
-			label: dayLabels[newCourseDraft.day]
-		};
-	});
-
-	$effect(() => {
-		if (selectedArrangement) {
-			selectedArrangementDaySelected = {
-				value: selectedArrangement.day,
-				label: dayLabels[selectedArrangement.day]
-			};
-		}
-	});
 
 	function cloneParsedData(data: ParsedTimetableData): ParsedTimetableData {
 		return JSON.parse(JSON.stringify(data));
@@ -413,16 +393,14 @@
 						<div class="space-y-2">
 							<Label for="new-day">星期</Label>
 							<Select.Root
-								selected={newCourseDaySelected}
 								onSelectedChange={(v) => {
 									if (v) {
 										newCourseDraft.day = v.value;
-										newCourseDaySelected = v;
 									}
 								}}
 							>
 								<Select.Trigger id="new-day">
-									<Select.Value placeholder="选择星期" />
+									<Select.Value placeholder={dayLabels[newCourseDraft.day]} />
 								</Select.Trigger>
 								<Select.Content>
 									{#each visibleDays as day}
@@ -504,16 +482,14 @@
 						<div class="space-y-2">
 							<Label for="day">星期</Label>
 							<Select.Root
-								selected={selectedArrangementDaySelected}
 								onSelectedChange={(v) => {
 									if (v) {
 										updateSelectedArrangement('day', v.value);
-										selectedArrangementDaySelected = v;
 									}
 								}}
 							>
 								<Select.Trigger id="day">
-									<Select.Value />
+									<Select.Value placeholder={selectedArrangement ? dayLabels[selectedArrangement.day] : '选择星期'} />
 								</Select.Trigger>
 								<Select.Content>
 									{#each visibleDays as day}

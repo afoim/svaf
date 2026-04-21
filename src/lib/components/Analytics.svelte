@@ -99,15 +99,35 @@
 				if (!cc) return false;
 				
 				// 获取用户的同意级别
-				const consent = cc.get?.() || {};
-				return consent.level?.includes?.('tracking') || false;
+				try {
+					const consent = cc.get();
+					// 检查是否包含 tracking 级别
+					if (consent && consent.level) {
+						const levels = Array.isArray(consent.level) ? consent.level : [consent.level];
+						return levels.includes('tracking');
+					}
+				} catch (e) {
+					console.error('[Analytics] 检查 Cookie 同意状态失败:', e);
+				}
+				return false;
 			};
 			
 			if (!checkConsent()) {
 				console.log('[Analytics] Clarity 未加载：用户未同意 tracking cookies');
+				// 监听 Cookie Consent 变化
+				window.addEventListener('cc_consent_update', () => {
+					if (checkConsent() && !window.__clarityLoaded) {
+						console.log('[Analytics] 用户已同意 tracking，加载 Clarity');
+						loadClarityScript();
+					}
+				});
 				return;
 			}
 			
+			loadClarityScript();
+		};
+		
+		const loadClarityScript = () => {
 			if (window.__clarityLoaded) return;
 			window.__clarityLoaded = true;
 			

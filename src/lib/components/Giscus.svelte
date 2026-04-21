@@ -1,8 +1,26 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
+	let loaded = $state(false);
+
 	onMount(() => {
-		// 创建 Giscus 脚本
+		// 监听 Cookie Consent 更新事件
+		const handleConsentUpdate = (e: CustomEvent) => {
+			const preferences = e.detail;
+			if (preferences.functional && !loaded) {
+				loadGiscus();
+				loaded = true;
+			}
+		};
+
+		window.addEventListener('cookie-consent-updated', handleConsentUpdate as EventListener);
+
+		return () => {
+			window.removeEventListener('cookie-consent-updated', handleConsentUpdate as EventListener);
+		};
+	});
+
+	function loadGiscus() {
 		const script = document.createElement('script');
 		script.src = 'https://giscus.app/client.js';
 		script.setAttribute('data-repo', 'afoim/giscus-fuwari');
@@ -20,19 +38,20 @@
 		script.setAttribute('crossorigin', 'anonymous');
 		script.async = true;
 
-		// 将脚本添加到容器
 		const container = document.getElementById('giscus-container');
 		if (container) {
 			container.appendChild(script);
 		}
-
-		return () => {
-			// 清理
-			if (container) {
-				container.innerHTML = '';
-			}
-		};
-	});
+	}
 </script>
 
-<div id="giscus-container" class="mt-12"></div>
+<div id="giscus-container" class="mt-12">
+	{#if !loaded}
+		<div class="text-center text-muted-foreground py-8">
+			<p>评论功能需要启用功能性 Cookie</p>
+			<p class="text-sm mt-2">
+				请在 <a href="#" id="open_preferences_center" class="text-primary underline">Cookie 设置</a> 中启用
+			</p>
+		</div>
+	{/if}
+</div>

@@ -9,15 +9,21 @@
 	let { data }: { data: PageData } = $props();
 	const { viewModel, isCurrentWeek } = data;
 
+	console.log('[Timetable] 页面加载，当前周:', viewModel.currentWeek, '最大周:', viewModel.maxWeek);
+
 	function goToPreviousWeek() {
+		const targetWeek = viewModel.currentWeek - 1;
+		console.log('[Timetable] 点击上一周，目标周:', targetWeek);
 		if (viewModel.currentWeek > 1) {
-			goto(`/timetable/${viewModel.currentWeek - 1}/`);
+			goto(`/timetable/${targetWeek}/`);
 		}
 	}
 
 	function goToNextWeek() {
+		const targetWeek = viewModel.currentWeek + 1;
+		console.log('[Timetable] 点击下一周，目标周:', targetWeek);
 		if (viewModel.currentWeek < viewModel.maxWeek) {
-			goto(`/timetable/${viewModel.currentWeek + 1}/`);
+			goto(`/timetable/${targetWeek}/`);
 		}
 	}
 </script>

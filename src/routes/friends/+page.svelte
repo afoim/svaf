@@ -1,14 +1,7 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
 	import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '$lib/components/ui/card';
-	import {
-		Pagination,
-		PaginationContent,
-		PaginationItem,
-		PaginationLink,
-		PaginationNext,
-		PaginationPrevious
-	} from '$lib/components/ui/pagination';
+	import * as Pagination from '$lib/components/ui/pagination';
 	import Icon from '@iconify/svelte';
 	import { onMount } from 'svelte';
 
@@ -22,14 +15,6 @@
 	let friends = $state<Friend[]>([]);
 	let currentPage = $state(1);
 	const itemsPerPage = 12;
-
-	$effect(() => {
-		totalPages = Math.ceil(friends.length / itemsPerPage);
-		paginatedFriends = friends.slice(
-			(currentPage - 1) * itemsPerPage,
-			currentPage * itemsPerPage
-		);
-	});
 
 	let totalPages = $derived(Math.ceil(friends.length / itemsPerPage));
 	let paginatedFriends = $derived(
@@ -46,11 +31,6 @@
 			console.error('Failed to load friends:', error);
 		}
 	});
-
-	function goToPage(page: number) {
-		currentPage = page;
-		window.scrollTo({ top: 0, behavior: 'smooth' });
-	}
 </script>
 
 <svelte:head>
@@ -115,35 +95,43 @@
 
 			{#if totalPages > 1}
 				<div class="mt-8 flex justify-center">
-					<Pagination count={totalPages} perPage={1}>
-						{#snippet children({ pages, currentPage: activePage })}
-							<PaginationContent>
-								<PaginationItem>
-									<PaginationPrevious
-										onclick={() => currentPage > 1 && goToPage(currentPage - 1)}
-									/>
-								</PaginationItem>
+					<Pagination.Root count={friends.length} perPage={itemsPerPage} bind:page={currentPage}>
+						{#snippet children({ pages })}
+							<Pagination.Content>
+								<Pagination.Item>
+									<Pagination.PrevButton>
+										{#snippet children()}
+											<Icon icon="mdi:chevron-left" class="w-4 h-4" />
+											<span>上一页</span>
+										{/snippet}
+									</Pagination.PrevButton>
+								</Pagination.Item>
 
-								{#each pages as page}
-									<PaginationItem>
-										<PaginationLink
-											{page}
-											isActive={currentPage === page.value}
-											onclick={() => goToPage(page.value)}
-										>
-											{page.value}
-										</PaginationLink>
-									</PaginationItem>
+								{#each pages as page (page.key)}
+									{#if page.type === 'ellipsis'}
+										<Pagination.Item>
+											<Pagination.Ellipsis />
+										</Pagination.Item>
+									{:else}
+										<Pagination.Item>
+											<Pagination.Link {page} isActive={currentPage === page.value}>
+												{page.value}
+											</Pagination.Link>
+										</Pagination.Item>
+									{/if}
 								{/each}
 
-								<PaginationItem>
-									<PaginationNext
-										onclick={() => currentPage < totalPages && goToPage(currentPage + 1)}
-									/>
-								</PaginationItem>
-							</PaginationContent>
+								<Pagination.Item>
+									<Pagination.NextButton>
+										{#snippet children()}
+											<span>下一页</span>
+											<Icon icon="mdi:chevron-right" class="w-4 h-4" />
+										{/snippet}
+									</Pagination.NextButton>
+								</Pagination.Item>
+							</Pagination.Content>
 						{/snippet}
-					</Pagination>
+					</Pagination.Root>
 				</div>
 			{/if}
 		{/if}

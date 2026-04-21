@@ -696,22 +696,22 @@
 					</div>
 
 					{#if searchResults.length > 0}
-						<div class="grid grid-cols-4 gap-2 max-h-60 overflow-y-auto p-2 border rounded-lg">
+						<div class="grid grid-cols-6 gap-1 max-h-60 overflow-y-auto p-2 border rounded-lg">
 							{#each searchResults as icon}
 								<button
 									onclick={() => selectIcon(icon)}
-									class="p-2 rounded hover:bg-accent transition-colors aspect-square"
+									class="p-1 rounded hover:bg-accent transition-colors aspect-square flex items-center justify-center"
 									title={icon}
 								>
 									<div
 										class="w-full h-full flex items-center justify-center border rounded {icon ===
 										iconName
-											? 'border-primary'
+											? 'border-primary bg-primary/10'
 											: 'border-border'}"
 									>
 										<img
 											src={`https://api.iconify.design/${icon.split(':')[0]}/${icon.split(':')[1]}.svg`}
-											class="w-6 h-6"
+											class="w-5 h-5"
 											alt={icon}
 										/>
 									</div>

@@ -22,10 +22,22 @@
 	let fontSearchQuery = $state('');
 	let isLoadingFonts = $state(false);
 	let fontApiSupported = $state(false);
+	let currentPage = $state(1);
+	const FONTS_PER_PAGE = 20;
 
 	let filteredFonts = $derived(
 		systemFonts.filter((font) => font.toLowerCase().includes(fontSearchQuery.toLowerCase()))
 	);
+
+	let totalPages = $derived(Math.ceil(filteredFonts.length / FONTS_PER_PAGE));
+	let paginatedFonts = $derived(
+		filteredFonts.slice((currentPage - 1) * FONTS_PER_PAGE, currentPage * FONTS_PER_PAGE)
+	);
+
+	$effect(() => {
+		fontSearchQuery;
+		currentPage = 1;
+	});
 
 	async function loadSystemFonts() {
 		if (!('queryLocalFonts' in window)) {
@@ -114,15 +126,11 @@
 				</div>
 
 				{#if systemFonts.length > 0}
-					<Input
-						bind:value={fontSearchQuery}
-						placeholder="搜索字体..."
-						class="h-9"
-					/>
+					<Input bind:value={fontSearchQuery} placeholder="搜索字体..." class="h-9" />
 
 					<div class="max-h-48 overflow-y-auto border rounded-lg">
 						<div class="divide-y">
-							{#each filteredFonts.slice(0, 50) as font}
+							{#each paginatedFonts as font}
 								<button
 									onclick={() => onSystemFontSelect(font)}
 									class="w-full px-3 py-2 text-left hover:bg-accent transition-colors {customFontName ===
@@ -137,10 +145,46 @@
 						</div>
 					</div>
 
-					{#if filteredFonts.length > 50}
-						<p class="text-xs text-muted-foreground">
-							显示前 50 个结果，共 {filteredFonts.length} 个字体
-						</p>
+					{#if totalPages > 1}
+						<div class="flex items-center justify-between text-sm">
+							<span class="text-muted-foreground">
+								第 {currentPage} / {totalPages} 页，共 {filteredFonts.length} 个字体
+							</span>
+							<div class="flex gap-1">
+								<Button
+									variant="outline"
+									size="sm"
+									onclick={() => (currentPage = 1)}
+									disabled={currentPage === 1}
+								>
+									<Icon icon="mdi:chevron-double-left" class="h-4 w-4" />
+								</Button>
+								<Button
+									variant="outline"
+									size="sm"
+									onclick={() => currentPage--}
+									disabled={currentPage === 1}
+								>
+									<Icon icon="mdi:chevron-left" class="h-4 w-4" />
+								</Button>
+								<Button
+									variant="outline"
+									size="sm"
+									onclick={() => currentPage++}
+									disabled={currentPage === totalPages}
+								>
+									<Icon icon="mdi:chevron-right" class="h-4 w-4" />
+								</Button>
+								<Button
+									variant="outline"
+									size="sm"
+									onclick={() => (currentPage = totalPages)}
+									disabled={currentPage === totalPages}
+								>
+									<Icon icon="mdi:chevron-double-right" class="h-4 w-4" />
+								</Button>
+							</div>
+						</div>
 					{/if}
 				{/if}
 			</div>

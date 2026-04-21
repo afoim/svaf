@@ -5,6 +5,7 @@
 	import { onMount } from 'svelte';
 	
 	let totalPageViews = $state<number | null>(null);
+	let isLive = $state<boolean>(false);
 	
 	async function loadTotalPageViews() {
 		try {
@@ -25,17 +26,118 @@
 		}
 	}
 	
+	async function checkLiveStatus() {
+		try {
+			const response = await fetch('https://b-live.2x.nz');
+			if (response.ok) {
+				const status = await response.text();
+				isLive = status.trim() === '1';
+			}
+		} catch (error) {
+			console.error('Failed to check live status:', error);
+		}
+	}
+	
 	onMount(() => {
 		loadTotalPageViews();
+		checkLiveStatus();
+		// 每 30 秒检查一次直播状态
+		const interval = setInterval(checkLiveStatus, 30000);
+		return () => clearInterval(interval);
 	});
 </script>
 
 <svelte:head>
 	<title>{siteConfig.title} - 首页</title>
+	<style>
+		@keyframes live-pulse {
+			0%, 100% {
+				opacity: 1;
+				transform: scale(1);
+			}
+			50% {
+				opacity: 0.8;
+				transform: scale(1.05);
+			}
+		}
+		
+		@keyframes live-ring {
+			0% {
+				transform: scale(1);
+				opacity: 1;
+			}
+			100% {
+				transform: scale(1.5);
+				opacity: 0;
+			}
+		}
+		
+		.live-avatar-container {
+			position: relative;
+			display: inline-block;
+		}
+		
+		.live-ring {
+			position: absolute;
+			top: -4px;
+			left: -4px;
+			right: -4px;
+			bottom: -4px;
+			border: 3px solid #ff2d55;
+			border-radius: 50%;
+			animation: live-ring 1.5s ease-out infinite;
+		}
+		
+		.live-ring:nth-child(2) {
+			animation-delay: 0.5s;
+		}
+		
+		.live-ring:nth-child(3) {
+			animation-delay: 1s;
+		}
+		
+		.live-badge {
+			position: absolute;
+			bottom: 0;
+			right: 0;
+			background: linear-gradient(135deg, #ff2d55 0%, #ff6b9d 100%);
+			color: white;
+			padding: 4px 12px;
+			border-radius: 12px;
+			font-size: 12px;
+			font-weight: bold;
+			display: flex;
+			align-items: center;
+			gap: 4px;
+			box-shadow: 0 2px 8px rgba(255, 45, 85, 0.4);
+			animation: live-pulse 2s ease-in-out infinite;
+		}
+		
+		.live-dot {
+			width: 6px;
+			height: 6px;
+			background: white;
+			border-radius: 50%;
+			animation: live-pulse 1s ease-in-out infinite;
+		}
+	</style>
 </svelte:head>
 
 <div class="flex min-h-screen flex-col items-center justify-center gap-6">
-	<img src={siteConfig.bio.avatar} alt="Avatar" class="h-32 w-32 rounded-full" />
+	<div class="live-avatar-container">
+		{#if isLive}
+			<div class="live-ring"></div>
+			<div class="live-ring"></div>
+			<div class="live-ring"></div>
+		{/if}
+		<img src={siteConfig.bio.avatar} alt="Avatar" class="h-32 w-32 rounded-full" />
+		{#if isLive}
+			<div class="live-badge">
+				<div class="live-dot"></div>
+				<span>直播中</span>
+			</div>
+		{/if}
+	</div>
 	
 	<div class="text-center">
 		<h1 class="text-4xl font-bold mb-2">{siteConfig.bio.name}</h1>

@@ -1,6 +1,14 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
 	import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '$lib/components/ui/card';
+	import {
+		Pagination,
+		PaginationContent,
+		PaginationItem,
+		PaginationLink,
+		PaginationNext,
+		PaginationPrevious
+	} from '$lib/components/ui/pagination';
 	import Icon from '@iconify/svelte';
 	import { onMount } from 'svelte';
 
@@ -12,6 +20,21 @@
 	}
 
 	let friends = $state<Friend[]>([]);
+	let currentPage = $state(1);
+	const itemsPerPage = 12;
+
+	$effect(() => {
+		totalPages = Math.ceil(friends.length / itemsPerPage);
+		paginatedFriends = friends.slice(
+			(currentPage - 1) * itemsPerPage,
+			currentPage * itemsPerPage
+		);
+	});
+
+	let totalPages = $derived(Math.ceil(friends.length / itemsPerPage));
+	let paginatedFriends = $derived(
+		friends.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+	);
 
 	onMount(async () => {
 		try {
@@ -23,6 +46,11 @@
 			console.error('Failed to load friends:', error);
 		}
 	});
+
+	function goToPage(page: number) {
+		currentPage = page;
+		window.scrollTo({ top: 0, behavior: 'smooth' });
+	}
 </script>
 
 <svelte:head>
@@ -64,7 +92,7 @@
 			</Card>
 		{:else}
 			<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-				{#each friends as friend}
+				{#each paginatedFriends as friend}
 					<a href={friend.url} target="_blank" rel="noopener noreferrer">
 						<Card class="h-full transition-all hover:shadow-lg">
 							<CardContent class="flex items-start gap-4 p-6">
@@ -84,6 +112,38 @@
 					</a>
 				{/each}
 			</div>
+
+			{#if totalPages > 1}
+				<div class="mt-8 flex justify-center">
+					<Pagination count={totalPages} perPage={1} let:pages let:currentPage>
+						<PaginationContent>
+							<PaginationItem>
+								<PaginationPrevious
+									onclick={() => currentPage > 1 && goToPage(currentPage - 1)}
+								/>
+							</PaginationItem>
+
+							{#each pages as page}
+								<PaginationItem>
+									<PaginationLink
+										{page}
+										isActive={currentPage === page.value}
+										onclick={() => goToPage(page.value)}
+									>
+										{page.value}
+									</PaginationLink>
+								</PaginationItem>
+							{/each}
+
+							<PaginationItem>
+								<PaginationNext
+									onclick={() => currentPage < totalPages && goToPage(currentPage + 1)}
+								/>
+							</PaginationItem>
+						</PaginationContent>
+					</Pagination>
+				</div>
+			{/if}
 		{/if}
 	</div>
 

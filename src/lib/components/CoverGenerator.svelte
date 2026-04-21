@@ -436,134 +436,140 @@
 	});
 </script>
 
-<div class="flex flex-col items-center gap-8 w-full">
-	<CoverPreview
-		bind:svgContainer
-		{canvasWidth}
-		{canvasHeight}
-		{visualRatios}
-		{bgImage}
-		{bgImageX}
-		{bgImageY}
-		{bgImageScale}
-		{bgBlur}
-		{bgOpacity}
-		{bgColor}
-		{bgColorOpacity}
-		{leftText}
-		{rightText}
-		{fontSize}
-		{fontWeight}
-		{customFontName}
-		{color}
-		{textShadow}
-		{gap}
-		{showIcon}
-		{iconSvg}
-		{localIcon}
-		{iconSize}
-		{iconBgPadding}
-		{iconBgEnabled}
-		{iconBgColor}
-		{iconBgOpacity}
-		{iconBgBlur}
-		{iconBgRadius}
-		{useOriginalIconColor}
-		{iconColor}
-		{iconShadow}
-		{iconRadius}
-		{isDragging}
-		{hexToRgba}
-		onPointerDown={handlePointerDown}
-		onPointerMove={handlePointerMove}
-		onPointerUp={handlePointerUp}
-		onWheel={handleWheel}
-	/>
+<div class="flex flex-col lg:flex-row gap-6 w-full">
+	<!-- 左侧：预览区域 -->
+	<div class="flex-1 lg:sticky lg:top-6 lg:self-start">
+		<CoverPreview
+			bind:svgContainer
+			{canvasWidth}
+			{canvasHeight}
+			{visualRatios}
+			{bgImage}
+			{bgImageX}
+			{bgImageY}
+			{bgImageScale}
+			{bgBlur}
+			{bgOpacity}
+			{bgColor}
+			{bgColorOpacity}
+			{leftText}
+			{rightText}
+			{fontSize}
+			{fontWeight}
+			{customFontName}
+			{color}
+			{textShadow}
+			{gap}
+			{showIcon}
+			{iconSvg}
+			{localIcon}
+			{iconSize}
+			{iconBgPadding}
+			{iconBgEnabled}
+			{iconBgColor}
+			{iconBgOpacity}
+			{iconBgBlur}
+			{iconBgRadius}
+			{useOriginalIconColor}
+			{iconColor}
+			{iconShadow}
+			{iconRadius}
+			{isDragging}
+			{hexToRgba}
+			onPointerDown={handlePointerDown}
+			onPointerMove={handlePointerMove}
+			onPointerUp={handlePointerUp}
+			onWheel={handleWheel}
+		/>
+	</div>
 
-	<Tabs.Root value="content" class="w-full">
-		<Tabs.List class="grid w-full grid-cols-3">
-			<Tabs.Trigger value="content">内容</Tabs.Trigger>
-			<Tabs.Trigger value="style">样式</Tabs.Trigger>
-			<Tabs.Trigger value="export">导出</Tabs.Trigger>
-		</Tabs.List>
+	<!-- 右侧：控制面板 -->
+	<div class="w-full lg:w-[480px] flex-shrink-0">
+		<Tabs.Root value="content" class="w-full">
+			<Tabs.List class="grid w-full grid-cols-3">
+				<Tabs.Trigger value="content">内容</Tabs.Trigger>
+				<Tabs.Trigger value="style">样式</Tabs.Trigger>
+				<Tabs.Trigger value="export">导出</Tabs.Trigger>
+			</Tabs.List>
 
-		<Tabs.Content value="content" class="space-y-6 mt-6">
-			<TextSettings bind:leftText bind:rightText bind:fontWeight />
-			<IconSettings
-				bind:showIcon
-				bind:localIcon
-				bind:searchQuery
-				bind:searchResults
-				bind:iconName
-				onLocalIconUpload={handleLocalIconUpload}
-				{onSearchInput}
-				onSelectIcon={selectIcon}
-			/>
-			<BackgroundSettings
-				bind:bgImage
-				bind:bgBlur
-				bind:bgOpacity
-				bind:isBgDragOver
-				onBgImageUpload={handleBgImageUpload}
-				onBgDragOver={handleBgDragOver}
-				onBgDragLeave={handleBgDragLeave}
-				onBgDrop={handleBgDrop}
-			/>
-			<FontSettings
-				bind:customFontName
-				onFontUpload={handleFontUpload}
-				onSystemFontSelect={handleSystemFontSelect}
-				onRemoveFont={() => {
-					customFont = null;
-					customFontName = '';
-				}}
-			/>
-		</Tabs.Content>
+			<Tabs.Content value="content" class="space-y-6 mt-6">
+				<TextSettings bind:leftText bind:rightText bind:fontWeight />
+				<IconSettings
+					bind:showIcon
+					bind:localIcon
+					bind:searchQuery
+					bind:searchResults
+					bind:iconName
+					onLocalIconUpload={handleLocalIconUpload}
+					{onSearchInput}
+					onSelectIcon={selectIcon}
+				/>
+				<BackgroundSettings
+					bind:bgImage
+					bind:bgBlur
+					bind:bgOpacity
+					bind:isBgDragOver
+					onBgImageUpload={handleBgImageUpload}
+					onBgDragOver={handleBgDragOver}
+					onBgDragLeave={handleBgDragLeave}
+					onBgDrop={handleBgDrop}
+				/>
+				<FontSettings
+					bind:customFontName
+					onFontUpload={handleFontUpload}
+					onSystemFontSelect={handleSystemFontSelect}
+					onRemoveFont={() => {
+						customFont = null;
+						customFontName = '';
+					}}
+				/>
+			</Tabs.Content>
 
-		<Tabs.Content value="style" class="space-y-6 mt-6">
-			<SizeSettings
-				bind:fontSize
-				bind:iconSize
-				bind:iconRadius
-				bind:gap
-				bind:linkScale
-				onFontSizeChange={handleFontSizeChange}
-				onIconSizeChange={handleIconSizeChange}
-			/>
-			<ColorSettings
-				bind:color
-				bind:iconColor
-				bind:bgColor
-				bind:bgColorOpacity
-				bind:linkColor
-				bind:useOriginalIconColor
-				onColorChange={handleColorChange}
-			/>
-			<IconBackgroundSettings
-				bind:iconBgEnabled
-				bind:iconBgColor
-				bind:iconBgPadding
-				bind:iconBgRadius
-				bind:iconBgBlur
-				bind:iconBgOpacity
-			/>
-			<ShadowSettings
-				bind:shadowTarget
-				{textShadow}
-				{iconShadow}
-				onUpdateShadow={updateShadow}
-			/>
-		</Tabs.Content>
+			<Tabs.Content value="style" class="space-y-6 mt-6">
+				<SizeSettings
+					bind:fontSize
+					bind:iconSize
+					bind:iconRadius
+					bind:gap
+					bind:linkScale
+					onFontSizeChange={handleFontSizeChange}
+					onIconSizeChange={handleIconSizeChange}
+				/>
+				<ColorSettings
+					bind:color
+					bind:iconColor
+					bind:bgColor
+					bind:bgColorOpacity
+					bind:linkColor
+					bind:useOriginalIconColor
+					onColorChange={handleColorChange}
+				/>
+				<IconBackgroundSettings
+					bind:iconBgEnabled
+					bind:iconBgColor
+					bind:iconBgPadding
+					bind:iconBgRadius
+					bind:iconBgBlur
+					bind:iconBgOpacity
+				/>
+				<ShadowSettings
+					bind:shadowTarget
+					{textShadow}
+					{iconShadow}
+					onUpdateShadow={updateShadow}
+				/>
+			</Tabs.Content>
 
-		<Tabs.Content value="export" class="space-y-6 mt-6">
-			<ExportSettings
-				bind:ratios
-				bind:exportConfig
-				{canvasWidth}
-				{canvasHeight}
-				{activeRatios}
-				onExport={doExport}
-			/>
-		</Tabs.Content>
-	</Tabs.Root>
+			<Tabs.Content value="export" class="space-y-6 mt-6">
+				<ExportSettings
+					bind:ratios
+					bind:exportConfig
+					{canvasWidth}
+					{canvasHeight}
+					{activeRatios}
+					onExport={doExport}
+				/>
+			</Tabs.Content>
+		</Tabs.Root>
+	</div>
 </div>

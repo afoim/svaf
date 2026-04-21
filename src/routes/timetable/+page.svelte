@@ -84,8 +84,8 @@
 										</p>
 									</td>
 									{#each viewModel.dayColumns as day}
+										{@const courses = (viewModel.coursesByDay[day.day] ?? []).filter(c => c.startNode === row.node)}
 										<td class="px-4 py-3 align-top min-w-[180px]">
-											{@const courses = (viewModel.coursesByDay[day.day] ?? []).filter(c => c.startNode === row.node)}
 											{#if courses.length > 0}
 												<div class="space-y-2">
 													{#each courses as course}
@@ -119,12 +119,12 @@
 	<!-- 移动端列表视图 -->
 	<div class="md:hidden space-y-4">
 		{#each viewModel.dayColumns as day}
+			{@const courses = viewModel.coursesByDay[day.day] ?? []}
 			<Card>
 				<CardHeader>
 					<CardTitle class="text-lg">{day.label}</CardTitle>
 				</CardHeader>
 				<CardContent>
-					{@const courses = viewModel.coursesByDay[day.day] ?? []}
 					{#if courses.length > 0}
 						<div class="space-y-3">
 							{#each courses as course}

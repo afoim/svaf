@@ -501,8 +501,8 @@
 						bind:rightText
 						bind:fontWeight
 						bind:customFontName
-						{onFontUpload}
-						{onSystemFontSelect}
+						onFontUpload={handleFontUpload}
+						onSystemFontSelect={handleSystemFontSelect}
 						onRemoveFont={() => {
 							customFont = null;
 							customFontName = '';
@@ -588,8 +588,8 @@
 					bind:rightText
 					bind:fontWeight
 					bind:customFontName
-					{onFontUpload}
-					{onSystemFontSelect}
+					onFontUpload={handleFontUpload}
+					onSystemFontSelect={handleSystemFontSelect}
 					onRemoveFont={() => {
 						customFont = null;
 						customFontName = '';

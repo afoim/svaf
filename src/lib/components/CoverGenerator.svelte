@@ -696,11 +696,11 @@
 					</div>
 
 					{#if searchResults.length > 0}
-						<div class="grid grid-cols-6 gap-1 max-h-60 overflow-y-auto p-2 border rounded-lg">
+						<div class="grid grid-cols-8 gap-0.5 max-h-48 overflow-y-auto p-1 border rounded-lg">
 							{#each searchResults as icon}
 								<button
 									onclick={() => selectIcon(icon)}
-									class="p-1 rounded hover:bg-accent transition-colors aspect-square flex items-center justify-center"
+									class="p-0.5 rounded hover:bg-accent transition-colors aspect-square flex items-center justify-center"
 									title={icon}
 								>
 									<div
@@ -711,7 +711,7 @@
 									>
 										<img
 											src={`https://api.iconify.design/${icon.split(':')[0]}/${icon.split(':')[1]}.svg`}
-											class="w-5 h-5"
+											class="w-4 h-4"
 											alt={icon}
 										/>
 									</div>

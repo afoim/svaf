@@ -3,12 +3,10 @@
 	import { Card, CardContent, CardHeader, CardTitle } from '$lib/components/ui/card';
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
-	import * as Select from '$lib/components/ui/select';
 	import * as Alert from '$lib/components/ui/alert';
 	import Icon from '@iconify/svelte';
 	import type {
 		ParsedTimetableData,
-		TimetableCourseArrangement,
 		TimetableViewModel
 	} from '$lib/types/timetable';
 	import { buildTimetableViewModel } from '$lib/utils/timetable-normalizer';
@@ -34,24 +32,11 @@
 	let baselineParsed = $state(parseTimetableText(baselineText));
 	let draftParsed = $state(cloneParsedData(baselineParsed));
 	let previewViewModel = $state(buildTimetableViewModel(draftParsed, viewModel.currentWeek));
-	let selectedArrangementRef = $state<number | null>(null);
 	let validationError = $state('');
 	let isDirty = $state(false);
-	let creatingCourse = $state(false);
 
-	let visibleDays = $derived(viewModel.dayColumns.map((column) => column.day));
-	let maxNode = $derived(Math.max(...viewModel.nodeRows.map((row) => row.node), 1));
-	let selectedArrangement = $derived(
-		selectedArrangementRef === null ? null : draftParsed.arrangements[selectedArrangementRef] ?? null
-	);
-	let selectedCourseName = $derived(
-		selectedArrangement
-			? draftParsed.courseDefinitions.find((course) => course.id === selectedArrangement?.id)
-					?.courseName || ''
-			: ''
-	);
-
-	type NewCourseDraft = {
+	type CourseArrangementItem = {
+		index: number;
 		courseName: string;
 		teacher: string;
 		room: string;
@@ -61,32 +46,29 @@
 		endWeek: number;
 	};
 
-	let newCourseDraft = $state<NewCourseDraft>(createNewCourseDraft());
+	let arrangements = $derived.by(() => {
+		return draftParsed.arrangements.map((arr, index) => {
+			const courseDef = draftParsed.courseDefinitions.find((c) => c.id === arr.id);
+			return {
+				index,
+				courseName: courseDef?.courseName || '',
+				teacher: arr.teacher || '',
+				room: arr.room || '',
+				day: arr.day,
+				startNode: arr.startNode,
+				startWeek: arr.startWeek,
+				endWeek: arr.endWeek
+			};
+		});
+	});
 
 	function cloneParsedData(data: ParsedTimetableData): ParsedTimetableData {
 		return JSON.parse(JSON.stringify(data));
 	}
 
-	function createNewCourseDraft(): NewCourseDraft {
-		const defaultDay = visibleDays[0] ?? 1;
-		const maxWeek = Math.max(1, draftParsed.meta.maxWeek || 1);
-		return {
-			courseName: '',
-			teacher: '',
-			room: '',
-			day: defaultDay,
-			startNode: 1,
-			startWeek: 1,
-			endWeek: maxWeek
-		};
-	}
-
 	function enterEditMode() {
 		draftParsed = cloneParsedData(baselineParsed);
 		previewViewModel = buildTimetableViewModel(draftParsed, viewModel.currentWeek);
-		selectedArrangementRef = null;
-		creatingCourse = false;
-		newCourseDraft = createNewCourseDraft();
 		validationError = '';
 		isDirty = false;
 		editMode = true;
@@ -96,8 +78,6 @@
 		editMode = false;
 		draftParsed = cloneParsedData(baselineParsed);
 		previewViewModel = buildTimetableViewModel(draftParsed, viewModel.currentWeek);
-		selectedArrangementRef = null;
-		creatingCourse = false;
 		validationError = '';
 		isDirty = false;
 	}
@@ -105,91 +85,46 @@
 	function resetDraft() {
 		draftParsed = cloneParsedData(baselineParsed);
 		previewViewModel = buildTimetableViewModel(draftParsed, viewModel.currentWeek);
-		selectedArrangementRef = null;
-		creatingCourse = false;
-		newCourseDraft = createNewCourseDraft();
 		validationError = '';
 		isDirty = false;
 	}
 
-	function beginCreateCourse() {
-		creatingCourse = true;
-		selectedArrangementRef = null;
-		validationError = '';
-		newCourseDraft = createNewCourseDraft();
-	}
-
-	function cancelCreateCourse() {
-		creatingCourse = false;
-		newCourseDraft = createNewCourseDraft();
-		validationError = '';
-	}
-
-	function submitCreateCourse() {
-		const courseName = newCourseDraft.courseName.trim();
-		if (!courseName) {
-			validationError = '课程名不能为空';
-			return;
-		}
-
-		const maxWeek = Math.max(1, draftParsed.meta.maxWeek || 1);
-		if (!visibleDays.includes(newCourseDraft.day)) {
-			validationError = '星期不在当前课表显示范围内';
-			return;
-		}
-		if (newCourseDraft.startNode < 1 || newCourseDraft.startNode > maxNode) {
-			validationError = `起始节次超出范围（1-${maxNode}）`;
-			return;
-		}
-		if (newCourseDraft.startWeek < 1 || newCourseDraft.endWeek < 1) {
-			validationError = '周次必须大于等于 1';
-			return;
-		}
-		if (newCourseDraft.startWeek > newCourseDraft.endWeek) {
-			validationError = '开始周不能大于结束周';
-			return;
-		}
-		if (newCourseDraft.endWeek > maxWeek) {
-			validationError = `结束周超出最大周次 ${maxWeek}`;
-			return;
-		}
-
+	function addNewCourse() {
 		const maxCourseId = draftParsed.courseDefinitions.reduce(
 			(maxId, course) => Math.max(maxId, course.id),
 			0
 		);
 		const nextCourseId = maxCourseId + 1;
+		
 		draftParsed.courseDefinitions.push({
 			id: nextCourseId,
-			courseName
+			courseName: '新课程'
 		});
+		
 		draftParsed.arrangements.push({
 			id: nextCourseId,
-			day: newCourseDraft.day,
-			startNode: newCourseDraft.startNode,
+			day: 1,
+			startNode: 1,
 			step: 2,
-			startWeek: newCourseDraft.startWeek,
-			endWeek: newCourseDraft.endWeek,
-			teacher: newCourseDraft.teacher,
-			room: newCourseDraft.room
+			startWeek: 1,
+			endWeek: draftParsed.meta.maxWeek,
+			teacher: '',
+			room: ''
 		});
 
-		creatingCourse = false;
-		selectedArrangementRef = draftParsed.arrangements.length - 1;
-		validationError = '';
 		afterDraftChange();
-		newCourseDraft = createNewCourseDraft();
 	}
 
-	function updateSelectedArrangement(
-		field: 'teacher' | 'room' | 'day' | 'startNode' | 'startWeek' | 'endWeek',
-		value: string | number
-	) {
-		if (selectedArrangementRef === null) return;
-		const arrangement = draftParsed.arrangements[selectedArrangementRef];
+	function updateArrangement(index: number, field: string, value: string | number) {
+		const arrangement = draftParsed.arrangements[index];
 		if (!arrangement) return;
 
-		if (field === 'teacher' || field === 'room') {
+		if (field === 'courseName') {
+			const courseDef = draftParsed.courseDefinitions.find((c) => c.id === arrangement.id);
+			if (courseDef) {
+				courseDef.courseName = String(value);
+			}
+		} else if (field === 'teacher' || field === 'room') {
 			arrangement[field] = String(value);
 		} else {
 			const numValue = typeof value === 'number' ? value : Number(value);
@@ -200,20 +135,8 @@
 		afterDraftChange();
 	}
 
-	function updateCourseName(value: string) {
-		if (!selectedArrangement) return;
-		const courseDef = draftParsed.courseDefinitions.find(
-			(course) => course.id === selectedArrangement?.id
-		);
-		if (!courseDef) return;
-		courseDef.courseName = value;
-		afterDraftChange();
-	}
-
-	function deleteSelectedArrangement() {
-		if (selectedArrangementRef === null) return;
-		draftParsed.arrangements.splice(selectedArrangementRef, 1);
-		selectedArrangementRef = null;
+	function deleteArrangement(index: number) {
+		draftParsed.arrangements.splice(index, 1);
 		afterDraftChange();
 	}
 
@@ -237,48 +160,6 @@
 
 		cancelEditMode();
 	}
-
-	function selectArrangement(index: number) {
-		creatingCourse = false;
-		selectedArrangementRef = index;
-		validationError = '';
-	}
-
-	let arrangementCards = $derived.by(() => {
-		return previewViewModel.dayColumns.map((dayColumn) => {
-			const cards = previewViewModel.coursesByDay[dayColumn.day] ?? [];
-			const items = cards
-				.map((courseView) => {
-					const arrangementIndex = draftParsed.arrangements.findIndex(
-						(arrangement) =>
-							arrangement.id === courseView.courseId &&
-							arrangement.day === courseView.day &&
-							arrangement.startNode === courseView.startNode &&
-							arrangement.startWeek === courseView.startWeek &&
-							arrangement.endWeek === courseView.endWeek
-					);
-
-					if (arrangementIndex < 0) return null;
-
-					return {
-						arrangementIndex,
-						title: courseView.courseName,
-						teacher: courseView.teacher,
-						room: courseView.room,
-						nodeText: courseView.nodeText,
-						weekText: `${courseView.startWeek}-${courseView.endWeek}周`,
-						color: courseView.color
-					};
-				})
-				.filter((item): item is NonNullable<typeof item> => Boolean(item));
-
-			return {
-				day: dayColumn.day,
-				label: dayLabels[dayColumn.day] ?? dayColumn.label,
-				items
-			};
-		});
-	});
 </script>
 
 <div class="mb-6 flex flex-wrap items-center gap-3">
@@ -291,7 +172,7 @@
 			<Icon icon="mdi:refresh" class="mr-2 h-4 w-4" />
 			重置
 		</Button>
-		<Button onclick={beginCreateCourse}>
+		<Button onclick={addNewCourse}>
 			<Icon icon="mdi:plus" class="mr-2 h-4 w-4" />
 			新增课程
 		</Button>
@@ -324,235 +205,110 @@
 		</Alert.Root>
 	{/if}
 
-	<div class="grid gap-6 lg:grid-cols-[1.6fr_1fr]">
-		<!-- 左侧：课程列表 -->
-		<Card>
-			<CardHeader>
-				<CardTitle>可视化课程列表（第 {viewModel.currentWeek} 周）</CardTitle>
-			</CardHeader>
-			<CardContent>
-				<div class="grid gap-4 md:grid-cols-2">
-					{#each arrangementCards as dayGroup}
-						<div class="space-y-2">
-							<h4 class="font-semibold">{dayGroup.label}</h4>
-							{#if dayGroup.items.length === 0}
-								<p class="text-sm text-muted-foreground">本日暂无课程</p>
-							{:else}
-								<div class="space-y-2">
-									{#each dayGroup.items as item}
-										<button
-											type="button"
-											class="w-full rounded-lg border p-3 text-left transition-colors {selectedArrangementRef ===
-											item.arrangementIndex
-												? 'border-primary bg-primary/10'
-												: 'border-border hover:border-primary/50'}"
-											onclick={() => selectArrangement(item.arrangementIndex)}
-										>
-											<div class="font-semibold" style="color: {item.color}">{item.title}</div>
-											<div class="text-xs text-muted-foreground">
-												{item.nodeText} · {item.weekText}
-											</div>
-											<div class="text-xs text-muted-foreground">{item.teacher} / {item.room}</div>
-										</button>
-									{/each}
-								</div>
-							{/if}
-						</div>
-					{/each}
-				</div>
-			</CardContent>
-		</Card>
-
-		<!-- 右侧：编辑面板 -->
-		<Card>
-			<CardHeader>
-				<CardTitle>属性编辑</CardTitle>
-			</CardHeader>
-			<CardContent>
-				{#if creatingCourse}
-					<div class="space-y-4">
-						<div class="space-y-2">
-							<Label for="new-course-name">课程名</Label>
-							<Input
-								id="new-course-name"
-								bind:value={newCourseDraft.courseName}
-								placeholder="输入课程名"
-							/>
-						</div>
-
-						<div class="space-y-2">
-							<Label for="new-teacher">教师</Label>
-							<Input id="new-teacher" bind:value={newCourseDraft.teacher} placeholder="输入教师" />
-						</div>
-
-						<div class="space-y-2">
-							<Label for="new-room">教室</Label>
-							<Input id="new-room" bind:value={newCourseDraft.room} placeholder="输入教室" />
-						</div>
-
-						<div class="space-y-2">
-							<Label for="new-day">星期</Label>
-							<Select.Root
-								onSelectedChange={(v) => {
-									if (v) {
-										newCourseDraft.day = v.value;
-									}
-								}}
-							>
-								<Select.Trigger id="new-day">
-									<Select.Value placeholder={dayLabels[newCourseDraft.day]} />
-								</Select.Trigger>
-								<Select.Content>
-									{#each visibleDays as day}
-										<Select.Item value={day}>{dayLabels[day]}</Select.Item>
-									{/each}
-								</Select.Content>
-							</Select.Root>
-						</div>
-
-						<div class="space-y-2">
-							<Label for="new-start-node">起始节</Label>
-							<Input
-								id="new-start-node"
-								type="number"
-								min="1"
-								max={maxNode}
-								bind:value={newCourseDraft.startNode}
-							/>
-						</div>
-
-						<div class="grid grid-cols-2 gap-4">
+	<Card>
+		<CardHeader>
+			<CardTitle>课程列表（共 {arrangements.length} 门）</CardTitle>
+		</CardHeader>
+		<CardContent>
+			<div class="space-y-4">
+				{#each arrangements as item (item.index)}
+					<div class="rounded-lg border p-4">
+						<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
 							<div class="space-y-2">
-								<Label for="new-start-week">起始周</Label>
+								<Label>课程名</Label>
 								<Input
-									id="new-start-week"
-									type="number"
-									min="1"
-									max={draftParsed.meta.maxWeek}
-									bind:value={newCourseDraft.startWeek}
+									value={item.courseName}
+									oninput={(e) => updateArrangement(item.index, 'courseName', e.currentTarget.value)}
+									placeholder="课程名"
 								/>
 							</div>
 
 							<div class="space-y-2">
-								<Label for="new-end-week">结束周</Label>
+								<Label>教师</Label>
 								<Input
-									id="new-end-week"
+									value={item.teacher}
+									oninput={(e) => updateArrangement(item.index, 'teacher', e.currentTarget.value)}
+									placeholder="教师"
+								/>
+							</div>
+
+							<div class="space-y-2">
+								<Label>教室</Label>
+								<Input
+									value={item.room}
+									oninput={(e) => updateArrangement(item.index, 'room', e.currentTarget.value)}
+									placeholder="教室"
+								/>
+							</div>
+
+							<div class="space-y-2">
+								<Label>星期</Label>
+								<Input
+									type="number"
+									min="1"
+									max="7"
+									value={item.day}
+									oninput={(e) => updateArrangement(item.index, 'day', Number(e.currentTarget.value))}
+								/>
+								<p class="text-xs text-muted-foreground">{dayLabels[item.day] || '无效'}</p>
+							</div>
+
+							<div class="space-y-2">
+								<Label>起始节</Label>
+								<Input
+									type="number"
+									min="1"
+									value={item.startNode}
+									oninput={(e) =>
+										updateArrangement(item.index, 'startNode', Number(e.currentTarget.value))}
+								/>
+							</div>
+
+							<div class="space-y-2">
+								<Label>起始周</Label>
+								<Input
 									type="number"
 									min="1"
 									max={draftParsed.meta.maxWeek}
-									bind:value={newCourseDraft.endWeek}
+									value={item.startWeek}
+									oninput={(e) =>
+										updateArrangement(item.index, 'startWeek', Number(e.currentTarget.value))}
 								/>
 							</div>
-						</div>
 
-						<div class="flex gap-2">
-							<Button onclick={submitCreateCourse}>保存新增课程</Button>
-							<Button variant="outline" onclick={cancelCreateCourse}>取消</Button>
+							<div class="space-y-2">
+								<Label>结束周</Label>
+								<Input
+									type="number"
+									min="1"
+									max={draftParsed.meta.maxWeek}
+									value={item.endWeek}
+									oninput={(e) =>
+										updateArrangement(item.index, 'endWeek', Number(e.currentTarget.value))}
+								/>
+							</div>
+
+							<div class="flex items-end">
+								<Button
+									variant="destructive"
+									size="sm"
+									onclick={() => deleteArrangement(item.index)}
+									class="w-full"
+								>
+									<Icon icon="mdi:delete" class="mr-2 h-4 w-4" />
+									删除
+								</Button>
+							</div>
 						</div>
 					</div>
-				{:else if selectedArrangement}
-					<div class="space-y-4">
-						<div class="space-y-2">
-							<Label for="course-name">课程名</Label>
-							<Input
-								id="course-name"
-								value={selectedCourseName}
-								oninput={(e) => updateCourseName(e.currentTarget.value)}
-							/>
-						</div>
+				{/each}
 
-						<div class="space-y-2">
-							<Label for="teacher">教师</Label>
-							<Input
-								id="teacher"
-								value={selectedArrangement.teacher ?? ''}
-								oninput={(e) => updateSelectedArrangement('teacher', e.currentTarget.value)}
-							/>
-						</div>
-
-						<div class="space-y-2">
-							<Label for="room">教室</Label>
-							<Input
-								id="room"
-								value={selectedArrangement.room ?? ''}
-								oninput={(e) => updateSelectedArrangement('room', e.currentTarget.value)}
-							/>
-						</div>
-
-						<div class="space-y-2">
-							<Label for="day">星期</Label>
-							<Select.Root
-								onSelectedChange={(v) => {
-									if (v) {
-										updateSelectedArrangement('day', v.value);
-									}
-								}}
-							>
-								<Select.Trigger id="day">
-									<Select.Value placeholder={selectedArrangement ? dayLabels[selectedArrangement.day] : '选择星期'} />
-								</Select.Trigger>
-								<Select.Content>
-									{#each visibleDays as day}
-										<Select.Item value={day}>{dayLabels[day]}</Select.Item>
-									{/each}
-								</Select.Content>
-							</Select.Root>
-						</div>
-
-						<div class="space-y-2">
-							<Label for="start-node">起始节</Label>
-							<Input
-								id="start-node"
-								type="number"
-								min="1"
-								max={maxNode}
-								value={selectedArrangement.startNode}
-								oninput={(e) =>
-									updateSelectedArrangement('startNode', Number(e.currentTarget.value))}
-							/>
-						</div>
-
-						<div class="grid grid-cols-2 gap-4">
-							<div class="space-y-2">
-								<Label for="start-week">起始周</Label>
-								<Input
-									id="start-week"
-									type="number"
-									min="1"
-									max={draftParsed.meta.maxWeek}
-									value={selectedArrangement.startWeek}
-									oninput={(e) =>
-										updateSelectedArrangement('startWeek', Number(e.currentTarget.value))}
-								/>
-							</div>
-
-							<div class="space-y-2">
-								<Label for="end-week">结束周</Label>
-								<Input
-									id="end-week"
-									type="number"
-									min="1"
-									max={draftParsed.meta.maxWeek}
-									value={selectedArrangement.endWeek}
-									oninput={(e) =>
-										updateSelectedArrangement('endWeek', Number(e.currentTarget.value))}
-								/>
-							</div>
-						</div>
-
-						<Button variant="destructive" onclick={deleteSelectedArrangement}>
-							<Icon icon="mdi:delete" class="mr-2 h-4 w-4" />
-							删除课程
-						</Button>
-					</div>
-				{:else}
-					<p class="text-sm text-muted-foreground">
-						请先在左侧点击课程卡片，或点击上方"新增课程"。
-					</p>
+				{#if arrangements.length === 0}
+					<p class="text-center text-muted-foreground py-8">暂无课程，点击"新增课程"开始添加</p>
 				{/if}
-			</CardContent>
-		</Card>
-	</div>
+			</div>
+		</CardContent>
+	</Card>
 {:else}
 	<Alert.Root class="mb-4">
 		<Icon icon="mdi:information" class="h-4 w-4" />

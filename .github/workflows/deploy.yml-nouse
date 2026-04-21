@@ -1,0 +1,43 @@
+name: 构建并发布到page分支
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install Dependencies
+        run: pnpm install
+
+      - name: Build
+        run: git clone https://github.com/afoim/fuwari temp && cd temp && pnpm update-diff && cd .. && mkdir -p src/json && mv -f temp/src/json/git-history.json src/json/git-history.json && rm -rf temp && pnpm build:cdn
+
+      - name: Deploy to page branch
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: page
+          commit_message: ${{ github.event.head_commit.message }}

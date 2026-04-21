@@ -49,14 +49,37 @@
 		<Card>
 			<CardHeader>
 				<CardTitle>申请友链</CardTitle>
-				<CardDescription>欢迎与我交换友链，请在评论区留言或通过其他方式联系我</CardDescription>
+				<CardDescription>欢迎与我交换友链，支持自动化 PR 流程</CardDescription>
 			</CardHeader>
 			<CardContent>
-				<div class="space-y-2 text-sm text-muted-foreground">
-					<p>• 网站名称：二叉树树</p>
-					<p>• 网站地址：https://2x.nz</p>
-					<p>• 网站描述：Protect What You Love.</p>
-					<p>• 网站头像：https://q2.qlogo.cn/headimg_dl?dst_uin=2726730791&spec=0</p>
+				<div class="space-y-4">
+					<div class="space-y-2 text-sm">
+						<p class="font-semibold">本站信息：</p>
+						<div class="space-y-1 text-muted-foreground">
+							<p>• 网站名称：二叉树树</p>
+							<p>• 网站地址：https://2x.nz</p>
+							<p>• 网站描述：Protect What You Love.</p>
+							<p>• 网站头像：https://q2.qlogo.cn/headimg_dl?dst_uin=2726730791&spec=0</p>
+						</div>
+					</div>
+					
+					<div class="space-y-2 text-sm">
+						<p class="font-semibold">申请方式：</p>
+						<div class="space-y-1 text-muted-foreground">
+							<p>1. Fork 本仓库：<a href="https://github.com/afoim/svaf" target="_blank" rel="noopener noreferrer" class="text-primary underline">github.com/afoim/svaf</a></p>
+							<p>2. 在 <code class="rounded bg-muted px-1 py-0.5">static/friends/lists/</code> 目录下创建 JSON 文件（<a href="https://github.com/afoim/svaf/tree/main/static/friends/lists" target="_blank" rel="noopener noreferrer" class="text-primary underline">查看目录</a>）</p>
+							<p>3. 文件格式：</p>
+							<pre class="mt-2 rounded bg-muted p-3 text-xs"><code>{`{
+  "name": "你的网站名称",
+  "avatar": "你的头像 URL",
+  "description": "网站描述",
+  "url": "你的网站地址"
+}`}</code></pre>
+							<p>4. 提交 Pull Request，GitHub Actions 会自动验证并合并</p>
+							<p>5. 支持双向链接验证，请在你的友链页面添加本站链接（https://2x.nz）</p>
+							<p>6. 在 PR 中添加 <code class="rounded bg-muted px-1 py-0.5">backlink</code> 字段指向你的友链页面，系统会自动验证双向链接</p>
+						</div>
+					</div>
 				</div>
 			</CardContent>
 		</Card>

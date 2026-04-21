@@ -85,7 +85,7 @@
 		onWheel: (e: WheelEvent) => void;
 	} = $props();
 
-	const BASE_HEIGHT = 900;
+	const BASE_HEIGHT = 600;
 </script>
 
 <div

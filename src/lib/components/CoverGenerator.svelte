@@ -103,7 +103,7 @@
 	let initialScale = 1;
 
 	// 计算画布尺寸
-	const BASE_HEIGHT = 900;
+	const BASE_HEIGHT = 600;
 	let activeRatios = $derived(ratios.filter((r) => r.checked));
 	let visualRatios = $derived(activeRatios.length > 0 ? activeRatios : [ratios[2]]);
 	let maxWidthRatio = $derived(
@@ -438,7 +438,7 @@
 
 <div class="flex flex-col lg:flex-row gap-6 w-full">
 	<!-- 左侧：预览区域 -->
-	<div class="flex-1 lg:sticky lg:top-6 lg:self-start">
+	<div class="flex-1 lg:max-w-[55%]">
 		<CoverPreview
 			bind:svgContainer
 			{canvasWidth}
@@ -484,7 +484,7 @@
 	</div>
 
 	<!-- 右侧：控制面板 -->
-	<div class="w-full lg:w-[480px] flex-shrink-0">
+	<div class="w-full lg:flex-1">
 		<Tabs.Root value="content" class="w-full">
 			<Tabs.List class="grid w-full grid-cols-3">
 				<Tabs.Trigger value="content">内容</Tabs.Trigger>

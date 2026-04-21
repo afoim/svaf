@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { Button } from '$lib/components/ui/button';
 	import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '$lib/components/ui/card';
 	import { Tabs, TabsContent, TabsList, TabsTrigger } from '$lib/components/ui/tabs';
 	import Icon from '@iconify/svelte';
@@ -95,14 +94,5 @@
 				{/each}
 			</div>
 		{/if}
-	</div>
-
-	<div class="mt-8 text-center">
-		<a href="/">
-			<Button variant="outline">
-				<Icon icon="mdi:home" class="mr-2 h-4 w-4" />
-				返回首页
-			</Button>
-		</a>
 	</div>
 </div>

@@ -2,18 +2,18 @@ import { parseTimetableText } from '$lib/utils/timetable-parser';
 import { buildTimetableViewModel, resolveCurrentWeek } from '$lib/utils/timetable-normalizer';
 import type { PageLoad } from './$types';
 
-export const load: PageLoad = async ({ fetch }) => {
-	console.log('[Timetable Load] 加载默认页面（当前周）');
+export const load: PageLoad = async ({ fetch, url }) => {
 	const response = await fetch('/timetable.json');
 	const text = await response.text();
 	const parsed = parseTimetableText(text);
 	const currentWeek = resolveCurrentWeek(parsed.meta.startDate, parsed.meta.maxWeek);
-	console.log('[Timetable Load] 解析完成，当前周:', currentWeek);
-	const viewModel = buildTimetableViewModel(parsed, currentWeek);
+	const requestedWeek = Number(url.searchParams.get('week'));
+	const selectedWeek = Number.isInteger(requestedWeek) && requestedWeek > 0 ? requestedWeek : currentWeek;
+	const viewModel = buildTimetableViewModel(parsed, selectedWeek);
 	
 	return {
 		viewModel,
 		baselineText: text,
-		isCurrentWeek: true
+		isCurrentWeek: viewModel.currentWeek === currentWeek
 	};
 };

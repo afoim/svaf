@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { Button } from '$lib/components/ui/button';
 	import { Card, CardContent, CardHeader, CardTitle } from '$lib/components/ui/card';
 	import { Badge } from '$lib/components/ui/badge';
@@ -6,61 +7,59 @@
 	import type { PageData } from './$types';
 	
 	let { data }: { data: PageData } = $props();
-	const { viewModel, isCurrentWeek } = data;
 
-	console.log('[Timetable] 页面加载，当前周:', viewModel.currentWeek, '最大周:', viewModel.maxWeek);
+	function buildWeekHref(week: number) {
+		return `/timetable/?week=${week}`;
+	}
+
+	function goToPreviousWeek() {
+		const targetWeek = data.viewModel.currentWeek - 1;
+		if (data.viewModel.currentWeek > 1) {
+			goto(buildWeekHref(targetWeek));
+		}
+	}
+
+	function goToNextWeek() {
+		const targetWeek = data.viewModel.currentWeek + 1;
+		if (data.viewModel.currentWeek < data.viewModel.maxWeek) {
+			goto(buildWeekHref(targetWeek));
+		}
+	}
 </script>
 
 <svelte:head>
-	<title>课程表 - 二叉树树</title>
+	<title>课程表 - 第 {data.viewModel.currentWeek} 周 - 二叉树树</title>
 </svelte:head>
 
 <div class="container mx-auto max-w-7xl px-4 py-12">
 	<div class="mb-8">
-		<div class="mb-4 flex items-center justify-between">
-			<div>
-				<h1 class="text-4xl font-bold mb-2">{viewModel.tableName}</h1>
-				<p class="text-muted-foreground">共 {viewModel.maxWeek} 周</p>
-			</div>
-			<a href="/">
-				<Button variant="outline">
-					<Icon icon="mdi:home" class="mr-2 h-4 w-4" />
-					返回首页
-				</Button>
-			</a>
+		<div class="mb-4">
+			<h1 class="text-4xl font-bold mb-2">{data.viewModel.tableName}</h1>
+			<p class="text-muted-foreground">共 {data.viewModel.maxWeek} 周</p>
 		</div>
 
 		<div class="flex flex-wrap items-center gap-3">
 			<div class="inline-flex items-center gap-1">
-				{#if viewModel.currentWeek > 1}
-					<a href={`/timetable/${viewModel.currentWeek - 1}/`}>
-						<Button variant="outline" size="icon">
-							<Icon icon="mdi:chevron-left" class="h-5 w-5" />
-						</Button>
-					</a>
-				{:else}
-					<Button variant="outline" size="icon" disabled>
-						<Icon icon="mdi:chevron-left" class="h-5 w-5" />
-					</Button>
-				{/if}
-				
+				<Button 
+					variant="outline" 
+					size="icon" 
+					disabled={data.viewModel.currentWeek <= 1}
+					onclick={goToPreviousWeek}
+				>
+					<Icon icon="mdi:chevron-left" class="h-5 w-5" />
+				</Button>
 				<span class="min-w-[4.5rem] px-3 text-center font-medium">
-					第 {viewModel.currentWeek} 周
+					第 {data.viewModel.currentWeek} 周
 				</span>
-				
-				{#if viewModel.currentWeek < viewModel.maxWeek}
-					<a href={`/timetable/${viewModel.currentWeek + 1}/`}>
-						<Button variant="outline" size="icon">
-							<Icon icon="mdi:chevron-right" class="h-5 w-5" />
-						</Button>
-					</a>
-				{:else}
-					<Button variant="outline" size="icon" disabled>
-						<Icon icon="mdi:chevron-right" class="h-5 w-5" />
-					</Button>
-				{/if}
-				
-				{#if isCurrentWeek}
+				<Button 
+					variant="outline" 
+					size="icon" 
+					disabled={data.viewModel.currentWeek >= data.viewModel.maxWeek}
+					onclick={goToNextWeek}
+				>
+					<Icon icon="mdi:chevron-right" class="h-5 w-5" />
+				</Button>
+				{#if data.isCurrentWeek}
 					<Badge variant="default" class="ml-2">当前周</Badge>
 				{/if}
 			</div>
@@ -76,22 +75,22 @@
 						<thead>
 							<tr class="border-b">
 								<th class="px-4 py-3 text-left text-sm font-semibold">节次</th>
-								{#each viewModel.dayColumns as day}
+								{#each data.viewModel.dayColumns as day}
 									<th class="px-4 py-3 text-left text-sm font-semibold">{day.label}</th>
 								{/each}
 							</tr>
 						</thead>
 						<tbody>
-							{#each viewModel.nodeRows.filter((row) => row.node % 2 === 1) as row}
+							{#each data.viewModel.nodeRows.filter((row) => row.node % 2 === 1) as row}
 								<tr class="border-b last:border-b-0">
 									<td class="px-4 py-3 align-top">
-										<p class="text-sm font-medium">第 {row.node}-{Math.min(row.node + 1, viewModel.nodeRows.length)} 节</p>
+										<p class="text-sm font-medium">第 {row.node}-{Math.min(row.node + 1, data.viewModel.nodeRows.length)} 节</p>
 										<p class="text-xs text-muted-foreground mt-1">
-											{row.startTime} - {viewModel.nodeRows.find((item) => item.node === Math.min(row.node + 1, viewModel.nodeRows.length))?.endTime ?? row.endTime}
+											{row.startTime} - {data.viewModel.nodeRows.find((item) => item.node === Math.min(row.node + 1, data.viewModel.nodeRows.length))?.endTime ?? row.endTime}
 										</p>
 									</td>
-									{#each viewModel.dayColumns as day}
-										{@const courses = (viewModel.coursesByDay[day.day] ?? []).filter(c => c.startNode === row.node)}
+									{#each data.viewModel.dayColumns as day}
+										{@const courses = (data.viewModel.coursesByDay[day.day] ?? []).filter(c => c.startNode === row.node)}
 										<td class="px-4 py-3 align-top min-w-[180px]">
 											{#if courses.length > 0}
 												<div class="space-y-2">
@@ -125,8 +124,8 @@
 
 	<!-- 移动端列表视图 -->
 	<div class="md:hidden space-y-4">
-		{#each viewModel.dayColumns as day}
-			{@const courses = viewModel.coursesByDay[day.day] ?? []}
+		{#each data.viewModel.dayColumns as day}
+			{@const courses = data.viewModel.coursesByDay[day.day] ?? []}
 			<Card>
 				<CardHeader>
 					<CardTitle class="text-lg">{day.label}</CardTitle>

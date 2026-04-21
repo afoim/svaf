@@ -21,7 +21,6 @@
 		// 监听 Cookie Consent 更新事件
 		const handleConsentUpdate = (e: CustomEvent<ConsentPreferences>) => {
 			const preferences = e.detail;
-			console.log('[Analytics] Cookie consent updated:', preferences);
 			loadTrackers(preferences);
 		};
 
@@ -37,36 +36,32 @@
 		if (!scriptsLoaded.umami) {
 			loadUmami();
 			scriptsLoaded.umami = true;
-			console.log('[Analytics] Umami 已加载（必要）');
 		}
 
 		if (!scriptsLoaded.cloudflare) {
 			loadCloudflare();
 			scriptsLoaded.cloudflare = true;
-			console.log('[Analytics] Cloudflare 已加载（必要）');
 		}
+
+		// 功能性追踪器
+		// Giscus 由其自己的组件管理
 
 		// 分析追踪器
 		if (preferences.analytics) {
 			if (!scriptsLoaded.baidu) {
 				loadBaidu();
 				scriptsLoaded.baidu = true;
-				console.log('[Analytics] 百度统计已加载');
 			}
 
 			if (!scriptsLoaded.google) {
 				loadGoogle();
 				scriptsLoaded.google = true;
-				console.log('[Analytics] Google Analytics 已加载');
 			}
 
 			if (!scriptsLoaded.clarity) {
 				loadClarity();
 				scriptsLoaded.clarity = true;
-				console.log('[Analytics] Clarity 已加载');
 			}
-		} else {
-			console.log('[Analytics] 分析追踪器未加载：用户未同意 analytics cookies');
 		}
 
 		// 营销追踪器
@@ -74,10 +69,7 @@
 			if (!scriptsLoaded.adsense) {
 				loadAdSense();
 				scriptsLoaded.adsense = true;
-				console.log('[Analytics] AdSense 已加载');
 			}
-		} else {
-			console.log('[Analytics] 营销追踪器未加载：用户未同意 marketing cookies');
 		}
 	}
 

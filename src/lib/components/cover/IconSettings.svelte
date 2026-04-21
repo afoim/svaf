@@ -63,27 +63,25 @@
 		</div>
 
 		{#if searchResults.length > 0}
-			<div class="grid grid-cols-10 gap-0.5 max-h-40 overflow-y-auto p-0.5 border rounded-lg">
-				{#each searchResults as icon}
-					<button
-						onclick={() => onSelectIcon(icon)}
-						class="p-0.5 rounded hover:bg-accent transition-colors aspect-square flex items-center justify-center"
-						title={icon}
-					>
-						<div
-							class="w-full h-full flex items-center justify-center border rounded {icon ===
+			<div class="max-h-48 overflow-y-auto border rounded-lg p-2">
+				<div class="grid grid-cols-8 gap-2">
+					{#each searchResults as icon}
+						<button
+							onclick={() => onSelectIcon(icon)}
+							class="aspect-square flex items-center justify-center p-2 rounded-md border hover:bg-accent transition-colors {icon ===
 							iconName
 								? 'border-primary bg-primary/10'
-								: 'border-border'}"
+								: 'border-input'}"
+							title={icon}
 						>
 							<img
 								src={`https://api.iconify.design/${icon.split(':')[0]}/${icon.split(':')[1]}.svg`}
-								class="w-3 h-3"
+								class="w-full h-full"
 								alt={icon}
 							/>
-						</div>
-					</button>
-				{/each}
+						</button>
+					{/each}
+				</div>
 			</div>
 		{/if}
 

@@ -51,13 +51,13 @@
 					type="text"
 					value={shadowTarget === 'icon' ? iconShadow.color : textShadow.color}
 					oninput={(e) => onUpdateShadow('color', e.currentTarget.value)}
-					class="w-24 h-6 text-xs"
+					class="w-24 h-8 text-xs"
 				/>
 				<input
 					type="color"
 					value={shadowTarget === 'icon' ? iconShadow.color : textShadow.color}
 					oninput={(e) => onUpdateShadow('color', e.currentTarget.value)}
-					class="w-6 h-6 rounded cursor-pointer"
+					class="w-8 h-8 rounded cursor-pointer"
 				/>
 			</div>
 		</div>

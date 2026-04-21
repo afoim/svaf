@@ -191,6 +191,13 @@
 			</Button>
 		</a>
 		
+		<a href="https://u.2x.nz/share/CdkXbGgZr6ECKOyK" target="_blank" rel="noopener noreferrer">
+			<Button variant="outline" class="flex items-center gap-2">
+				<Icon icon="mdi:chart-line" class="w-5 h-5" />
+				统计
+			</Button>
+		</a>
+		
 		<Button
 			variant="outline"
 			class="flex items-center gap-2"

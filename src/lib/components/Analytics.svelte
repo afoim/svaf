@@ -3,48 +3,6 @@
 	import { siteConfig } from '$lib/config/site';
 
 	onMount(() => {
-		// Cookie Consent 加载
-		const loadCookieConsent = () => {
-			if (window.__cookieConsentScriptLoaded) return;
-			window.__cookieConsentScriptLoaded = true;
-			
-			const script = document.createElement('script');
-			script.src = 'https://www.termsfeed.com/public/cookie-consent/4.2.0/cookie-consent.js';
-			script.charset = 'UTF-8';
-			script.async = true;
-			
-			script.onload = () => {
-				// 脚本加载完成后运行配置
-				setTimeout(runCookieConsent, 100);
-			};
-			
-			document.head.appendChild(script);
-		};
-
-		// Cookie Consent 配置
-		const runCookieConsent = () => {
-			const cc = window.cookieconsent;
-			if (!cc || typeof cc.run !== 'function') {
-				setTimeout(runCookieConsent, 100);
-				return;
-			}
-
-			cc.run({
-				notice_banner_type: 'simple',
-				consent_type: 'express',
-				language: 'zh-TW',
-				page_load_consent_levels: ['strictly-necessary'],
-				notice_banner_reject_button_hide: false,
-				preferences_center_close_button_hide: false,
-				page_refresh_confirmation_buttons: false,
-				website_name: siteConfig.title,
-				website_privacy_policy_url: `${siteConfig.url}/posts/privacy-policy/`,
-				palette: 'dark'
-			});
-		};
-
-		loadCookieConsent();
-
 		// 百度统计
 		const loadBaidu = () => {
 			if (window.__baiduAnalyticsLoaded) return;
@@ -64,7 +22,7 @@
 			window.dataLayer = window.dataLayer || [];
 			window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
 
-			const loadScript = (src, attrs = {}) => {
+			const loadScript = (src: string, attrs: Record<string, any> = {}) => {
 				const script = document.createElement('script');
 				script.src = src;
 				script.async = true;
@@ -91,47 +49,12 @@
 			);
 		};
 
-		// Microsoft Clarity（仅在用户同意 tracking 后加载）
+		// Microsoft Clarity
 		const loadClarity = () => {
-			// 检查用户是否同意 tracking cookies
-			const checkConsent = () => {
-				const cc = window.cookieconsent;
-				if (!cc) return false;
-				
-				// 获取用户的同意级别
-				try {
-					const consent = cc.get();
-					// 检查是否包含 tracking 级别
-					if (consent && consent.level) {
-						const levels = Array.isArray(consent.level) ? consent.level : [consent.level];
-						return levels.includes('tracking');
-					}
-				} catch (e) {
-					console.error('[Analytics] 检查 Cookie 同意状态失败:', e);
-				}
-				return false;
-			};
-			
-			if (!checkConsent()) {
-				console.log('[Analytics] Clarity 未加载：用户未同意 tracking cookies');
-				// 监听 Cookie Consent 变化
-				window.addEventListener('cc_consent_update', () => {
-					if (checkConsent() && !window.__clarityLoaded) {
-						console.log('[Analytics] 用户已同意 tracking，加载 Clarity');
-						loadClarityScript();
-					}
-				});
-				return;
-			}
-			
-			loadClarityScript();
-		};
-		
-		const loadClarityScript = () => {
 			if (window.__clarityLoaded) return;
 			window.__clarityLoaded = true;
 			
-			(function(c,l,a,r,i,t,y){
+			(function(c: any,l: any,a: any,r: any,i: any,t: any,y: any){
 				c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
 				t=l.createElement(r);
 				t.async=1;
@@ -146,41 +69,29 @@
 			window.requestIdleCallback(() => {
 				loadBaidu();
 				loadGoogle();
-				// 延迟加载 Clarity，确保 Cookie Consent 已初始化
-				setTimeout(loadClarity, 1000);
+				loadClarity();
 			}, { timeout: 4000 });
 		} else {
 			setTimeout(() => {
 				loadBaidu();
 				loadGoogle();
-				setTimeout(loadClarity, 1000);
+				loadClarity();
 			}, 2000);
 		}
 	});
 </script>
 
 <svelte:head>
-	<!-- Cookie Consent CSS -->
-	<link
-		rel="stylesheet"
-		href="https://www.termsfeed.com/public/cookie-consent/4.2.0/cookie-consent.css"
-	/>
-
-	<!-- 必要追踪脚本 -->
+	<!-- Umami Analytics -->
+	<script defer src="https://t.2x.nz/tracker.js"></script>
 	<script
-		data-cookie-consent="strictly-necessary"
-		defer
-		src="https://t.2x.nz/tracker.js"
-	></script>
-	<script
-		type="text/plain"
-		data-cookie-consent="strictly-necessary"
 		defer
 		src="https://u.2x.nz/script.js"
 		data-website-id="5d710dbd-3a2e-43e3-a553-97b415090c63"
 	></script>
+	
+	<!-- Cloudflare Insights -->
 	<script
-		data-cookie-consent="strictly-necessary"
 		defer
 		src="https://static.cloudflareinsights.com/beacon.min.js"
 		data-cf-beacon={JSON.stringify({ token: '15fe148e91b34f10a15652e1a74ab26c' })}

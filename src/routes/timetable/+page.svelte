@@ -71,7 +71,13 @@
 		<Card>
 			<CardContent class="p-0">
 				<div class="overflow-x-auto">
-					<table class="w-full">
+					<table class="w-full table-fixed">
+						<colgroup>
+							<col class="w-28" />
+							{#each data.viewModel.dayColumns as _day}
+								<col />
+							{/each}
+						</colgroup>
 						<thead>
 							<tr class="border-b">
 								<th class="px-4 py-3 text-left text-sm font-semibold">节次</th>
@@ -91,12 +97,12 @@
 									</td>
 									{#each data.viewModel.dayColumns as day}
 										{@const courses = (data.viewModel.coursesByDay[day.day] ?? []).filter(c => c.startNode === row.node)}
-										<td class="px-4 py-3 align-top min-w-[180px]">
+										<td class="px-4 py-3 align-top">
 											{#if courses.length > 0}
 												<div class="space-y-2">
 													{#each courses as course}
 														<div
-															class="rounded-lg border-l-4 p-3 text-sm"
+															class="rounded-lg border-l-4 p-3 text-sm break-words"
 															style="border-color: {course.color}; background: color-mix(in srgb, {course.color} 10%, transparent)"
 														>
 															<div class="font-semibold mb-1">{course.courseName}</div>

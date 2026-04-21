@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { Button } from '$lib/components/ui/button';
 	import { Card, CardContent, CardHeader, CardTitle } from '$lib/components/ui/card';
 	import { Badge } from '$lib/components/ui/badge';
@@ -7,6 +8,18 @@
 	
 	let { data }: { data: PageData } = $props();
 	const { viewModel, isCurrentWeek } = data;
+
+	function goToPreviousWeek() {
+		if (viewModel.currentWeek > 1) {
+			goto(`/timetable/${viewModel.currentWeek - 1}/`);
+		}
+	}
+
+	function goToNextWeek() {
+		if (viewModel.currentWeek < viewModel.maxWeek) {
+			goto(`/timetable/${viewModel.currentWeek + 1}/`);
+		}
+	}
 </script>
 
 <svelte:head>
@@ -30,19 +43,25 @@
 
 		<div class="flex flex-wrap items-center gap-3">
 			<div class="inline-flex items-center gap-1">
-				<a href={`/timetable/${Math.max(1, viewModel.currentWeek - 1)}/`}>
-					<Button variant="outline" size="icon" disabled={viewModel.currentWeek <= 1}>
-						<Icon icon="mdi:chevron-left" class="h-5 w-5" />
-					</Button>
-				</a>
+				<Button 
+					variant="outline" 
+					size="icon" 
+					disabled={viewModel.currentWeek <= 1}
+					onclick={goToPreviousWeek}
+				>
+					<Icon icon="mdi:chevron-left" class="h-5 w-5" />
+				</Button>
 				<span class="min-w-[4.5rem] px-3 text-center font-medium">
 					第 {viewModel.currentWeek} 周
 				</span>
-				<a href={`/timetable/${Math.min(viewModel.maxWeek, viewModel.currentWeek + 1)}/`}>
-					<Button variant="outline" size="icon" disabled={viewModel.currentWeek >= viewModel.maxWeek}>
-						<Icon icon="mdi:chevron-right" class="h-5 w-5" />
-					</Button>
-				</a>
+				<Button 
+					variant="outline" 
+					size="icon" 
+					disabled={viewModel.currentWeek >= viewModel.maxWeek}
+					onclick={goToNextWeek}
+				>
+					<Icon icon="mdi:chevron-right" class="h-5 w-5" />
+				</Button>
 				{#if isCurrentWeek}
 					<Badge variant="default" class="ml-2">当前周</Badge>
 				{/if}

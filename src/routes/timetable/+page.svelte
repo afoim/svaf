@@ -4,6 +4,7 @@
 	import { Card, CardContent, CardHeader, CardTitle } from '$lib/components/ui/card';
 	import { Badge } from '$lib/components/ui/badge';
 	import Icon from '@iconify/svelte';
+	import PageViews from '$lib/components/PageViews.svelte';
 	import type { PageData } from './$types';
 	
 	let { data }: { data: PageData } = $props();
@@ -36,7 +37,11 @@
 		<div class="mb-4 flex items-center justify-between">
 			<div>
 				<h1 class="text-4xl font-bold mb-2">{data.viewModel.tableName}</h1>
-				<p class="text-muted-foreground">共 {data.viewModel.maxWeek} 周</p>
+				<div class="flex items-center gap-2 text-muted-foreground">
+					<p>共 {data.viewModel.maxWeek} 周</p>
+					<span>·</span>
+					<PageViews pathname="/timetable/" class="text-sm" />
+				</div>
 			</div>
 			<a href="/">
 				<Button variant="outline">

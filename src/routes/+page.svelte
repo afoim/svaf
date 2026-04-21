@@ -75,6 +75,13 @@
 			</Button>
 		</a>
 		
+		<a href="/sponsors">
+			<Button variant="outline" class="flex items-center gap-2">
+				<Icon icon="mdi:heart" class="w-5 h-5" />
+				赞助
+			</Button>
+		</a>
+		
 		<Button
 			variant="outline"
 			class="flex items-center gap-2"

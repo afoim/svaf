@@ -72,7 +72,7 @@
 			</Card>
 		{:else}
 			<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-				{#each paginatedFriends as friend}
+				{#each paginatedFriends as friend (friend.url)}
 					<a href={friend.url} target="_blank" rel="noopener noreferrer">
 						<Card class="h-full transition-all hover:shadow-lg">
 							<CardContent class="flex items-start gap-4 p-6">

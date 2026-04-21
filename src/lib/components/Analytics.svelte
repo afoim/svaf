@@ -1,96 +1,151 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-</script>
 
-<svelte:head>
-	<!-- Cookie Consent CSS -->
-	<link
-		rel="stylesheet"
-		href="https://www.termsfeed.com/public/cookie-consent/4.2.0/cookie-consent.css"
-	/>
+	interface ConsentPreferences {
+		necessary: boolean;
+		functional: boolean;
+		analytics: boolean;
+		marketing: boolean;
+	}
 
-	<!-- Cookie Consent by TermsFeed -->
-	<script src="//www.termsfeed.com/public/cookie-consent/4.2.0/cookie-consent.js"></script>
-	<script>
-		document.addEventListener('DOMContentLoaded', function () {
-			cookieconsent.run({
-				"notice_banner_type": "interstitial",
-				"consent_type": "implied",
-				"palette": "light",
-				"language": "zh_tw",
-				"page_load_consent_levels": ["strictly-necessary", "functionality", "tracking", "targeting"],
-				"notice_banner_reject_button_hide": false,
-				"preferences_center_close_button_hide": false,
-				"page_refresh_confirmation_buttons": false,
-				"website_name": "《二叉树树》官网",
-				"website_privacy_policy_url": "https://2x.nz/posts/privacy-policy/"
-			});
-		});
-	</script>
+	let scriptsLoaded = $state({
+		umami: false,
+		cloudflare: false,
+		baidu: false,
+		google: false,
+		clarity: false,
+		adsense: false
+	});
 
-	<!-- Umami -->
-	<script
-		type="text/plain"
-		data-cookie-consent="strictly-necessary"
-		defer
-		src="https://u.2x.nz/script.js"
-		data-website-id="5d710dbd-3a2e-43e3-a553-97b415090c63"
-	></script>
+	onMount(() => {
+		// 监听 Cookie Consent 更新事件
+		const handleConsentUpdate = (e: CustomEvent<ConsentPreferences>) => {
+			const preferences = e.detail;
+			console.log('[Analytics] Cookie consent updated:', preferences);
+			loadTrackers(preferences);
+		};
 
-	<!-- Baidu Analytics -->
-	<script type="text/plain" data-cookie-consent="tracking">
-		var _hmt = _hmt || [];
-		(function() {
-			var hm = document.createElement("script");
-			hm.src = "https://hm.baidu.com/hm.js?a87028bb5a1ed77d98f192bc12b56142";
-			var s = document.getElementsByTagName("script")[0];
-			s.parentNode.insertBefore(hm, s);
-		})();
-	</script>
+		window.addEventListener('cookie-consent-updated', handleConsentUpdate as EventListener);
 
-	<!-- Cloudflare Web Analytics -->
-	<script
-		type="text/plain"
-		data-cookie-consent="strictly-necessary"
-		defer
-		src="https://static.cloudflareinsights.com/beacon.min.js"
-		data-cf-beacon={JSON.stringify({ token: '15fe148e91b34f10a15652e1a74ab26c' })}
-	></script>
+		return () => {
+			window.removeEventListener('cookie-consent-updated', handleConsentUpdate as EventListener);
+		};
+	});
 
-	<!-- Google Analytics -->
-	<script
-		type="text/plain"
-		data-cookie-consent="tracking"
-		async
-		src="https://www.googletagmanager.com/gtag/js?id=G-RBZVQJCV26"
-	></script>
-	<script type="text/plain" data-cookie-consent="tracking">
-		window.dataLayer = window.dataLayer || [];
-		function gtag() {
-			dataLayer.push(arguments);
+	function loadTrackers(preferences: ConsentPreferences) {
+		// 必要追踪器（始终加载）
+		if (!scriptsLoaded.umami) {
+			loadUmami();
+			scriptsLoaded.umami = true;
+			console.log('[Analytics] Umami 已加载（必要）');
 		}
-		gtag('js', new Date());
-		gtag('config', 'G-RBZVQJCV26');
-	</script>
 
-	<!-- Microsoft Clarity -->
-	<script type="text/plain" data-cookie-consent="tracking">
-		(function(c,l,a,r,i,t,y) {
-			c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-			t=l.createElement(r);
-			t.async=1;
-			t.src="https://www.clarity.ms/tag/"+i;
-			y=l.getElementsByTagName(r)[0];
-			y.parentNode.insertBefore(t,y);
-		})(window, document, "clarity", "script", "v94yrasi99");
-	</script>
+		if (!scriptsLoaded.cloudflare) {
+			loadCloudflare();
+			scriptsLoaded.cloudflare = true;
+			console.log('[Analytics] Cloudflare 已加载（必要）');
+		}
 
-	<!-- Google AdSense -->
-	<script
-		type="text/plain"
-		data-cookie-consent="targeting"
-		async
-		src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1683686345039700"
-		crossorigin="anonymous"
-	></script>
-</svelte:head>
+		// 分析追踪器
+		if (preferences.analytics) {
+			if (!scriptsLoaded.baidu) {
+				loadBaidu();
+				scriptsLoaded.baidu = true;
+				console.log('[Analytics] 百度统计已加载');
+			}
+
+			if (!scriptsLoaded.google) {
+				loadGoogle();
+				scriptsLoaded.google = true;
+				console.log('[Analytics] Google Analytics 已加载');
+			}
+
+			if (!scriptsLoaded.clarity) {
+				loadClarity();
+				scriptsLoaded.clarity = true;
+				console.log('[Analytics] Clarity 已加载');
+			}
+		} else {
+			console.log('[Analytics] 分析追踪器未加载：用户未同意 analytics cookies');
+		}
+
+		// 营销追踪器
+		if (preferences.marketing) {
+			if (!scriptsLoaded.adsense) {
+				loadAdSense();
+				scriptsLoaded.adsense = true;
+				console.log('[Analytics] AdSense 已加载');
+			}
+		} else {
+			console.log('[Analytics] 营销追踪器未加载：用户未同意 marketing cookies');
+		}
+	}
+
+	function loadUmami() {
+		const script = document.createElement('script');
+		script.defer = true;
+		script.src = 'https://u.2x.nz/script.js';
+		script.setAttribute('data-website-id', '5d710dbd-3a2e-43e3-a553-97b415090c63');
+		document.head.appendChild(script);
+	}
+
+	function loadCloudflare() {
+		const script = document.createElement('script');
+		script.defer = true;
+		script.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+		script.setAttribute('data-cf-beacon', JSON.stringify({ token: '15fe148e91b34f10a15652e1a74ab26c' }));
+		document.head.appendChild(script);
+	}
+
+	function loadBaidu() {
+		const script = document.createElement('script');
+		script.innerHTML = `
+			var _hmt = _hmt || [];
+			(function() {
+				var hm = document.createElement("script");
+				hm.src = "https://hm.baidu.com/hm.js?a87028bb5a1ed77d98f192bc12b56142";
+				var s = document.getElementsByTagName("script")[0];
+				s.parentNode.insertBefore(hm, s);
+			})();
+		`;
+		document.head.appendChild(script);
+	}
+
+	function loadGoogle() {
+		// 加载 gtag.js
+		const gtagScript = document.createElement('script');
+		gtagScript.async = true;
+		gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-RBZVQJCV26';
+		document.head.appendChild(gtagScript);
+
+		// 初始化 Google Analytics
+		const initScript = document.createElement('script');
+		initScript.innerHTML = `
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', 'G-RBZVQJCV26');
+		`;
+		document.head.appendChild(initScript);
+	}
+
+	function loadClarity() {
+		const script = document.createElement('script');
+		script.innerHTML = `
+			(function(c,l,a,r,i,t,y){
+				c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+				t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+				y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+			})(window, document, "clarity", "script", "v94yrasi99");
+		`;
+		document.head.appendChild(script);
+	}
+
+	function loadAdSense() {
+		const script = document.createElement('script');
+		script.async = true;
+		script.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1683686345039700';
+		script.crossOrigin = 'anonymous';
+		document.head.appendChild(script);
+	}
+</script>

@@ -4,6 +4,7 @@
 	import BackToTop from '$lib/components/BackToTop.svelte';
 	import NavBar from '$lib/components/NavBar.svelte';
 	import Analytics from '$lib/components/Analytics.svelte';
+	import CookieConsent from '$lib/components/CookieConsent.svelte';
 
 	let { children } = $props();
 </script>
@@ -31,3 +32,5 @@
 <BackToTop />
 
 <Analytics />
+
+<CookieConsent />

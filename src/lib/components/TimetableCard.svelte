@@ -30,7 +30,7 @@
 	}
 
 	let statusLines = $state<StatusLine[][]>([]);
-	let isVisible = $state<boolean>(false);
+	let isVisible = $state<boolean>(true);
 
 	function hexToRgba(hex: string, alpha: number = 1): string {
 		// Remove # if present
@@ -338,7 +338,6 @@
 
 	function updateStatus(payload: TimetablePayload) {
 		statusLines = resolveLiveState(payload);
-		isVisible = true;
 	}
 
 	onMount(async () => {
@@ -354,14 +353,13 @@
 			return () => clearInterval(interval);
 		} catch (error) {
 			console.error('Failed to load timetable:', error);
-			status = '加载失败';
-			isVisible = true;
+			statusLines = [[{ text: '### 加载失败' }]];
 		}
 	});
 </script>
 
 <a href="/timetable/" class="block transition-transform hover:-translate-y-0.5">
-	<Card class="opacity-0 transition-opacity duration-300" style="opacity: {isVisible ? 1 : 0}">
+	<Card>
 		<CardContent class="p-3 space-y-0.5">
 			{#each statusLines as line}
 				<p class="text-xs leading-relaxed">

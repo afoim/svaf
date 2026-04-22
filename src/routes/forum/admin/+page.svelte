@@ -99,6 +99,56 @@
 	let storageCleaning = $state(false);
 	let storageGcResult = $state<AdminStorageGcScanResult | null>(null);
 
+	const USERS_PAGE_SIZE = 20;
+	const HIDDEN = -1;
+	const ADJ_DIST = 2;
+	const VISIBLE = ADJ_DIST * 2 + 1;
+	let usersPage = $state(1);
+
+	let usersLastPage = $derived(Math.max(1, Math.ceil(users.length / USERS_PAGE_SIZE)));
+	let pagedUsers = $derived(
+		users.slice((usersPage - 1) * USERS_PAGE_SIZE, usersPage * USERS_PAGE_SIZE)
+	);
+	let userPages = $derived.by(() => {
+		const lastPage = usersLastPage;
+		let count = 1;
+		let left = usersPage;
+		let right = usersPage;
+		while (0 < left - 1 && right + 1 <= lastPage && count + 2 <= VISIBLE) {
+			count += 2;
+			left -= 1;
+			right += 1;
+		}
+		while (0 < left - 1 && count < VISIBLE) {
+			count += 1;
+			left -= 1;
+		}
+		while (right + 1 <= lastPage && count < VISIBLE) {
+			count += 1;
+			right += 1;
+		}
+		const values: number[] = [];
+		if (left > 1) values.push(1);
+		if (left === 3) values.push(2);
+		if (left > 3) values.push(HIDDEN);
+		for (let p = left; p <= right; p += 1) values.push(p);
+		if (right < lastPage - 2) values.push(HIDDEN);
+		if (right === lastPage - 2) values.push(lastPage - 1);
+		if (right < lastPage) values.push(lastPage);
+		return values;
+	});
+
+	$effect(() => {
+		if (usersPage > usersLastPage) usersPage = usersLastPage;
+		if (usersPage < 1) usersPage = 1;
+	});
+
+	function goToUserPage(p: number) {
+		if (p < 1 || p > usersLastPage || p === usersPage) return;
+		usersPage = p;
+		if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' });
+	}
+
 	function getErrorMessage(e: unknown, fb: string) {
 		return e instanceof Error ? e.message : fb;
 	}
@@ -162,6 +212,7 @@
 	async function submitUserSearch() {
 		if (loading || refreshing || userSearching) return;
 		userSearching = true;
+		usersPage = 1;
 		try {
 			await refreshData();
 		} finally {
@@ -801,7 +852,7 @@
 						</div>
 
 						<div class="space-y-3">
-							{#each users as forumUser (forumUser.id)}
+							{#each pagedUsers as forumUser (forumUser.id)}
 								<div class="rounded-md border p-3">
 									<div class="flex flex-wrap items-start gap-3">
 										{#if forumUser.avatarUrl}
@@ -954,6 +1005,54 @@
 								</div>
 							{/each}
 						</div>
+
+						{#if usersLastPage > 1}
+							<div class="flex flex-col items-center gap-2 pt-2">
+								<div class="flex flex-row justify-center gap-2">
+									<Button
+										variant="outline"
+										size="icon"
+										disabled={usersPage === 1}
+										onclick={() => goToUserPage(usersPage - 1)}
+										aria-label="上一页"
+									>
+										<Icon icon="mdi:chevron-left" class="size-5" />
+									</Button>
+									<div class="flex items-center gap-1">
+										{#each userPages as page, i (i)}
+											{#if page === HIDDEN}
+												<span class="flex size-9 items-center justify-center text-muted-foreground">
+													<Icon icon="mdi:dots-horizontal" />
+												</span>
+											{:else if page === usersPage}
+												<Button size="icon" disabled>{page}</Button>
+											{:else}
+												<Button
+													variant="outline"
+													size="icon"
+													onclick={() => goToUserPage(page)}
+													aria-label="第 {page} 页"
+												>
+													{page}
+												</Button>
+											{/if}
+										{/each}
+									</div>
+									<Button
+										variant="outline"
+										size="icon"
+										disabled={usersPage === usersLastPage}
+										onclick={() => goToUserPage(usersPage + 1)}
+										aria-label="下一页"
+									>
+										<Icon icon="mdi:chevron-right" class="size-5" />
+									</Button>
+								</div>
+								<p class="text-xs text-muted-foreground">
+									第 {usersPage} / {usersLastPage} 页，共 {users.length} 名用户
+								</p>
+							</div>
+						{/if}
 					</CardContent>
 				</Card>
 			{/if}

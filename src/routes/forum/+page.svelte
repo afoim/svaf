@@ -248,7 +248,7 @@
 					href="https://github.com/afoim/svaf/issues"
 					target="_blank"
 					rel="noopener noreferrer"
-					class="text-primary underline decoration-dashed underline-offset-4"
+					class="text-primary underline decoration-dashed underline-offset-[6px]"
 				>
 					svaf
 				</a>
@@ -257,7 +257,7 @@
 					href="https://github.com/afoim/acofork_forum_backend/issues"
 					target="_blank"
 					rel="noopener noreferrer"
-					class="text-primary underline decoration-dashed underline-offset-4"
+					class="text-primary underline decoration-dashed underline-offset-[6px]"
 				>
 					acofork_forum_backend
 				</a>

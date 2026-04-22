@@ -4,6 +4,7 @@
 	import { Label } from '$lib/components/ui/label';
 	import { Checkbox } from '$lib/components/ui/checkbox';
 	import { Button } from '$lib/components/ui/button';
+	import { Tabs, TabsList, TabsTrigger } from '$lib/components/ui/tabs';
 	import Icon from '@iconify/svelte';
 
 	type Ratio = { label: string; w: number; h: number; checked: boolean };
@@ -95,26 +96,12 @@
 
 			<div class="space-y-2">
 				<Label>格式</Label>
-				<div class="flex gap-2">
-					<label
-						class="flex-1 flex items-center justify-center gap-1 p-2 border rounded-lg cursor-pointer {exportConfig.format ===
-						'png'
-							? 'border-primary bg-primary/5'
-							: ''}"
-					>
-						<input type="radio" bind:group={exportConfig.format} value="png" class="hidden" />
-						<span class="font-bold">PNG</span>
-					</label>
-					<label
-						class="flex-1 flex items-center justify-center gap-1 p-2 border rounded-lg cursor-pointer {exportConfig.format ===
-						'svg'
-							? 'border-primary bg-primary/5'
-							: ''}"
-					>
-						<input type="radio" bind:group={exportConfig.format} value="svg" class="hidden" />
-						<span class="font-bold">SVG</span>
-					</label>
-				</div>
+				<Tabs bind:value={exportConfig.format} class="w-full">
+					<TabsList class="w-full">
+						<TabsTrigger value="png" class="flex-1 font-bold">PNG</TabsTrigger>
+						<TabsTrigger value="svg" class="flex-1 font-bold">SVG</TabsTrigger>
+					</TabsList>
+				</Tabs>
 			</div>
 
 			<label class="flex items-center justify-between p-2 border rounded cursor-pointer">

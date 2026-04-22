@@ -6,8 +6,8 @@
 	import PageViews from '$lib/components/PageViews.svelte';
 
 	const API_URL = 'https://nat.2x.nz/api/analyze';
-	const PRIMARY_HOST = '64.110.118.255';
-	const SECONDARY_HOST = '161.33.17.215';
+	const PRIMARY_HOST = '217.142.241.80';
+	const SECONDARY_HOST = '64.110.98.108';
 
 	let logs = $state<string[]>(['System ready.']);
 	let isTesting = $state(false);

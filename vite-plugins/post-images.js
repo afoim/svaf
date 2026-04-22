@@ -151,20 +151,31 @@ export function postImagesPlugin() {
       let copied = 0;
 
       const concurrency = Math.max(2, Math.min(8, os.cpus?.().length || 4));
+      const total = tasks.length;
+      let done = 0;
 
       await processWithConcurrency(tasks, concurrency, async (task) => {
+        const rel = path.relative(postsDir, task.srcPath).replace(/\\/g, '/');
         if (task.type === 'avif') {
           const r = await convertToAvif(task.srcPath, task.destPath);
+          done++;
           if (r.skipped) {
             skipped++;
+            console.log(`[post-images] (${done}/${total}) 跳过 ${rel}`);
           } else {
             converted++;
             if (r.srcSize) totalSrc += r.srcSize;
             if (r.outSize) totalOut += r.outSize;
+            const saved = r.srcSize && r.outSize
+              ? ` ${(r.srcSize / 1024).toFixed(0)}KB → ${(r.outSize / 1024).toFixed(0)}KB (-${((1 - r.outSize / r.srcSize) * 100).toFixed(0)}%)`
+              : '';
+            console.log(`[post-images] (${done}/${total}) 转换 ${rel}${saved}`);
           }
         } else {
           fs.copyFileSync(task.srcPath, task.destPath);
           copied++;
+          done++;
+          console.log(`[post-images] (${done}/${total}) 复制 ${rel}`);
         }
       });
 

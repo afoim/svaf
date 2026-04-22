@@ -72,7 +72,19 @@
 	</header>
 
 	<!-- 文章内容 - 使用 mdsvex 组件 -->
-	<div class="prose prose-neutral dark:prose-invert max-w-none">
+	<div
+		class="prose prose-neutral dark:prose-invert max-w-none
+			prose-headings:text-foreground
+			prose-p:text-foreground
+			prose-strong:text-foreground
+			prose-a:text-primary prose-a:underline prose-a:underline-offset-4 hover:prose-a:opacity-80
+			prose-blockquote:border-l-primary prose-blockquote:text-muted-foreground
+			prose-code:bg-muted prose-code:text-foreground prose-code:rounded prose-code:px-1.5 prose-code:py-0.5 prose-code:before:content-none prose-code:after:content-none
+			prose-hr:border-border
+			prose-th:border prose-th:border-border prose-th:bg-muted
+			prose-td:border prose-td:border-border
+			prose-img:rounded-lg"
+	>
 		<data.component />
 	</div>
 
@@ -93,139 +105,34 @@
 <ImageViewer />
 
 <style>
-	@import "tailwindcss";
-	
-	/* Markdown 样式 */
-	:global(.prose) {
-		color: var(--foreground);
-	}
-
-	:global(.prose h1) {
-		margin-bottom: 1rem;
-		margin-top: 2rem;
-		font-size: 1.875rem;
-		font-weight: 700;
-	}
-
-	:global(.prose h2) {
-		margin-bottom: 0.75rem;
-		margin-top: 1.5rem;
-		font-size: 1.5rem;
-		font-weight: 600;
-	}
-
-	:global(.prose h3) {
-		margin-bottom: 0.5rem;
-		margin-top: 1rem;
-		font-size: 1.25rem;
-		font-weight: 600;
-	}
-
-	:global(.prose p) {
-		margin-bottom: 1rem;
-		line-height: 1.75;
-	}
-
-	:global(.prose a) {
-		color: var(--primary);
-		text-decoration: underline;
-		text-underline-offset: 4px;
-	}
-
-	:global(.prose a:hover) {
-		opacity: 0.8;
-	}
-
-	:global(.prose ul),
-	:global(.prose ol) {
-		margin-bottom: 1rem;
-		margin-left: 1.5rem;
-	}
-
-	:global(.prose li) {
-		margin-bottom: 0.5rem;
-	}
-
-	:global(.prose blockquote) {
-		border-left: 4px solid var(--primary);
-		padding-left: 1rem;
-		font-style: italic;
-		color: var(--muted-foreground);
-	}
-
-	:global(.prose code) {
-		border-radius: 0.25rem;
-		background-color: var(--muted);
-		padding: 0.125rem 0.375rem;
-		font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
-		font-size: 0.875rem;
-	}
-
-	:global(.prose pre) {
-		margin-bottom: 1rem;
-		overflow-x: auto;
-		border-radius: 0.5rem;
-		padding: 1rem;
-		font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
-	}
-
-	:global(.prose pre code) {
-		background-color: transparent;
-		padding: 0;
-		font-size: 0.875rem;
-		line-height: 1.7;
-		font-family: inherit;
-	}
-	
 	/* rehype-pretty-code 使用 CSS 变量实现主题切换 */
 	:global(.prose pre) {
 		background-color: var(--shiki-light-bg);
 		color: var(--shiki-light);
 	}
-	
+
 	@media (prefers-color-scheme: dark) {
 		:global(.prose pre) {
 			background-color: var(--shiki-dark-bg);
 			color: var(--shiki-dark);
 		}
 	}
-	
+
 	/* 应用 shiki 的颜色变量到每个 span */
 	:global(.prose pre span) {
 		color: var(--shiki-light);
 	}
-	
+
 	@media (prefers-color-scheme: dark) {
 		:global(.prose pre span) {
 			color: var(--shiki-dark);
 		}
 	}
 
-	:global(.prose img) {
-		margin-top: 1rem;
-		margin-bottom: 1rem;
-		border-radius: 0.5rem;
-	}
-
-	:global(.prose hr) {
-		margin-top: 2rem;
-		margin-bottom: 2rem;
-		border-color: var(--border);
-	}
-
-	:global(.prose table) {
-		width: 100%;
-		border-collapse: collapse;
-	}
-
-	:global(.prose th),
-	:global(.prose td) {
-		border: 1px solid var(--border);
-		padding: 0.5rem 1rem;
-	}
-
-	:global(.prose th) {
-		background-color: var(--muted);
-		font-weight: 600;
+	/* 代码块内 code 元素去除 prose 默认背景与边距 */
+	:global(.prose pre code) {
+		background-color: transparent;
+		padding: 0;
+		font-family: inherit;
 	}
 </style>

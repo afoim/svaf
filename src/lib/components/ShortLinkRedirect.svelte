@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import * as Dialog from '$lib/components/ui/dialog';
+	import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '$lib/components/ui/card';
 	import { Button } from '$lib/components/ui/button';
 	import Icon from '@iconify/svelte';
 	import { tryDecodeShortLink } from '$lib/utils/zwShortLink';
@@ -19,7 +19,7 @@
 			targetHost = decoded;
 		}
 		open = true;
-		// 清理地址栏中的零宽字符（替换为根路径），避免用户分享时再被提示
+		document.body.style.overflow = 'hidden';
 		try {
 			window.history.replaceState({}, '', '/');
 		} catch {
@@ -33,38 +33,40 @@
 
 	function cancel() {
 		open = false;
+		document.body.style.overflow = '';
 	}
 </script>
 
-<Dialog.Root bind:open>
-	<Dialog.Content class="max-w-md">
-		<Dialog.Header>
-			<Dialog.Title class="flex items-center gap-2">
-				<Icon icon="mdi:link-variant" class="size-5 text-primary" />
-				即将跳转到外部链接
-			</Dialog.Title>
-			<Dialog.Description>
-				该零宽短链将带你前往以下地址，请确认后再继续：
-			</Dialog.Description>
-		</Dialog.Header>
-
-		<div class="space-y-2">
-			<div class="rounded-md border bg-muted/30 px-3 py-2">
-				<p class="text-xs text-muted-foreground mb-1">目标域名</p>
-				<p class="text-sm font-medium break-all">{targetHost}</p>
-			</div>
-			<div class="rounded-md border bg-muted/30 px-3 py-2">
-				<p class="text-xs text-muted-foreground mb-1">完整 URL</p>
-				<p class="text-sm break-all">{target}</p>
-			</div>
-		</div>
-
-		<Dialog.Footer>
-			<Button variant="outline" onclick={cancel}>取消</Button>
-			<Button onclick={confirm}>
-				<Icon icon="mdi:open-in-new" class="size-4" />
-				继续访问
-			</Button>
-		</Dialog.Footer>
-	</Dialog.Content>
-</Dialog.Root>
+{#if open}
+	<!-- 完全不透明遮罩，盖掉所有页面背景 -->
+	<div class="fixed inset-0 z-[60] flex items-center justify-center bg-background p-4">
+		<Card class="w-full max-w-md">
+			<CardHeader>
+				<CardTitle class="flex items-center gap-2">
+					<Icon icon="mdi:link-variant" class="size-5 text-primary" />
+					即将跳转到外部链接
+				</CardTitle>
+				<p class="text-sm text-muted-foreground">
+					该零宽短链将带你前往以下地址，请确认后再继续：
+				</p>
+			</CardHeader>
+			<CardContent class="space-y-2">
+				<div class="rounded-md border bg-muted/30 px-3 py-2">
+					<p class="mb-1 text-xs text-muted-foreground">目标域名</p>
+					<p class="text-sm font-medium break-all">{targetHost}</p>
+				</div>
+				<div class="rounded-md border bg-muted/30 px-3 py-2">
+					<p class="mb-1 text-xs text-muted-foreground">完整 URL</p>
+					<p class="text-sm break-all">{target}</p>
+				</div>
+			</CardContent>
+			<CardFooter class="flex justify-end gap-2">
+				<Button variant="outline" onclick={cancel}>取消</Button>
+				<Button onclick={confirm}>
+					<Icon icon="mdi:open-in-new" class="size-4" />
+					继续访问
+				</Button>
+			</CardFooter>
+		</Card>
+	</div>
+{/if}

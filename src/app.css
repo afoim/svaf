@@ -129,7 +129,7 @@
 
 	/* Shiki 双主题代码高亮（rehype-pretty-code / 论坛运行时 shiki 共用） */
 	.prose pre {
-		background-color: var(--shiki-light-bg);
+		background-color: var(--shiki-light-bg) !important;
 		color: var(--shiki-light);
 	}
 	.prose pre span {
@@ -137,7 +137,7 @@
 	}
 	@media (prefers-color-scheme: dark) {
 		.prose pre {
-			background-color: var(--shiki-dark-bg);
+			background-color: var(--shiki-dark-bg) !important;
 			color: var(--shiki-dark);
 		}
 		.prose pre span {
@@ -148,5 +148,6 @@
 		background-color: transparent;
 		padding: 0;
 		font-family: inherit;
+		color: inherit;
 	}
 }

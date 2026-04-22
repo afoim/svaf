@@ -5,6 +5,7 @@
 	import { onMount } from 'svelte';
 	import { spaCache } from '$lib/utils/spaCache';
 	import PageViews from '$lib/components/PageViews.svelte';
+	import TimetableCard from '$lib/components/TimetableCard.svelte';
 	
 	let isLive = $state<boolean>(false);
 	
@@ -104,7 +105,7 @@
 	</style>
 </svelte:head>
 
-<div class="flex min-h-screen flex-col items-center justify-center gap-6">
+<div class="flex min-h-screen flex-col items-center justify-center gap-6 px-4">
 	<div class="live-avatar-container">
 		{#if isLive}
 			<div class="live-ring"></div>
@@ -126,6 +127,11 @@
 		<p class="text-sm text-muted-foreground">
 			全站浏览量: <PageViews pathname="/" cacheKey="homepage-pageviews" />
 		</p>
+	</div>
+
+	<!-- 课程表卡片 -->
+	<div class="w-full max-w-md">
+		<TimetableCard />
 	</div>
 
 	<!-- 社交媒体链接 -->

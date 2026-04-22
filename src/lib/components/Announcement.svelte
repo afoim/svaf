@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Card, CardContent } from '$lib/components/ui/card';
 	import Content, { metadata as rawMetadata } from '../../content/announcement/index.md';
+	import { onMount } from 'svelte';
 
 	const metadata = (rawMetadata ?? {}) as {
 		enable?: boolean;
@@ -34,44 +35,89 @@
 	const isHappy = level === 'happy';
 	const currentIconPath = iconPathMap[level] || iconPathMap.info;
 	const currentColor = colorMap[level] || colorMap.info;
+
+	let isVisible = $state(false);
+	let shouldRender = $state(false);
+	let closeBtnRef: HTMLButtonElement | undefined = $state();
+
+	const STORAGE_KEY = 'announcement-closed';
+	const ANIMATION_DURATION = 350;
+
+	function handleClose() {
+		isVisible = false;
+		// 不再保存关闭状态到 localStorage，每次访问都会显示
+	}
+
+	onMount(() => {
+		if (!enable) return;
+
+		// 等待 Cookie 同意框消失后再显示公告
+		const checkCookieBanner = () => {
+			// 检查 Cookie 横幅是否存在
+			const cookieBanner = document.querySelector('.fixed.inset-0.z-50.bg-background\\/80');
+			if (!cookieBanner) {
+				// Cookie 横幅不存在，可以显示公告
+				shouldRender = true;
+				requestAnimationFrame(() => {
+					requestAnimationFrame(() => {
+						isVisible = true;
+					});
+				});
+			} else {
+				// Cookie 横幅还在，继续等待
+				setTimeout(checkCookieBanner, 300);
+			}
+		};
+
+		checkCookieBanner();
+	});
 </script>
 
-{#if enable}
-	<div class="flex w-full justify-center">
+{#if shouldRender}
+	<div
+		class="announcement-popup"
+		class:announcement-visible={isVisible}
+		role="alert"
+		aria-live="polite"
+	>
 		<Card
-			class={`w-full max-w-2xl ${isHappy ? 'announcement-happy' : ''}`}
+			class={`announcement-card ${isHappy ? 'announcement-happy' : ''}`}
 			style={isHappy ? '' : `border-color: ${currentColor};`}
 		>
-			<CardContent class="flex items-center gap-3">
-				<div
-					class="flex shrink-0 items-center justify-center"
-					style={isHappy ? '' : `color: ${currentColor};`}
-				>
-					{#if isHappy}
-						<span class="announcement-emoji" aria-hidden="true">🎉</span>
-					{:else}
-						<svg width="24" height="24" viewBox="0 0 16 16" aria-hidden="true">
-							<path d={currentIconPath} fill="currentColor"></path>
-						</svg>
-					{/if}
-				</div>
-				<div class="grow">
-					<div
-						class="announcement-text prose prose-neutral dark:prose-invert max-w-none text-sm md:text-base
-							prose-headings:text-foreground prose-headings:my-0
-							prose-p:text-foreground prose-p:my-0
-							prose-strong:text-foreground
-							prose-a:text-primary prose-a:underline prose-a:underline-offset-4 hover:prose-a:opacity-80
-							prose-blockquote:border-l-primary prose-blockquote:text-muted-foreground prose-blockquote:my-0
-							prose-code:bg-muted prose-code:text-foreground prose-code:rounded prose-code:px-1.5 prose-code:py-0.5 prose-code:before:content-none prose-code:after:content-none
-							prose-pre:bg-transparent prose-pre:p-0 prose-pre:text-foreground prose-pre:my-0
-							prose-hr:border-border
-							prose-ul:my-0 prose-ol:my-0 prose-li:my-0
-							prose-img:rounded-lg prose-img:my-0"
-						style={isHappy ? '' : `color: ${currentColor};`}
+			<CardContent class="relative px-4 py-2">
+				<div class="flex items-center gap-3">
+					<button
+						bind:this={closeBtnRef}
+						type="button"
+						class="announcement-close-btn"
+						onclick={handleClose}
+						aria-label="关闭公告"
 					>
-						<Content />
+						<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+							<line x1="18" y1="6" x2="6" y2="18"></line>
+							<line x1="6" y1="6" x2="18" y2="18"></line>
+						</svg>
+					</button>
+					<div class="flex items-center gap-3 flex-1">
+					<div class="flex-1 min-w-0">
+						<div
+							class="announcement-text prose prose-neutral dark:prose-invert max-w-none text-sm
+								prose-headings:text-foreground prose-headings:my-0
+								prose-p:text-foreground prose-p:my-0 prose-p:leading-tight
+								prose-strong:text-foreground
+								prose-a:text-primary prose-a:underline prose-a:underline-offset-2 hover:prose-a:opacity-80
+								prose-blockquote:border-l-primary prose-blockquote:text-muted-foreground prose-blockquote:my-0
+								prose-code:bg-muted prose-code:text-foreground prose-code:rounded prose-code:px-1 prose-code:py-0.5 prose-code:before:content-none prose-code:after:content-none
+								prose-pre:bg-transparent prose-pre:p-0 prose-pre:text-foreground prose-pre:my-0
+								prose-hr:border-border
+								prose-ul:my-0 prose-ol:my-0 prose-li:my-0
+								prose-img:rounded-lg prose-img:my-0"
+							style={isHappy ? '' : `color: ${currentColor};`}
+						>
+							<Content />
+						</div>
 					</div>
+				</div>
 				</div>
 			</CardContent>
 		</Card>
@@ -79,6 +125,66 @@
 {/if}
 
 <style>
+	.announcement-popup {
+		position: fixed;
+		top: 80px;
+		left: 16px;
+		z-index: 9999;
+		max-width: 520px;
+		width: calc(100vw - 32px);
+		transform: translateX(-120%);
+		opacity: 0;
+		transition: transform 400ms cubic-bezier(0.34, 1.56, 0.64, 1), opacity 400ms ease-out;
+		pointer-events: none;
+	}
+
+	.announcement-popup.announcement-visible {
+		transform: translateX(0);
+		opacity: 1;
+		pointer-events: auto;
+	}
+
+	.announcement-card {
+		box-shadow: 0 20px 60px -15px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.05);
+		border-radius: 12px;
+		overflow: hidden;
+		background: hsl(var(--card));
+		opacity: 1;
+	}
+
+	.announcement-close-btn {
+		flex-shrink: 0;
+		min-width: 32px;
+		min-height: 20px;
+		width: 32px;
+		height: 20px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: hsl(var(--muted) / 0.5);
+		border: none;
+		border-radius: 4px;
+		cursor: pointer;
+		color: hsl(var(--muted-foreground));
+		transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+		z-index: 2;
+	}
+
+	.announcement-close-btn:hover {
+		background: hsl(var(--muted));
+		color: hsl(var(--foreground));
+		transform: scale(1.05);
+	}
+
+	.announcement-close-btn:focus-visible {
+		outline: 2px solid hsl(var(--ring));
+		outline-offset: 2px;
+	}
+
+	.announcement-close-btn:active {
+		transform: scale(0.95);
+	}
+
 	@keyframes rainbow-flow {
 		0% {
 			background-position: 0% 50%;
@@ -121,7 +227,7 @@
 	}
 
 	.announcement-emoji {
-		font-size: 1.5rem;
+		font-size: 1.25rem;
 		line-height: 1;
 	}
 
@@ -136,5 +242,59 @@
 		background-clip: text;
 		color: transparent;
 		animation: rainbow-flow 3s linear infinite;
+	}
+
+	/* 平板端：≤768px */
+	@media (max-width: 768px) {
+		.announcement-popup {
+			top: 60px;
+			max-width: 460px;
+		}
+
+		.announcement-card {
+			background: hsl(var(--card));
+			opacity: 1;
+		}
+
+		.announcement-text {
+			font-size: 0.875rem !important;
+		}
+
+		.announcement-text :global(p),
+		.announcement-text :global(strong),
+		.announcement-text :global(a) {
+			font-size: 0.875rem !important;
+			line-height: 1.3 !important;
+		}
+	}
+
+	/* 手机端：≤480px */
+	@media (max-width: 480px) {
+		.announcement-popup {
+			top: 35px;
+			left: 8px;
+			max-width: 380px;
+			width: calc(100vw - 16px);
+		}
+
+		.announcement-card {
+			background: hsl(var(--card));
+			opacity: 1;
+		}
+
+		.announcement-emoji {
+			display: none;
+		}
+
+		.announcement-text {
+			font-size: 0.8125rem !important;
+		}
+
+		.announcement-text :global(p),
+		.announcement-text :global(strong),
+		.announcement-text :global(a) {
+			font-size: 0.8125rem !important;
+			line-height: 1.3 !important;
+		}
 	}
 </style>

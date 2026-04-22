@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
-	import { Input } from '$lib/components/ui/input';
+	import { SearchInput } from '$lib/components/ui/search-input';
 	import { Checkbox } from '$lib/components/ui/checkbox';
 	import { Badge } from '$lib/components/ui/badge';
 	import * as Card from '$lib/components/ui/card';
@@ -221,6 +221,69 @@
 	});
 </script>
 
+<style>
+	.search-filter-label {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.5rem 1rem;
+		border-radius: 0.75rem;
+		cursor: pointer;
+		transition: all 0.2s ease-out;
+		background-color: color-mix(in oklch, var(--muted) 40%, transparent);
+		border: 1px solid color-mix(in oklch, var(--border) 50%, transparent);
+	}
+	
+	.search-filter-label:hover {
+		background-color: color-mix(in oklch, var(--muted) 70%, transparent);
+		border-color: var(--border);
+	}
+	
+	.search-filter-label:active {
+		transform: scale(0.98);
+	}
+	
+	.search-filter-label:has(:global([data-state="checked"])) {
+		background-color: color-mix(in oklch, var(--primary) 10%, transparent);
+		border-color: color-mix(in oklch, var(--primary) 40%, transparent);
+	}
+	
+	.search-filter-label:has(:global([data-state="checked"])):hover {
+		background-color: color-mix(in oklch, var(--primary) 15%, transparent);
+		border-color: color-mix(in oklch, var(--primary) 60%, transparent);
+	}
+	
+	.search-filter-label:focus-within {
+		outline: 2px solid color-mix(in oklch, var(--ring) 30%, transparent);
+		outline-offset: 2px;
+	}
+	
+	.search-filter-text {
+		font-size: 0.875rem;
+		font-weight: 500;
+		color: color-mix(in oklch, var(--foreground) 70%, transparent);
+		transition: color 0.2s;
+		user-select: none;
+	}
+	
+	.search-filter-label:hover .search-filter-text {
+		color: color-mix(in oklch, var(--foreground) 90%, transparent);
+	}
+	
+	.search-filter-label:has(:global([data-state="checked"])) .search-filter-text {
+		color: var(--primary);
+		font-weight: 600;
+	}
+	
+	@media (max-width: 640px) {
+		.search-filter-label {
+			padding: 0.5rem 0.75rem;
+			font-size: 0.75rem;
+			gap: 0.5rem;
+		}
+	}
+</style>
+
 <svelte:head>
 	<title>文章列表 - {siteConfig.title}</title>
 	<meta name="description" content="浏览所有文章" />
@@ -238,43 +301,51 @@
 	</div>
 
 	<div class="mb-8">
-		<Input
-			type="text"
+		<SearchInput
 			bind:value={searchQuery}
 			onfocus={loadRSS}
 			placeholder="搜索文章标题、描述或内容..."
+			{isLoading}
 			class="w-full"
 		/>
 		
-		<div class="mt-3 flex flex-wrap gap-4">
-			<label class="flex items-center gap-2 cursor-pointer">
+		<div class="mt-6 flex flex-wrap items-center gap-3">
+			<span class="text-sm font-medium text-foreground/80">搜索范围：</span>
+			<label class="search-filter-label group">
 				<Checkbox bind:checked={searchFilters.title} />
-				<span class="text-sm">标题</span>
+				<span class="search-filter-text">标题</span>
 			</label>
-			<label class="flex items-center gap-2 cursor-pointer">
+			<label class="search-filter-label group">
 				<Checkbox bind:checked={searchFilters.description} />
-				<span class="text-sm">简介</span>
+				<span class="search-filter-text">简介</span>
 			</label>
-			<label class="flex items-center gap-2 cursor-pointer">
+			<label class="search-filter-label group">
 				<Checkbox bind:checked={searchFilters.content} />
-				<span class="text-sm">正文</span>
+				<span class="search-filter-text">正文</span>
 			</label>
-			<label class="flex items-center gap-2 cursor-pointer">
+			<label class="search-filter-label group">
 				<Checkbox bind:checked={searchFilters.path} />
-				<span class="text-sm">路径</span>
+				<span class="search-filter-text">路径</span>
 			</label>
 		</div>
 		
 		{#if searchQuery}
-			<div class="mt-2 min-h-[20px]">
+			<div class="mt-3 min-h-[24px] transition-all duration-200">
 				{#if !hasAnyFilter}
-					<p class="text-sm text-red-500">你什么都不选怎么搜啊喂！</p>
-				{:else if isLoading}
-					<p class="text-sm text-muted-foreground">搜索中...</p>
+					<div class="flex items-center gap-2 text-sm text-destructive">
+						<Icon icon="mdi:alert-circle-outline" class="h-4 w-4" />
+						<span>请至少选择一个搜索范围</span>
+					</div>
 				{:else if filteredPostsWithMatches().length === 0}
-					<p class="text-sm text-muted-foreground">未找到匹配的文章</p>
+					<div class="flex items-center gap-2 text-sm text-muted-foreground">
+						<Icon icon="mdi:file-search-outline" class="h-4 w-4" />
+						<span>未找到匹配「{searchQuery}」的文章，试试其他关键词？</span>
+					</div>
 				{:else}
-					<p class="text-sm text-muted-foreground">找到 {filteredPostsWithMatches().length} 篇文章</p>
+					<div class="flex items-center gap-2 text-sm text-muted-foreground">
+						<Icon icon="mdi:check-circle-outline" class="h-4 w-4 text-primary" />
+						<span>找到 <strong class="text-foreground">{filteredPostsWithMatches().length}</strong> 篇相关文章</span>
+					</div>
 				{/if}
 			</div>
 		{/if}

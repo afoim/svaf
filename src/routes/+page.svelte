@@ -59,20 +59,29 @@
 		}
 		
 		.live-avatar-container {
-			position: relative;
-			display: inline-block;
-		}
-		
-		.live-ring {
-			position: absolute;
-			top: -4px;
-			left: -4px;
-			right: -4px;
-			bottom: -4px;
-			border: 3px solid #ff2d55;
-			border-radius: 50%;
-			animation: live-ring 1.5s ease-out infinite;
-		}
+		position: relative;
+		display: inline-block;
+		width: min(8rem, calc(100vw - 2rem));
+		height: min(8rem, calc(100vw - 2rem));
+	}
+	
+	.live-avatar-container img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+	
+	.live-ring {
+		position: absolute;
+		top: -4px;
+		left: -4px;
+		right: -4px;
+		bottom: -4px;
+		border: 3px solid #ff2d55;
+		border-radius: 50%;
+		animation: live-ring 1.5s ease-out infinite;
+		pointer-events: none;
+	}
 		
 		.live-ring:nth-child(2) {
 			animation-delay: 0.5s;
@@ -109,7 +118,7 @@
 	</style>
 </svelte:head>
 
-<div class="flex min-h-screen flex-col items-center justify-center gap-6 px-4">
+<div class="flex min-h-screen flex-col items-center justify-center gap-6 px-4 pt-48">
 	<Announcement />
 
 	<div class="live-avatar-container">
@@ -118,7 +127,7 @@
 			<div class="live-ring"></div>
 			<div class="live-ring"></div>
 		{/if}
-		<img src={siteConfig.bio.avatar} alt="Avatar" class="h-32 w-32 rounded-full" />
+		<img src={siteConfig.bio.avatar} alt="Avatar" class="rounded-full" />
 		{#if isLive}
 			<div class="live-badge">
 				<div class="live-dot"></div>

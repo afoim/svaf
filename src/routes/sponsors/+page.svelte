@@ -6,7 +6,7 @@
 
 	interface Sponsor {
 		name: string;
-		avatar: string;
+		avatar: string | null;
 		date: string;
 		amount: string;
 	}

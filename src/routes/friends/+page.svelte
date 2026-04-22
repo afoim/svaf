@@ -6,9 +6,12 @@
 
 	interface Friend {
 		name: string;
-		avatar: string;
-		description: string;
+		avatar: string | null;
+		description?: string;
 		url: string;
+		vip?: boolean;
+		backlink?: string;
+		introduction?: string;
 	}
 
 	let friends = $state<Friend[]>(staticData.friends);
@@ -95,7 +98,7 @@
 								<div class="flex-1 overflow-hidden">
 									<div class="mb-1 truncate font-semibold">{friend.name}</div>
 									<div class="line-clamp-2 text-sm text-muted-foreground">
-										{friend.description}
+										{friend.description || '暂无描述'}
 									</div>
 								</div>
 							</CardContent>

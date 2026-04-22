@@ -7,8 +7,7 @@
 		Select,
 		SelectContent,
 		SelectItem,
-		SelectTrigger,
-		SelectValue
+		SelectTrigger
 	} from '$lib/components/ui/select';
 	import { Alert, AlertDescription } from '$lib/components/ui/alert';
 	import Icon from '@iconify/svelte';
@@ -319,7 +318,7 @@
 					disabled={categoriesLoading}
 				>
 					<SelectTrigger class="lg:w-40">
-						<SelectValue placeholder="全部分类">{categoryDisplay}</SelectValue>
+						{categoryDisplay}
 					</SelectTrigger>
 					<SelectContent>
 						<SelectItem value="">全部分类</SelectItem>
@@ -331,7 +330,7 @@
 
 				<Select type="single" value={sort} onValueChange={(v) => changeSort(v ?? 'latest')}>
 					<SelectTrigger class="lg:w-36">
-						<SelectValue>{sortLabelMap[sort] || '最新发布'}</SelectValue>
+						{sortLabelMap[sort] || '最新发布'}
 					</SelectTrigger>
 					<SelectContent>
 						{#each Object.entries(sortLabelMap) as [k, v] (k)}

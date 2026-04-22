@@ -55,9 +55,19 @@
 						</svg>
 					{/if}
 				</div>
-				<div class="grow text-center">
+				<div class="grow">
 					<div
-						class="announcement-text text-sm font-bold md:text-base"
+						class="announcement-text prose prose-neutral dark:prose-invert max-w-none text-sm md:text-base
+							prose-headings:text-foreground prose-headings:my-0
+							prose-p:text-foreground prose-p:my-0
+							prose-strong:text-foreground
+							prose-a:text-primary prose-a:underline prose-a:underline-offset-4 hover:prose-a:opacity-80
+							prose-blockquote:border-l-primary prose-blockquote:text-muted-foreground prose-blockquote:my-0
+							prose-code:bg-muted prose-code:text-foreground prose-code:rounded prose-code:px-1.5 prose-code:py-0.5 prose-code:before:content-none prose-code:after:content-none
+							prose-pre:bg-transparent prose-pre:p-0 prose-pre:text-foreground prose-pre:my-0
+							prose-hr:border-border
+							prose-ul:my-0 prose-ol:my-0 prose-li:my-0
+							prose-img:rounded-lg prose-img:my-0"
 						style={isHappy ? '' : `color: ${currentColor};`}
 					>
 						<Content />
@@ -117,5 +127,14 @@
 
 	.announcement-text :global(p) {
 		margin: 0;
+	}
+
+	:global(.announcement-happy) .announcement-text :global(*) {
+		background: var(--notice-gradient);
+		background-size: 200% 100%;
+		-webkit-background-clip: text;
+		background-clip: text;
+		color: transparent;
+		animation: rainbow-flow 3s linear infinite;
 	}
 </style>

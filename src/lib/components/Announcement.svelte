@@ -1,6 +1,12 @@
 <script lang="ts">
-	import { siteConfig } from '$lib/config/site';
 	import { Card, CardContent } from '$lib/components/ui/card';
+	import announcementModule from '../../content/announcement/index.md';
+
+	const Content = (announcementModule as any).default;
+	const metadata = ((announcementModule as any).metadata ?? {}) as {
+		enable?: boolean;
+		level?: 'info' | 'note' | 'tip' | 'important' | 'warning' | 'caution' | 'happy';
+	};
 
 	const iconPathMap: Record<string, string> = {
 		info: 'M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0Zm0 1.5a6.5 6.5 0 1 1 0 13 6.5 6.5 0 0 1 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z',
@@ -24,10 +30,8 @@
 		important: '#8250df'
 	};
 
-	const announcement = siteConfig.announcement;
-	const enable = announcement?.enable ?? false;
-	const level = announcement?.level ?? 'info';
-	const content = announcement?.content ?? '';
+	const enable = metadata.enable ?? false;
+	const level = metadata.level ?? 'info';
 	const isHappy = level === 'happy';
 	const currentIconPath = iconPathMap[level] || iconPathMap.info;
 	const currentColor = colorMap[level] || colorMap.info;
@@ -39,8 +43,11 @@
 			class={`w-full max-w-2xl ${isHappy ? 'announcement-happy' : ''}`}
 			style={isHappy ? '' : `border-color: ${currentColor};`}
 		>
-			<CardContent class="flex items-center gap-3 text-center">
-				<div class="flex shrink-0 items-center justify-center" style={isHappy ? '' : `color: ${currentColor};`}>
+			<CardContent class="flex items-center gap-3">
+				<div
+					class="flex shrink-0 items-center justify-center"
+					style={isHappy ? '' : `color: ${currentColor};`}
+				>
 					{#if isHappy}
 						<span class="announcement-emoji" aria-hidden="true">🎉</span>
 					{:else}
@@ -54,7 +61,7 @@
 						class="announcement-text text-sm font-bold md:text-base"
 						style={isHappy ? '' : `color: ${currentColor};`}
 					>
-						{@html content}
+						<Content />
 					</div>
 				</div>
 			</CardContent>
@@ -107,5 +114,9 @@
 	.announcement-emoji {
 		font-size: 1.5rem;
 		line-height: 1;
+	}
+
+	.announcement-text :global(p) {
+		margin: 0;
 	}
 </style>

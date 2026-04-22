@@ -207,6 +207,13 @@
 			</Button>
 		</a>
 		
+		<a href="/nat">
+			<Button variant="outline" class="flex items-center gap-2">
+				<Icon icon="mdi:lan-check" class="w-5 h-5" />
+				NAT 检测
+			</Button>
+		</a>
+		
 		<a href="/friends">
 			<Button variant="outline" class="flex items-center gap-2">
 				<Icon icon="mdi:link-variant" class="w-5 h-5" />

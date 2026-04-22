@@ -277,8 +277,6 @@
 				</Select>
 			</div>
 
-			<CommentList {comments} loading={commentsLoading} />
-
 			{#if $forumAuth.token}
 				<Card class="p-4 md:p-5 space-y-3">
 					<div class="flex items-center gap-2 text-sm font-medium">
@@ -320,6 +318,8 @@
 					</AlertDescription>
 				</Alert>
 			{/if}
+
+			<CommentList {comments} loading={commentsLoading} />
 		</section>
 	{/if}
 </div>

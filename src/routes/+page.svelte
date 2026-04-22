@@ -9,6 +9,7 @@
 	import PageViews from '$lib/components/PageViews.svelte';
 	import TimetableCard from '$lib/components/TimetableCard.svelte';
 	import SponsorBanners from '$lib/components/SponsorBanners.svelte';
+	import Announcement from '$lib/components/Announcement.svelte';
 	
 	let isLive = $state<boolean>(false);
 	
@@ -109,6 +110,8 @@
 </svelte:head>
 
 <div class="flex min-h-screen flex-col items-center justify-center gap-6 px-4">
+	<Announcement />
+
 	<div class="live-avatar-container">
 		{#if isLive}
 			<div class="live-ring"></div>

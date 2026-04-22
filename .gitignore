@@ -77,3 +77,6 @@ coverage/
 
 # 内部交换
 demo
+
+# Obsidian
+src/content/.Obsidian

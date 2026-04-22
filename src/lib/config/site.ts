@@ -45,6 +45,13 @@ export const siteConfig = {
 	},
 	links: {
 		github: 'https://github.com/yourusername/svaf'
+	},
+	announcement: {
+		enable: true,
+		// 可选: info | note | tip | important | warning | caution | happy
+		level: 'happy' as 'info' | 'note' | 'tip' | 'important' | 'warning' | 'caution' | 'happy',
+		// 支持 HTML
+		content: '欢迎来到《二叉树树》官方网站！'
 	}
 };
 

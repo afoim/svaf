@@ -25,7 +25,7 @@ const content = `---
 title: ${name}
 published: ${date}
 description: 
-image: 
+image: 0
 draft: false
 ---
 `;

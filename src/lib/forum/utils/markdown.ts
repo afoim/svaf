@@ -24,7 +24,7 @@ function applyExternalLinkTarget(html: string): string {
 	return tpl.innerHTML;
 }
 
-/** 同步渲染：代码块用纯 escape，无高亮（用于 SSR / 首屏占位）。 */
+/** 同步渲染：代码块用纯 escape，无高亮（用于首屏占位）。 */
 export function renderForumMarkdown(text?: string): string {
 	if (!text) return '';
 	const raw = md.render(text);
@@ -38,31 +38,29 @@ export function renderForumMarkdown(text?: string): string {
  */
 export async function renderForumMarkdownAsync(text?: string): Promise<string> {
 	if (!text) return '';
-	const tokens = md.parse(text, {});
-	// 收集所有 fence 代码块对应位置，先做占位再异步替换
+
+	// 1. 在 markdown 解析前替换所有 fenced code block 为占位段落
 	const placeholders: { marker: string; html: Promise<string> }[] = [];
-	for (const tok of tokens) {
-		if (tok.type === 'fence') {
-			const lang = (tok.info || '').trim().split(/\s+/)[0] || 'plaintext';
-			const code = tok.content;
-			const marker = `\u0000FORUM_CODE_${placeholders.length}\u0000`;
-			placeholders.push({ marker, html: highlightCodeForForum(code, lang) });
-			// 把 token 类型改成 html_block 注入占位
-			tok.type = 'html_block';
-			tok.content = marker;
-			tok.tag = '';
-			tok.info = '';
-		}
-	}
-	const renderedWithMarkers = md.renderer.render(tokens, md.options, {});
-	const safe = DOMPurify.sanitize(renderedWithMarkers, SANITIZE_OPTS) as unknown as string;
+	const FENCE_RE = /^([ \t]*)(```|~~~)([^\n`~]*)\n([\s\S]*?)\n\1\2[ \t]*$/gm;
+	const replaced = text.replace(FENCE_RE, (_m, _indent, _f, info, code) => {
+		const lang = (info || '').trim().split(/\s+/)[0] || 'plaintext';
+		const marker = `FORUMCODEBLOCK${placeholders.length}MARKER`;
+		placeholders.push({ marker, html: highlightCodeForForum(code, lang) });
+		return `\n\n${marker}\n\n`;
+	});
+
+	// 2. 正常渲染（marker 会变成 <p>marker</p>）
+	const raw = md.render(replaced);
+	const safe = DOMPurify.sanitize(raw, SANITIZE_OPTS) as unknown as string;
 	let withLinks = applyExternalLinkTarget(safe);
+
+	// 3. 等所有 shiki 完成后字符串替换
 	const resolved = await Promise.all(placeholders.map((p) => p.html));
 	for (let i = 0; i < placeholders.length; i++) {
-		// 替换占位块（DOMPurify 可能保留为 <p>marker</p>，做一次宽松替换）
 		const m = placeholders[i].marker;
-		const re = new RegExp(`(?:<p>\\s*)?${m}(?:\\s*</p>)?`, 'g');
-		withLinks = withLinks.replace(re, resolved[i]);
+		const wrapped = new RegExp(`<p>\\s*${m}\\s*</p>`, 'g');
+		const bare = new RegExp(m, 'g');
+		withLinks = withLinks.replace(wrapped, resolved[i]).replace(bare, resolved[i]);
 	}
 	return withLinks;
 }

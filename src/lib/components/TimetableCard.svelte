@@ -430,7 +430,7 @@
 
 </script>
 
-<a href="/timetable/" class="block transition-transform hover:-translate-y-0.5">
+<a href="/timetable/" class="block">
 	<Card>
 		<CardContent class="p-3 space-y-0.5">
 			{#each statusLines as line}

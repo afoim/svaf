@@ -1,22 +1,59 @@
-// highlight.js 按需加载封装
-// - 语言模块按需动态 import，避免一次打包全部语言
-// - 主题 CSS 通过 CDN <link> 注入到 head（不碰本地 CSS）
+// 通过 cdnjs 加载 highlight.js + 主题 CSS，按需加载语言 <script>
+// 不打包任何 hljs 代码到本地 bundle
 
-import type { HLJSApi } from 'highlight.js';
+const VER = '11.11.1';
+const BASE = `https://cdnjs.cloudflare.com/ajax/libs/highlight.js/${VER}`;
+const THEME_URL = `${BASE}/styles/github.min.css`;
+const CORE_URL = `${BASE}/highlight.min.js`;
 
-let hljsPromise: Promise<HLJSApi> | null = null;
-let autoLangsLoaded = false;
-const loadedLangs = new Set<string>();
+const PRELOAD_LANGS = [
+	'bash',
+	'shell',
+	'go',
+	'rust',
+	'python',
+	'json',
+	'yaml',
+	'xml',
+	'css',
+	'sql',
+	'cpp',
+	'csharp',
+	'java',
+	'php',
+	'ruby',
+	'kotlin',
+	'swift',
+	'dockerfile',
+	'ini',
+	'powershell'
+];
+
+interface HljsResult {
+	value: string;
+	language?: string;
+	relevance?: number;
+}
+interface HljsLike {
+	highlight(code: string, opts: { language: string }): HljsResult;
+	highlightAuto(code: string, languages?: string[]): HljsResult;
+	getLanguage(name: string): unknown;
+}
+declare global {
+	interface Window {
+		hljs?: HljsLike;
+	}
+}
+
+let corePromise: Promise<HljsLike> | null = null;
+let langsPromise: Promise<void> | null = null;
 let themeInjected = false;
+const loadedLangs = new Set<string>();
 
-const THEME_CDN = 'https://cdn.jsdelivr.net/npm/highlight.js@11.11.1/styles/github.min.css';
-
-// hljs 别名 → 真实模块名
 const LANG_ALIASES: Record<string, string> = {
 	js: 'javascript',
 	ts: 'typescript',
 	sh: 'bash',
-	shell: 'bash',
 	zsh: 'bash',
 	yml: 'yaml',
 	md: 'markdown',
@@ -27,152 +64,132 @@ const LANG_ALIASES: Record<string, string> = {
 	'c#': 'csharp'
 };
 
-// 自动检测时尝试的常用语言
-const AUTO_DETECT_LANGS = [
-	'javascript',
-	'typescript',
-	'json',
-	'bash',
-	'xml',
-	'css',
-	'python',
-	'go',
-	'rust',
-	'yaml',
-	'markdown',
-	'sql',
-	'cpp',
-	'csharp',
-	'java',
-	'php',
-	'ruby',
-	'kotlin',
-	'swift',
-	'dockerfile',
-	'ini'
-];
+function loadScript(src: string): Promise<void> {
+	return new Promise((resolve, reject) => {
+		if (document.querySelector(`script[data-hljs-src="${src}"]`)) {
+			resolve();
+			return;
+		}
+		const s = document.createElement('script');
+		s.src = src;
+		s.async = true;
+		s.setAttribute('data-hljs-src', src);
+		s.onload = () => {
+			console.log('[hljs] loaded script:', src);
+			resolve();
+		};
+		s.onerror = (e) => {
+			console.error('[hljs] failed script:', src, e);
+			reject(e);
+		};
+		document.head.appendChild(s);
+	});
+}
 
-function ensureThemeLink() {
-	if (themeInjected || typeof document === 'undefined') return;
-	if (document.querySelector(`link[data-hljs-theme]`)) {
+function ensureTheme() {
+	if (themeInjected) return;
+	if (document.querySelector('link[data-hljs-theme]')) {
 		themeInjected = true;
-		console.log('[hljs] theme link already present');
 		return;
 	}
 	const link = document.createElement('link');
 	link.rel = 'stylesheet';
-	link.href = THEME_CDN;
+	link.href = THEME_URL;
 	link.setAttribute('data-hljs-theme', 'github');
-	link.onload = () => console.log('[hljs] theme CSS loaded:', THEME_CDN);
-	link.onerror = (e) => console.error('[hljs] theme CSS load failed:', THEME_CDN, e);
+	link.onload = () => console.log('[hljs] theme CSS loaded');
+	link.onerror = (e) => console.error('[hljs] theme CSS failed', e);
 	document.head.appendChild(link);
 	themeInjected = true;
-	console.log('[hljs] theme link appended:', THEME_CDN);
+	console.log('[hljs] theme link appended:', THEME_URL);
 }
 
-async function getHljs(): Promise<HLJSApi> {
-	if (!hljsPromise) {
-		console.log('[hljs] loading core module...');
-		hljsPromise = import('highlight.js/lib/core').then((m) => {
-			console.log('[hljs] core module loaded');
-			return m.default;
+async function getCore(): Promise<HljsLike> {
+	if (window.hljs) return window.hljs;
+	if (!corePromise) {
+		console.log('[hljs] loading core...');
+		corePromise = loadScript(CORE_URL).then(() => {
+			if (!window.hljs) throw new Error('window.hljs not present after script load');
+			console.log('[hljs] core ready');
+			return window.hljs;
 		});
 	}
-	return hljsPromise;
+	return corePromise;
 }
 
-async function ensureLang(hljs: HLJSApi, raw: string): Promise<string | null> {
-	const name = LANG_ALIASES[raw] || raw;
-	if (loadedLangs.has(name)) return name;
-	if (hljs.getLanguage(name)) {
-		loadedLangs.add(name);
-		return name;
+async function ensureLang(name: string): Promise<boolean> {
+	const real = LANG_ALIASES[name] || name;
+	if (loadedLangs.has(real)) return true;
+	if (window.hljs?.getLanguage(real)) {
+		loadedLangs.add(real);
+		return true;
 	}
 	try {
-		const mod = await import(`highlight.js/lib/languages/${name}`);
-		hljs.registerLanguage(name, mod.default);
-		loadedLangs.add(name);
-		console.log(`[hljs] lang loaded: ${name}`);
-		return name;
-	} catch (err) {
-		console.warn(`[hljs] failed to load lang: ${name}`, err);
-		return null;
+		await loadScript(`${BASE}/languages/${real}.min.js`);
+		loadedLangs.add(real);
+		return true;
+	} catch {
+		return false;
 	}
 }
 
-async function preloadAutoDetectLangs(hljs: HLJSApi) {
-	if (autoLangsLoaded) return;
-	autoLangsLoaded = true;
-	console.log('[hljs] preloading auto-detect langs...');
-	await Promise.all(AUTO_DETECT_LANGS.map((l) => ensureLang(hljs, l)));
-	console.log(`[hljs] auto-detect langs ready (${loadedLangs.size} loaded)`);
+async function preloadLangs() {
+	if (!langsPromise) {
+		langsPromise = Promise.all(PRELOAD_LANGS.map(ensureLang)).then(() => {
+			console.log(`[hljs] preloaded ${loadedLangs.size} langs`);
+		});
+	}
+	return langsPromise;
 }
 
-/**
- * 扫描容器中所有 <pre><code> 代码块并应用 highlight.js 高亮。
- * - 若 <code class="language-xx"> 指定了语言，按指定语言高亮
- * - 否则用 highlightAuto 自动检测（限定在 AUTO_DETECT_LANGS 范围内）
- * 高亮后给 <code> 加 hljs class，由 CDN 主题 CSS 自动接管样式（含整体背景）。
- */
+/** 扫描容器内 <pre><code> 并高亮。 */
 export async function highlightCodeBlocksIn(container: HTMLElement | null | undefined) {
 	console.log('[hljs] highlightCodeBlocksIn called, container:', container);
-	if (!container) {
-		console.warn('[hljs] no container provided');
-		return;
-	}
-
-	const allPres = container.querySelectorAll('pre');
-	console.log(`[hljs] container has ${allPres.length} <pre> elements`);
+	if (!container) return;
 
 	const blocks = container.querySelectorAll<HTMLElement>('pre > code');
 	console.log(`[hljs] selector "pre > code" matched ${blocks.length} blocks`);
+	if (blocks.length === 0) return;
 
-	if (blocks.length === 0) {
-		const looseBlocks = container.querySelectorAll('pre code');
-		console.log(
-			`[hljs] fallback selector "pre code" matched ${looseBlocks.length} blocks`,
-			Array.from(looseBlocks).slice(0, 3)
-		);
-		return;
-	}
-
-	ensureThemeLink();
-	const hljs = await getHljs();
-	await preloadAutoDetectLangs(hljs);
+	ensureTheme();
+	const hljs = await getCore();
+	await preloadLangs();
 
 	let i = 0;
 	for (const code of Array.from(blocks)) {
 		i++;
-		if (code.dataset.hljsRendered === '1') {
-			console.log(`[hljs] block ${i} already rendered, skip`);
-			continue;
-		}
+		if (code.dataset.hljsRendered === '1') continue;
+
+		// 优先 className "language-xx"，其次 data-language（rehype-pretty-code 输出）
 		const cls = code.className || '';
 		const m = cls.match(/language-([\w+#-]+)/i);
-		const requested = m && m[1] ? m[1].toLowerCase() : '';
+		const requested = (m && m[1].toLowerCase()) || (code.dataset.language || '').toLowerCase();
 		const text = code.textContent || '';
 
 		try {
+			let result: HljsResult;
 			if (requested) {
-				const lang = await ensureLang(hljs, requested);
-				if (lang) {
-					const result = hljs.highlight(text, { language: lang });
-					code.innerHTML = result.value;
-					code.classList.add('hljs', `language-${lang}`);
-					console.log(`[hljs] block ${i}: highlighted as ${lang}`);
+				const ok = await ensureLang(requested);
+				const real = LANG_ALIASES[requested] || requested;
+				if (ok && hljs.getLanguage(real)) {
+					result = hljs.highlight(text, { language: real });
+					code.classList.add(`language-${real}`);
+					console.log(`[hljs] block ${i}: highlighted as ${real}`);
 				} else {
-					code.classList.add('hljs');
-					console.log(`[hljs] block ${i}: lang "${requested}" unavailable, fallback`);
+					result = hljs.highlightAuto(text, PRELOAD_LANGS);
+					if (result.language) code.classList.add(`language-${result.language}`);
+					console.log(
+						`[hljs] block ${i}: lang "${requested}" unavailable, auto-detected as ${result.language || 'unknown'}`
+					);
 				}
 			} else {
-				const result = hljs.highlightAuto(text, AUTO_DETECT_LANGS);
-				code.innerHTML = result.value;
-				code.classList.add('hljs');
+				result = hljs.highlightAuto(text, PRELOAD_LANGS);
 				if (result.language) code.classList.add(`language-${result.language}`);
 				console.log(
 					`[hljs] block ${i}: auto-detected as ${result.language || 'unknown'} (relevance ${result.relevance})`
 				);
 			}
+			code.innerHTML = result.value;
+			code.classList.add('hljs');
 			code.dataset.hljsRendered = '1';
 		} catch (err) {
 			console.error(`[hljs] block ${i}: highlight failed`, err);

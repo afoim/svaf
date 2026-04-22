@@ -149,6 +149,21 @@ export function likePost(id: string): Promise<{ liked: boolean; likeCount: numbe
 	);
 }
 
+export async function getPostLikeStatus(id: string): Promise<boolean> {
+	const result = await forumRequest<{ liked?: boolean }>(
+		`/api/posts/${id}/like-status`,
+		{ requiresAuth: true }
+	);
+	return Boolean(result.liked);
+}
+
+export async function getMyLikedPostIds(): Promise<string[]> {
+	const result = await forumRequest<Array<string | number>>('/api/user/likes', {
+		requiresAuth: true
+	});
+	return Array.isArray(result) ? result.map(String) : [];
+}
+
 interface RawMutatePostResult {
 	success?: boolean;
 	id?: string | number | null;

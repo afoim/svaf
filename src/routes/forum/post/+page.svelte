@@ -17,7 +17,7 @@
 	import CommentItem from '$lib/components/forum/CommentItem.svelte';
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
-	import { deletePost, getPost, likePost, updatePost } from '$lib/forum/api/posts';
+	import { deletePost, getPost, getPostLikeStatus, likePost, updatePost } from '$lib/forum/api/posts';
 	import { getCategories } from '$lib/forum/api/categories';
 	import { getSession } from '$lib/forum/api/auth';
 	import {
@@ -97,6 +97,7 @@
 			if (typeof document !== 'undefined' && post.title) {
 				document.title = `${post.title} - 论坛 - 二叉树树`;
 			}
+			void hydratePostLikeStatus();
 		} catch (e) {
 			console.error(e);
 			post = null;
@@ -160,6 +161,16 @@
 	function cancelCompose() {
 		composerExpanded = false;
 		commentDraft = '';
+	}
+
+	async function hydratePostLikeStatus() {
+		if (!post || !forumAuth.getToken()) return;
+		try {
+			const liked = await getPostLikeStatus(post.id);
+			if (post) post = { ...post, liked };
+		} catch {
+			// 静默
+		}
 	}
 
 	async function togglePostLike() {

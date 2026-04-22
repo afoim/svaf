@@ -147,7 +147,7 @@
 					[{ text: '### 本周课毕' }],
 					[
 						{ text: '下周首节：' },
-						{ text: nextWeekFirstCourse.courseName, bold: true, color: hexToRgba(nextWeekFirstCourse.color, 0.8) }
+						{ text: `${nextWeekFirstCourse.courseName} - ${nextWeekFirstCourse.room || '未知'}`, bold: true, color: hexToRgba(nextWeekFirstCourse.color, 0.8) }
 					],
 					[
 						{ text: '距上课还有：' },
@@ -174,7 +174,7 @@
 					[{ text: '### 今日课毕' }],
 					[
 						{ text: '翌日首节：' },
-						{ text: nextDayCourse.courseName, bold: true, color: hexToRgba(nextDayCourse.color, 0.8) }
+						{ text: `${nextDayCourse.courseName} - ${nextDayCourse.room || '未知'}`, bold: true, color: hexToRgba(nextDayCourse.color, 0.8) }
 					],
 					[
 						{ text: '距上课还有：' },
@@ -200,15 +200,15 @@
 					[{ text: '### 上课' }],
 					...(prev ? [[
 						{ text: '上节：', strikethrough: true },
-						{ text: prev.courseName, strikethrough: true, color: hexToRgba(prev.color, 0.5) }
+						{ text: `${prev.courseName} - ${prev.room || '未知'}`, strikethrough: true, color: hexToRgba(prev.color, 0.5) }
 					]] : []),
 					[
 						{ text: '本节：' },
-						{ text: current.courseName, bold: true, color: hexToRgba(current.color, 0.8) }
+						{ text: `${current.courseName} - ${current.room || '未知'}`, bold: true, color: hexToRgba(current.color, 0.8) }
 					],
 					...(next ? [[
 						{ text: '下节：' },
-						{ text: next.courseName, color: hexToRgba(next.color, 0.8) }
+						{ text: `${next.courseName} - ${next.room || '未知'}`, color: hexToRgba(next.color, 0.8) }
 					]] : []),
 					[
 						{ text: '距下课还有：' },
@@ -225,11 +225,11 @@
 					[{ text: '### 课间' }],
 					[
 						{ text: '上节：', strikethrough: true },
-						{ text: current.courseName, strikethrough: true, color: hexToRgba(current.color, 0.5) }
+						{ text: `${current.courseName} - ${current.room || '未知'}`, strikethrough: true, color: hexToRgba(current.color, 0.5) }
 					],
 					[
 						{ text: '下节：' },
-						{ text: next.courseName, bold: true, color: hexToRgba(next.color, 0.8) }
+						{ text: `${next.courseName} - ${next.room || '未知'}`, bold: true, color: hexToRgba(next.color, 0.8) }
 					],
 					[
 						{ text: '距上课还有：' },
@@ -253,7 +253,7 @@
 					[{ text: '### 今日课毕' }],
 					[
 						{ text: '翌日首节：' },
-						{ text: nextDayCourse.courseName, bold: true, color: hexToRgba(nextDayCourse.color, 0.8) }
+						{ text: `${nextDayCourse.courseName} - ${nextDayCourse.room || '未知'}`, bold: true, color: hexToRgba(nextDayCourse.color, 0.8) }
 					],
 					[
 						{ text: '距上课还有：' },
@@ -273,7 +273,7 @@
 			[{ text: '### 课前' }],
 			[
 				{ text: '首节：' },
-				{ text: firstCourse.courseName, bold: true, color: hexToRgba(firstCourse.color, 0.8) }
+				{ text: `${firstCourse.courseName} - ${firstCourse.room || '未知'}`, bold: true, color: hexToRgba(firstCourse.color, 0.8) }
 			],
 			[
 				{ text: '距上课还有：' },

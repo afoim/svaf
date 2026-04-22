@@ -275,7 +275,7 @@
 			</p>
 
 			<div class="flex flex-wrap gap-3">
-				<Button disabled title="后续阶段实现">
+				<Button href="/forum/post/new/">
 					<Icon icon="mdi:plus" class="size-4" />
 					发布帖子
 				</Button>

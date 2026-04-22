@@ -83,14 +83,6 @@
 
 		await tick();
 		loading = false;
-
-		// sentinel 仍可见时继续加载
-		if (hasMore && sentinelEl) {
-			const rect = sentinelEl.getBoundingClientRect();
-			if (rect.top < window.innerHeight + 600) {
-				loadMore(batch);
-			}
-		}
 	}
 
 	function setType(type: 'h' | 'v') {
@@ -215,7 +207,14 @@
 							alt="gallery"
 							loading="lazy"
 							decoding="async"
-							class="block h-auto w-full"
+							style="aspect-ratio: {currentType === 'h' ? '4 / 3' : '3 / 4'};"
+							onload={(e) => {
+								const img = e.currentTarget as HTMLImageElement;
+								if (img.naturalWidth && img.naturalHeight) {
+									img.style.aspectRatio = `${img.naturalWidth} / ${img.naturalHeight}`;
+								}
+							}}
+							class="block h-auto w-full bg-muted"
 						/>
 					</a>
 				{/each}

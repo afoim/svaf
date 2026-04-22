@@ -3,6 +3,11 @@
 	"private": true,
 	"version": "0.0.1",
 	"type": "module",
+	"pnpm": {
+		"onlyBuiltDependencies": [
+			"sharp"
+		]
+	},
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
@@ -28,6 +33,7 @@
 		"mdsvex": "^0.12.7",
 		"rehype-pretty-code": "^0.14.3",
 		"shadcn-svelte": "^1.2.7",
+		"sharp": "^0.34.5",
 		"svelte": "^5.55.2",
 		"svelte-check": "^4.4.6",
 		"tailwind-merge": "^3.5.0",

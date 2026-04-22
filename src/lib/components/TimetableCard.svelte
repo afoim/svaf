@@ -64,11 +64,12 @@
 		// Remove # if present
 		hex = hex.replace('#', '');
 		
-		// Handle 8-digit hex (with alpha)
+		// Handle 8-digit hex (ARGB format from Android)
 		if (hex.length === 8) {
-			const r = parseInt(hex.substring(0, 2), 16);
-			const g = parseInt(hex.substring(2, 4), 16);
-			const b = parseInt(hex.substring(4, 6), 16);
+			// Skip alpha channel (first 2 chars) and use RGB
+			const r = parseInt(hex.substring(2, 4), 16);
+			const g = parseInt(hex.substring(4, 6), 16);
+			const b = parseInt(hex.substring(6, 8), 16);
 			return `rgb(${r}, ${g}, ${b})`;
 		}
 		

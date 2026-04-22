@@ -193,6 +193,13 @@
 			</Button>
 		</a>
 		
+		<a href="/short">
+			<Button variant="outline" class="flex items-center gap-2">
+				<Icon icon="mynaui:zero-circle-solid" class="w-5 h-5" />
+				零宽短链
+			</Button>
+		</a>
+		
 		<a href="/friends">
 			<Button variant="outline" class="flex items-center gap-2">
 				<Icon icon="mdi:link-variant" class="w-5 h-5" />

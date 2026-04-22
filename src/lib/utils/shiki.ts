@@ -21,7 +21,7 @@ async function getHighlighter(): Promise<Highlighter> {
 	if (!highlighterPromise) {
 		highlighterPromise = import('shiki').then(({ createHighlighter }) =>
 			createHighlighter({
-				themes: ['github-light', 'github-dark'],
+				themes: ['github-light'],
 				langs: PRELOAD_LANGS
 			}).then((h) => {
 				for (const l of PRELOAD_LANGS) loadedLangs.add(l);
@@ -58,8 +58,7 @@ export async function highlightCodeForForum(code: string, lang?: string): Promis
 		const finalLang = loadedLangs.has(useLang) ? (useLang as BundledLanguage) : 'plaintext';
 		const html = h.codeToHtml(code, {
 			lang: finalLang,
-			themes: { light: 'github-light', dark: 'github-dark' },
-			defaultColor: false
+			theme: 'github-light'
 		});
 		return postProcessShikiHtml(html, finalLang);
 	} catch {
@@ -79,13 +78,52 @@ export async function highlightCodeForForum(code: string, lang?: string): Promis
  */
 function postProcessShikiHtml(html: string, lang: string): string {
 	let out = html;
-	// 给 <pre> 加 data-language（rehype-pretty-code 风格）
 	if (!/<pre[^>]*data-language=/.test(out)) {
 		out = out.replace(/<pre\b/, `<pre data-language="${lang}"`);
 	}
-	// 给 <code> 加 data-language（如果 shiki 没加）
 	if (!/<code[^>]*data-language=/.test(out)) {
 		out = out.replace(/<code\b/, `<code data-language="${lang}"`);
 	}
 	return out;
+}
+
+/**
+ * 扫描容器中所有 <pre><code class="language-xx"> 代码块，用 shiki 替换为双主题高亮版本。
+ * 用于：博客（mdsvex 输出原生 code 块）、论坛（已渲染的 markdown HTML）。
+ */
+export async function highlightCodeBlocksIn(container: HTMLElement | null | undefined) {
+	if (!container) return;
+	const blocks = container.querySelectorAll<HTMLElement>('pre > code');
+	if (blocks.length === 0) return;
+
+	const tasks: Promise<void>[] = [];
+	for (const code of Array.from(blocks)) {
+		const pre = code.parentElement as HTMLPreElement | null;
+		if (!pre) continue;
+		// 已经被 shiki 处理过
+		if (pre.hasAttribute('data-shiki-rendered')) continue;
+
+		// 提取语言：优先 className "language-xx"，其次 data-language
+		const cls = code.className || '';
+		const m = cls.match(/language-([\w-]+)/i);
+		const lang =
+			(m && m[1]) ||
+			code.getAttribute('data-language') ||
+			pre.getAttribute('data-language') ||
+			'plaintext';
+
+		const text = code.textContent || '';
+		tasks.push(
+			highlightCodeForForum(text, lang).then((html) => {
+				const tpl = document.createElement('template');
+				tpl.innerHTML = html.trim();
+				const newPre = tpl.content.firstElementChild as HTMLElement | null;
+				if (newPre) {
+					newPre.setAttribute('data-shiki-rendered', '');
+					pre.replaceWith(newPre);
+				}
+			})
+		);
+	}
+	await Promise.all(tasks);
 }

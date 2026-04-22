@@ -1,6 +1,6 @@
 import MarkdownIt from 'markdown-it';
 import DOMPurify from 'dompurify';
-import { highlightCodeForForum } from './shiki';
+import { highlightCodeForForum } from '$lib/utils/shiki';
 
 const md = new MarkdownIt({ html: false, linkify: true, breaks: true });
 

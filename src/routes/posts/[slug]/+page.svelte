@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount, tick } from 'svelte';
 	import { Button } from '$lib/components/ui/button';
 	import { Badge } from '$lib/components/ui/badge';
 	import { siteConfig } from '$lib/config/site';
@@ -6,9 +7,12 @@
 	import Giscus from '$lib/components/Giscus.svelte';
 	import PageViews from '$lib/components/PageViews.svelte';
 	import MermaidRenderer from '$lib/components/MermaidRenderer.svelte';
+	import { highlightCodeBlocksIn } from '$lib/utils/shiki';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
+
+	let proseEl: HTMLDivElement | undefined = $state();
 
 	function formatDate(dateString: string) {
 		const date = new Date(dateString);
@@ -18,6 +22,11 @@
 			day: 'numeric'
 		});
 	}
+
+	onMount(async () => {
+		await tick();
+		highlightCodeBlocksIn(proseEl);
+	});
 </script>
 
 <svelte:head>
@@ -74,6 +83,7 @@
 
 	<!-- 文章内容 - 使用 mdsvex 组件 -->
 	<div
+		bind:this={proseEl}
 		class="prose prose-neutral dark:prose-invert max-w-none
 			prose-headings:text-foreground
 			prose-p:text-foreground

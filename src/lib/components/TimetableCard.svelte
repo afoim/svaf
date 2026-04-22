@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { Card, CardContent } from '$lib/components/ui/card';
 	import { onMount, onDestroy } from 'svelte';
 
 	interface TimetableCourseView {
@@ -431,32 +430,32 @@
 </script>
 
 <a href="/timetable/" class="block">
-	<Card>
-		<CardContent class="p-3 space-y-0.5">
-			{#each statusLines as line}
-				<p class="text-xs leading-relaxed">
-					{#each line as segment}
-						{#if segment.text.startsWith('###')}
-							<span
-								class="text-sm font-bold transition-colors"
-								style="color: {segment.color || 'inherit'}"
-							>
-								{segment.text.replace('###', '').trim()}
-							</span>
-						{:else}
-							<span
-								class="transition-colors"
-								class:font-bold={segment.bold}
-								class:line-through={segment.strikethrough}
-								class:opacity-60={segment.strikethrough}
-								style="color: {segment.color || 'inherit'}"
-							>
-								{segment.text}
-							</span>
-						{/if}
-					{/each}
-				</p>
-			{/each}
-		</CardContent>
-	</Card>
+	<div
+		class="ring-foreground/10 bg-card text-card-foreground overflow-hidden rounded-2xl text-sm ring-1 p-3 space-y-0.5"
+	>
+		{#each statusLines as line}
+			<p class="text-xs leading-relaxed">
+				{#each line as segment}
+					{#if segment.text.startsWith('###')}
+						<span
+							class="text-sm font-bold transition-colors"
+							style="color: {segment.color || 'inherit'}"
+						>
+							{segment.text.replace('###', '').trim()}
+						</span>
+					{:else}
+						<span
+							class="transition-colors"
+							class:font-bold={segment.bold}
+							class:line-through={segment.strikethrough}
+							class:opacity-60={segment.strikethrough}
+							style="color: {segment.color || 'inherit'}"
+						>
+							{segment.text}
+						</span>
+					{/if}
+				{/each}
+			</p>
+		{/each}
+	</div>
 </a>

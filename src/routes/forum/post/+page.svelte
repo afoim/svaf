@@ -429,22 +429,6 @@
 		</article>
 
 		<section class="space-y-3">
-			<div class="flex items-center justify-between">
-				<h2 class="text-sm text-muted-foreground">评论排序</h2>
-				<Select
-					type="single"
-					value={commentSort}
-					onValueChange={(v) => changeCommentSort(v ?? 'hot')}
-				>
-					<SelectTrigger class="w-28">{sortLabels[commentSort] || '最热'}</SelectTrigger>
-					<SelectContent>
-						{#each Object.entries(sortLabels) as [k, v] (k)}
-							<SelectItem value={k}>{v}</SelectItem>
-						{/each}
-					</SelectContent>
-				</Select>
-			</div>
-
 			{#if $forumAuth.token}
 				<Card class="p-4 md:p-5 space-y-3">
 					<div class="flex items-center gap-2 text-sm font-medium">
@@ -487,6 +471,22 @@
 					</AlertDescription>
 				</Alert>
 			{/if}
+
+			<div class="flex items-center justify-end gap-2">
+				<span class="text-sm text-muted-foreground">排序</span>
+				<Select
+					type="single"
+					value={commentSort}
+					onValueChange={(v) => changeCommentSort(v ?? 'hot')}
+				>
+					<SelectTrigger class="w-28">{sortLabels[commentSort] || '最热'}</SelectTrigger>
+					<SelectContent>
+						{#each Object.entries(sortLabels) as [k, v] (k)}
+							<SelectItem value={k}>{v}</SelectItem>
+						{/each}
+					</SelectContent>
+				</Select>
+			</div>
 
 			<CommentList {comments} loading={commentsLoading} onDeleted={loadComments} />
 		</section>

@@ -1,11 +1,24 @@
 <script lang="ts">
+	import { tick } from 'svelte';
 	import { renderForumMarkdown } from '$lib/forum/utils/markdown';
+	import { highlightCodeBlocksIn } from '$lib/utils/highlight';
 
 	let { content = '' }: { content?: string } = $props();
 	let html = $derived(renderForumMarkdown(content));
+	let proseEl: HTMLDivElement | undefined = $state();
+
+	$effect(() => {
+		// 内容变化后等 DOM 更新再高亮
+		html;
+		(async () => {
+			await tick();
+			highlightCodeBlocksIn(proseEl);
+		})();
+	});
 </script>
 
 <div
+	bind:this={proseEl}
 	class="prose prose-neutral dark:prose-invert max-w-none
 		prose-headings:text-foreground
 		prose-p:text-foreground

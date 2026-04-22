@@ -106,36 +106,3 @@
 
 <!-- 图片查看器 -->
 <ImageViewer />
-
-<style>
-	/* rehype-pretty-code 使用 CSS 变量实现主题切换 */
-	:global(.prose pre) {
-		background-color: var(--shiki-light-bg);
-		color: var(--shiki-light);
-	}
-
-	@media (prefers-color-scheme: dark) {
-		:global(.prose pre) {
-			background-color: var(--shiki-dark-bg);
-			color: var(--shiki-dark);
-		}
-	}
-
-	/* 应用 shiki 的颜色变量到每个 span */
-	:global(.prose pre span) {
-		color: var(--shiki-light);
-	}
-
-	@media (prefers-color-scheme: dark) {
-		:global(.prose pre span) {
-			color: var(--shiki-dark);
-		}
-	}
-
-	/* 代码块内 code 元素去除 prose 默认背景与边距 */
-	:global(.prose pre code) {
-		background-color: transparent;
-		padding: 0;
-		font-family: inherit;
-	}
-</style>

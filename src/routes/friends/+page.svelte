@@ -2,8 +2,7 @@
 	import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '$lib/components/ui/card';
 	import * as Pagination from '$lib/components/ui/pagination';
 	import Icon from '@iconify/svelte';
-	import { onMount } from 'svelte';
-	import { spaCache } from '$lib/utils/spaCache';
+	import { staticData } from '$lib/data/static-data';
 
 	interface Friend {
 		name: string;
@@ -12,7 +11,7 @@
 		url: string;
 	}
 
-	let friends = $state<Friend[]>([]);
+	let friends = $state<Friend[]>(staticData.friends);
 	let currentPage = $state(1);
 	const itemsPerPage = 12;
 
@@ -20,16 +19,6 @@
 	let paginatedFriends = $derived(
 		friends.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
 	);
-
-	onMount(async () => {
-		friends = await spaCache.get('friends-list', async () => {
-			const response = await fetch('/api/friends');
-			if (response.ok) {
-				return await response.json();
-			}
-			return [];
-		});
-	});
 </script>
 
 <svelte:head>

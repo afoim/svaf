@@ -2,8 +2,7 @@
 	import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '$lib/components/ui/card';
 	import { Tabs, TabsContent, TabsList, TabsTrigger } from '$lib/components/ui/tabs';
 	import Icon from '@iconify/svelte';
-	import { onMount } from 'svelte';
-	import { spaCache } from '$lib/utils/spaCache';
+	import { staticData } from '$lib/data/static-data';
 
 	interface Sponsor {
 		name: string;
@@ -12,17 +11,7 @@
 		amount: string;
 	}
 
-	let sponsors = $state<Sponsor[]>([]);
-
-	onMount(async () => {
-		sponsors = await spaCache.get('sponsors-list', async () => {
-			const response = await fetch('/api/sponsors');
-			if (response.ok) {
-				return await response.json();
-			}
-			return [];
-		});
-	});
+	let sponsors = $state<Sponsor[]>(staticData.sponsors);
 </script>
 
 <svelte:head>

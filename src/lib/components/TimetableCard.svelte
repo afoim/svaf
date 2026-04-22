@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Card, CardContent } from '$lib/components/ui/card';
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 
 	interface TimetableCourseView {
 		courseId: number;
@@ -29,8 +29,34 @@
 		bold?: boolean;
 	}
 
-	let statusLines = $state<StatusLine[][]>([]);
-	let isVisible = $state<boolean>(true);
+	// 全局会话状态存储
+	const TIMETABLE_STATE_KEY = '__timetable_card_state__';
+	
+	interface GlobalState {
+		payload: TimetablePayload | null;
+		statusLines: StatusLine[][];
+		intervalId: number | null;
+	}
+
+	// 从全局状态获取或初始化
+	function getGlobalState(): GlobalState {
+		if (typeof window === 'undefined') {
+			return { payload: null, statusLines: [], intervalId: null };
+		}
+		
+		if (!(window as any)[TIMETABLE_STATE_KEY]) {
+			(window as any)[TIMETABLE_STATE_KEY] = {
+				payload: null,
+				statusLines: [],
+				intervalId: null
+			};
+		}
+		
+		return (window as any)[TIMETABLE_STATE_KEY];
+	}
+
+	const globalState = getGlobalState();
+	let statusLines = $state<StatusLine[][]>(globalState.statusLines);
 
 	function hexToRgba(hex: string, alpha: number = 1): string {
 		// Remove # if present
@@ -287,9 +313,9 @@
 		const lines = (await response.text()).split('\n');
 		
 		// Parse the JSON lines
-		const config = JSON.parse(lines[0]);
+		JSON.parse(lines[0]); // config
 		const nodeTimes = JSON.parse(lines[1]);
-		const meta = JSON.parse(lines[2]);
+		JSON.parse(lines[2]); // meta
 		const courseDefinitions = JSON.parse(lines[3]);
 		const arrangements = JSON.parse(lines[4]);
 
@@ -337,25 +363,45 @@
 	}
 
 	function updateStatus(payload: TimetablePayload) {
-		statusLines = resolveLiveState(payload);
+		const newStatusLines = resolveLiveState(payload);
+		statusLines = newStatusLines;
+		globalState.statusLines = newStatusLines;
 	}
 
-	onMount(async () => {
-		try {
-			const payload = await loadTimetableData();
-			updateStatus(payload);
-
-			// Update every second for accurate countdown
-			const interval = setInterval(() => {
-				updateStatus(payload);
-			}, 1000);
-
-			return () => clearInterval(interval);
-		} catch (error) {
-			console.error('Failed to load timetable:', error);
-			statusLines = [[{ text: '### 加载失败' }]];
+	onMount(() => {
+		const state = getGlobalState();
+		
+		// 如果已经有数据，直接使用
+		if (state.payload) {
+			updateStatus(state.payload);
+			return;
 		}
+
+		// 首次加载数据
+		loadTimetableData()
+			.then((payload) => {
+				state.payload = payload;
+				updateStatus(payload);
+
+				// 启动定时器（全局唯一）
+				if (state.intervalId === null) {
+					state.intervalId = window.setInterval(() => {
+						if (state.payload) {
+							updateStatus(state.payload);
+						}
+					}, 1000);
+				}
+			})
+			.catch((error) => {
+				console.error('Failed to load timetable:', error);
+				const errorLines = [[{ text: '### 加载失败' }]];
+				statusLines = errorLines;
+				state.statusLines = errorLines;
+			});
 	});
+
+	// 组件销毁时不清理全局状态和定时器，保持会话持久化
+
 </script>
 
 <a href="/timetable/" class="block transition-transform hover:-translate-y-0.5">

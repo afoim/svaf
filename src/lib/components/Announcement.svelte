@@ -1,9 +1,8 @@
 <script lang="ts">
 	import { Card, CardContent } from '$lib/components/ui/card';
-	import announcementModule from '../../content/announcement/index.md';
+	import Content, { metadata as rawMetadata } from '../../content/announcement/index.md';
 
-	const Content = (announcementModule as any).default;
-	const metadata = ((announcementModule as any).metadata ?? {}) as {
+	const metadata = (rawMetadata ?? {}) as {
 		enable?: boolean;
 		level?: 'info' | 'note' | 'tip' | 'important' | 'warning' | 'caution' | 'happy';
 	};

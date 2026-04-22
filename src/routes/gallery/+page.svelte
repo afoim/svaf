@@ -11,19 +11,75 @@
 	const COUNT_JSON_URL = 'https://p.2x.nz/count.json';
 	const DOMAIN = 'https://p.2x.nz';
 	const FALLBACK = { h: 1074, v: 4003 };
+	const DEFAULT_RATIO_H = 4 / 3; // width / height
+	const DEFAULT_RATIO_V = 3 / 4;
 
 	let counts = $state<{ h: number; v: number }>({ h: 0, v: 0 });
 	let currentType = $state<'h' | 'v'>('h');
 	let isReverse = $state(false);
 	let nextIndex = $state(1);
 	let loading = $state(false);
-	let urls = $state<string[]>([]);
 	let footerStatus = $state('');
+	let columnCount = $state(2);
+
+	// 每列独立的 url 数组
+	let columns = $state<string[][]>([[], []]);
+	// 每列累计高度（基于占位 aspect-ratio 估算）
+	let columnHeights: number[] = [0, 0];
 
 	let galleryEl: HTMLDivElement | undefined;
 	let sentinelEl: HTMLDivElement | undefined;
 	let io: IntersectionObserver | null = null;
 	let lightbox: PhotoSwipeLightbox | null = null;
+	let resizeRO: ResizeObserver | null = null;
+
+	function getColumnCount(): number {
+		if (typeof window === 'undefined') return 2;
+		const w = window.innerWidth;
+		if (w >= 1024) return 4;
+		if (w >= 768) return 3;
+		return 2;
+	}
+
+	function defaultRatio() {
+		return currentType === 'h' ? DEFAULT_RATIO_H : DEFAULT_RATIO_V;
+	}
+
+	function pushToShortest(url: string) {
+		// 选最短列
+		let minIdx = 0;
+		for (let i = 1; i < columnHeights.length; i++) {
+			if (columnHeights[i] < columnHeights[minIdx]) minIdx = i;
+		}
+		columns[minIdx] = [...columns[minIdx], url];
+		// 估算高度（占位高度 = 1 / ratio）
+		columnHeights[minIdx] += 1 / defaultRatio();
+	}
+
+	function rebuildColumns(urls: string[]) {
+		columns = Array.from({ length: columnCount }, () => []);
+		columnHeights = new Array(columnCount).fill(0);
+		for (const u of urls) pushToShortest(u);
+		// 触发响应式
+		columns = [...columns];
+	}
+
+	function allUrls(): string[] {
+		// 按"列内顺序"展开，用于重布局
+		const result: string[] = [];
+		const idx = new Array(columns.length).fill(0);
+		while (true) {
+			let added = false;
+			for (let c = 0; c < columns.length; c++) {
+				if (idx[c] < columns[c].length) {
+					result.push(columns[c][idx[c]++]);
+					added = true;
+				}
+			}
+			if (!added) break;
+		}
+		return result;
+	}
 
 	function resetIndex() {
 		const max = counts[currentType] || 0;
@@ -58,7 +114,9 @@
 	}
 
 	function clearGallery() {
-		urls = [];
+		columnCount = getColumnCount();
+		columns = Array.from({ length: columnCount }, () => []);
+		columnHeights = new Array(columnCount).fill(0);
 		footerStatus = '';
 		resetIndex();
 	}
@@ -70,13 +128,12 @@
 		loading = true;
 		footerStatus = '加载中...';
 
-		const batchUrls: string[] = [];
 		for (let i = 0; i < batch; i++) {
 			const n = getNextIndex(max);
 			if (n === null) break;
-			batchUrls.push(buildImgUrl(n));
+			pushToShortest(buildImgUrl(n));
 		}
-		if (batchUrls.length > 0) urls = [...urls, ...batchUrls];
+		columns = [...columns];
 
 		const hasMore = isReverse ? nextIndex >= 1 : nextIndex <= max;
 		footerStatus = hasMore ? '' : '已加载全部';
@@ -98,12 +155,27 @@
 		loadMore(24);
 	}
 
+	function handleImgLoad(e: Event) {
+		const img = e.currentTarget as HTMLImageElement;
+		if (img.naturalWidth && img.naturalHeight) {
+			img.style.aspectRatio = `${img.naturalWidth} / ${img.naturalHeight}`;
+		}
+	}
+
+	function handleResize() {
+		const newCount = getColumnCount();
+		if (newCount === columnCount) return;
+		columnCount = newCount;
+		const flat = allUrls();
+		rebuildColumns(flat);
+	}
+
 	onMount(async () => {
+		columnCount = getColumnCount();
 		await fetchCounts();
 		clearGallery();
 		await loadMore(24);
 
-		// 无限滚动
 		if (sentinelEl) {
 			io = new IntersectionObserver(
 				(entries) => {
@@ -114,7 +186,8 @@
 			io.observe(sentinelEl);
 		}
 
-		// PhotoSwipe
+		window.addEventListener('resize', handleResize, { passive: true });
+
 		lightbox = new PhotoSwipeLightbox({
 			gallery: '#gallery-grid',
 			children: 'a',
@@ -135,7 +208,11 @@
 
 	onDestroy(() => {
 		io?.disconnect();
+		resizeRO?.disconnect();
 		lightbox?.destroy();
+		if (typeof window !== 'undefined') {
+			window.removeEventListener('resize', handleResize);
+		}
 	});
 </script>
 
@@ -187,36 +264,34 @@
 					</TabsList>
 				</Tabs>
 				<Button variant={isReverse ? 'default' : 'outline'} size="sm" onclick={toggleSort}>
-					<Icon icon={isReverse ? 'mdi:sort-clock-ascending' : 'mdi:sort-clock-descending'} class="size-4" />
+					<Icon
+						icon={isReverse ? 'mdi:sort-clock-ascending' : 'mdi:sort-clock-descending'}
+						class="size-4"
+					/>
 					{isReverse ? '最旧' : '最新'}
 				</Button>
 			</div>
 
-			<div
-				bind:this={galleryEl}
-				id="gallery-grid"
-				class="columns-2 gap-4 md:columns-3 lg:columns-4"
-			>
-				{#each urls as url (url)}
-					<a
-						href={url}
-						class="mb-4 block overflow-hidden rounded-xl ring-1 ring-foreground/10 break-inside-avoid transition active:scale-[0.99]"
-					>
-						<img
-							src={url}
-							alt="gallery"
-							loading="lazy"
-							decoding="async"
-							style="aspect-ratio: {currentType === 'h' ? '4 / 3' : '3 / 4'};"
-							onload={(e) => {
-								const img = e.currentTarget as HTMLImageElement;
-								if (img.naturalWidth && img.naturalHeight) {
-									img.style.aspectRatio = `${img.naturalWidth} / ${img.naturalHeight}`;
-								}
-							}}
-							class="block h-auto w-full bg-muted"
-						/>
-					</a>
+			<div bind:this={galleryEl} id="gallery-grid" class="flex gap-4 items-start">
+				{#each columns as col, ci (ci)}
+					<div class="flex flex-1 flex-col gap-4 min-w-0">
+						{#each col as url (url)}
+							<a
+								href={url}
+								class="block overflow-hidden rounded-xl ring-1 ring-foreground/10 transition active:scale-[0.99]"
+							>
+								<img
+									src={url}
+									alt="gallery"
+									loading="lazy"
+									decoding="async"
+									style="aspect-ratio: {defaultRatio()};"
+									onload={handleImgLoad}
+									class="block h-auto w-full bg-muted"
+								/>
+							</a>
+						{/each}
+					</div>
 				{/each}
 			</div>
 

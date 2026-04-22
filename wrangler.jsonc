@@ -1,0 +1,8 @@
+{
+	"name": "svaf",
+	"compatibility_date": "2026-04-22",
+	"assets": {
+		"directory": "./build",
+		"not_found_handling": "404-page"
+	}
+}

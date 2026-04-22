@@ -42,7 +42,6 @@
 		"feed": "^5.2.1",
 		"markdown-it": "^14.1.1",
 		"mermaid": "^11.14.0",
-		"photoswipe": "^5.4.4",
-		"shiki": "^4.0.2"
+		"photoswipe": "^5.4.4"
 	}
 }

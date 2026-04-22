@@ -1,22 +1,8 @@
 <script lang="ts">
-	import { renderForumMarkdown, renderForumMarkdownAsync } from '$lib/forum/utils/markdown';
+	import { renderForumMarkdown } from '$lib/forum/utils/markdown';
 
 	let { content = '' }: { content?: string } = $props();
-
-	// 先用同步版本立刻渲染（无代码高亮，纯 escape），再异步替换为带 shiki 高亮的版本
-	let html = $state('');
-
-	$effect(() => {
-		const text = content;
-		html = renderForumMarkdown(text);
-		let cancelled = false;
-		renderForumMarkdownAsync(text).then((next) => {
-			if (!cancelled) html = next;
-		});
-		return () => {
-			cancelled = true;
-		};
-	});
+	let html = $derived(renderForumMarkdown(content));
 </script>
 
 <div

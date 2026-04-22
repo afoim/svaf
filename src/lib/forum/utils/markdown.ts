@@ -1,6 +1,5 @@
 import MarkdownIt from 'markdown-it';
 import DOMPurify from 'dompurify';
-import { highlightCodeForForum } from '$lib/utils/shiki';
 
 const md = new MarkdownIt({ html: false, linkify: true, breaks: true });
 
@@ -24,45 +23,12 @@ function applyExternalLinkTarget(html: string): string {
 	return tpl.innerHTML;
 }
 
-/** 同步渲染：代码块用纯 escape，无高亮（用于首屏占位）。 */
+/** Markdown 渲染，无代码高亮（保留原 <pre><code class="language-xx">） */
 export function renderForumMarkdown(text?: string): string {
 	if (!text) return '';
 	const raw = md.render(text);
 	const safe = DOMPurify.sanitize(raw, SANITIZE_OPTS) as unknown as string;
 	return applyExternalLinkTarget(safe);
-}
-
-/**
- * 异步渲染：扫描所有 ```lang 代码块用 shiki 高亮，输出双主题 HTML。
- * 与 rehype-pretty-code 完全同款，复用 .prose pre 全局样式。
- */
-export async function renderForumMarkdownAsync(text?: string): Promise<string> {
-	if (!text) return '';
-
-	// 1. 在 markdown 解析前替换所有 fenced code block 为占位段落
-	const placeholders: { marker: string; html: Promise<string> }[] = [];
-	const FENCE_RE = /^([ \t]*)(```|~~~)([^\n`~]*)\n([\s\S]*?)\n\1\2[ \t]*$/gm;
-	const replaced = text.replace(FENCE_RE, (_m, _indent, _f, info, code) => {
-		const lang = (info || '').trim().split(/\s+/)[0] || 'plaintext';
-		const marker = `FORUMCODEBLOCK${placeholders.length}MARKER`;
-		placeholders.push({ marker, html: highlightCodeForForum(code, lang) });
-		return `\n\n${marker}\n\n`;
-	});
-
-	// 2. 正常渲染（marker 会变成 <p>marker</p>）
-	const raw = md.render(replaced);
-	const safe = DOMPurify.sanitize(raw, SANITIZE_OPTS) as unknown as string;
-	let withLinks = applyExternalLinkTarget(safe);
-
-	// 3. 等所有 shiki 完成后字符串替换
-	const resolved = await Promise.all(placeholders.map((p) => p.html));
-	for (let i = 0; i < placeholders.length; i++) {
-		const m = placeholders[i].marker;
-		const wrapped = new RegExp(`<p>\\s*${m}\\s*</p>`, 'g');
-		const bare = new RegExp(m, 'g');
-		withLinks = withLinks.replace(wrapped, resolved[i]).replace(bare, resolved[i]);
-	}
-	return withLinks;
 }
 
 // 轻量 Markdown 工具：仅提供首图提取（用于帖子封面）。

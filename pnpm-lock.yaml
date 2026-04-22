@@ -23,9 +23,6 @@ importers:
       photoswipe:
         specifier: ^5.4.4
         version: 5.4.4
-      shiki:
-        specifier: ^4.0.2
-        version: 4.0.2
     devDependencies:
       '@hugeicons/core-free-icons':
         specifier: ^4.1.1

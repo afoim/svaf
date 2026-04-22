@@ -69,6 +69,7 @@ coverage/
 *.temp
 .temp/
 .tmp/
+tmp/
 
 # Package Manager Lock Files (optional - uncomment if you want to ignore)
 # pnpm-lock.yaml

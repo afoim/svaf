@@ -1,5 +1,5 @@
 import { defineMDSveXConfig as defineConfig } from 'mdsvex';
-import remarkAvifRewrite from './remark-avif-rewrite.js';
+import remarkAvifRewrite from './vite-plugins/remark-avif-rewrite.js';
 
 const config = defineConfig({
 	extensions: ['.md'],

@@ -43,37 +43,33 @@
 	const STORAGE_KEY = 'announcement-closed';
 	const ANIMATION_DURATION = 350;
 
-	function wasClosed(): boolean {
-		if (typeof window === 'undefined') return false;
-		try {
-			const closed = localStorage.getItem(STORAGE_KEY);
-			if (!closed) return false;
-			const closedTime = parseInt(closed, 10);
-			const twentyFourHours = 24 * 60 * 60 * 1000;
-			return Date.now() - closedTime < twentyFourHours;
-		} catch {
-			return false;
-		}
-	}
-
 	function handleClose() {
 		isVisible = false;
-		try {
-			localStorage.setItem(STORAGE_KEY, Date.now().toString());
-		} catch {
-			// localStorage not available
-		}
+		// 不再保存关闭状态到 localStorage，每次访问都会显示
 	}
 
 	onMount(() => {
-		if (!enable || wasClosed()) return;
+		if (!enable) return;
 
-		shouldRender = true;
-		requestAnimationFrame(() => {
-			requestAnimationFrame(() => {
-				isVisible = true;
-			});
-		});
+		// 等待 Cookie 同意框消失后再显示公告
+		const checkCookieBanner = () => {
+			// 检查 Cookie 横幅是否存在
+			const cookieBanner = document.querySelector('.fixed.inset-0.z-50.bg-background\\/80');
+			if (!cookieBanner) {
+				// Cookie 横幅不存在，可以显示公告
+				shouldRender = true;
+				requestAnimationFrame(() => {
+					requestAnimationFrame(() => {
+						isVisible = true;
+					});
+				});
+			} else {
+				// Cookie 横幅还在，继续等待
+				setTimeout(checkCookieBanner, 300);
+			}
+		};
+
+		checkCookieBanner();
 	});
 </script>
 
@@ -88,7 +84,7 @@
 			class={`announcement-card ${isHappy ? 'announcement-happy' : ''}`}
 			style={isHappy ? '' : `border-color: ${currentColor};`}
 		>
-			<CardContent class="flex items-center gap-3 relative">
+			<CardContent class="relative p-6">
 				<button
 					bind:this={closeBtnRef}
 					type="button"
@@ -96,39 +92,41 @@
 					onclick={handleClose}
 					aria-label="关闭公告"
 				>
-					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 						<line x1="18" y1="6" x2="6" y2="18"></line>
 						<line x1="6" y1="6" x2="18" y2="18"></line>
 					</svg>
 				</button>
-				<div
-					class="flex shrink-0 items-center justify-center"
-					style={isHappy ? '' : `color: ${currentColor};`}
-				>
-					{#if isHappy}
-						<span class="announcement-emoji" aria-hidden="true">🎉</span>
-					{:else}
-						<svg width="24" height="24" viewBox="0 0 16 16" aria-hidden="true">
-							<path d={currentIconPath} fill="currentColor"></path>
-						</svg>
-					{/if}
-				</div>
-				<div class="grow">
+				<div class="flex items-start gap-4">
 					<div
-						class="announcement-text prose prose-neutral dark:prose-invert max-w-none text-sm md:text-base
-							prose-headings:text-foreground prose-headings:my-0
-							prose-p:text-foreground prose-p:my-0
-							prose-strong:text-foreground
-							prose-a:text-primary prose-a:underline prose-a:underline-offset-4 hover:prose-a:opacity-80
-							prose-blockquote:border-l-primary prose-blockquote:text-muted-foreground prose-blockquote:my-0
-							prose-code:bg-muted prose-code:text-foreground prose-code:rounded prose-code:px-1.5 prose-code:py-0.5 prose-code:before:content-none prose-code:after:content-none
-							prose-pre:bg-transparent prose-pre:p-0 prose-pre:text-foreground prose-pre:my-0
-							prose-hr:border-border
-							prose-ul:my-0 prose-ol:my-0 prose-li:my-0
-							prose-img:rounded-lg prose-img:my-0"
+						class="flex shrink-0 items-center justify-center mt-0.5"
 						style={isHappy ? '' : `color: ${currentColor};`}
 					>
-						<Content />
+						{#if isHappy}
+							<span class="announcement-emoji" aria-hidden="true">🎉</span>
+						{:else}
+							<svg width="24" height="24" viewBox="0 0 16 16" aria-hidden="true">
+								<path d={currentIconPath} fill="currentColor"></path>
+							</svg>
+						{/if}
+					</div>
+					<div class="flex-1 min-w-0">
+						<div
+							class="announcement-text prose prose-neutral dark:prose-invert max-w-none text-sm md:text-base
+								prose-headings:text-foreground prose-headings:my-0 prose-headings:mb-2
+								prose-p:text-foreground prose-p:my-0 prose-p:leading-relaxed
+								prose-strong:text-foreground
+								prose-a:text-primary prose-a:underline prose-a:underline-offset-4 hover:prose-a:opacity-80
+								prose-blockquote:border-l-primary prose-blockquote:text-muted-foreground prose-blockquote:my-0
+								prose-code:bg-muted prose-code:text-foreground prose-code:rounded prose-code:px-1.5 prose-code:py-0.5 prose-code:before:content-none prose-code:after:content-none
+								prose-pre:bg-transparent prose-pre:p-0 prose-pre:text-foreground prose-pre:my-0
+								prose-hr:border-border
+								prose-ul:my-0 prose-ol:my-0 prose-li:my-0
+								prose-img:rounded-lg prose-img:my-0"
+							style={isHappy ? '' : `color: ${currentColor};`}
+						>
+							<Content />
+						</div>
 					</div>
 				</div>
 			</CardContent>
@@ -139,14 +137,14 @@
 <style>
 	.announcement-popup {
 		position: fixed;
-		top: 0;
-		left: 0;
+		top: 80px;
+		left: 16px;
 		z-index: 9999;
-		max-width: 480px;
+		max-width: 600px;
 		width: calc(100vw - 32px);
-		transform: translateX(-100%);
+		transform: translateX(-120%);
 		opacity: 0;
-		transition: transform 350ms ease-out, opacity 350ms ease-out;
+		transition: transform 400ms cubic-bezier(0.34, 1.56, 0.64, 1), opacity 400ms ease-out;
 		pointer-events: none;
 	}
 
@@ -157,37 +155,40 @@
 	}
 
 	.announcement-card {
-		margin: 16px;
-		box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.2);
+		box-shadow: 0 20px 60px -15px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.05);
+		border-radius: 12px;
+		overflow: hidden;
+		backdrop-filter: blur(10px);
 	}
 
 	.announcement-close-btn {
 		position: absolute;
-		top: 8px;
-		left: 8px;
-		width: 32px;
-		height: 32px;
-		min-width: 24px;
-		min-height: 24px;
+		top: 12px;
+		right: 12px;
+		min-width: 44px;
+		min-height: 44px;
+		width: 44px;
+		height: 44px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		background: transparent;
+		background: hsl(var(--muted) / 0.5);
 		border: none;
-		border-radius: 6px;
+		border-radius: 8px;
 		cursor: pointer;
-		color: var(--muted-foreground, #666);
-		transition: background-color 150ms ease, color 150ms ease;
-		z-index: 1;
+		color: hsl(var(--muted-foreground));
+		transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+		z-index: 2;
 	}
 
 	.announcement-close-btn:hover {
-		background: var(--muted, #f0f0f0);
-		color: var(--foreground, #333);
+		background: hsl(var(--muted));
+		color: hsl(var(--foreground));
+		transform: scale(1.05);
 	}
 
 	.announcement-close-btn:focus-visible {
-		outline: 2px solid var(--ring, #888);
+		outline: 2px solid hsl(var(--ring));
 		outline-offset: 2px;
 	}
 
@@ -254,13 +255,87 @@
 		animation: rainbow-flow 3s linear infinite;
 	}
 
-	@media (max-width: 480px) {
+	/* 平板端：≤768px */
+	@media (max-width: 768px) {
 		.announcement-popup {
-			width: calc(100vw - 16px);
+			position: fixed;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			max-width: none;
+			width: 100vw;
+			height: 100vh;
+			background: rgba(0, 0, 0, 0.5);
+			backdrop-filter: blur(4px);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 16px;
+			transform: translateX(0);
+		}
+
+		.announcement-popup.announcement-visible {
+			transform: translateX(0);
 		}
 
 		.announcement-card {
-			margin: 8px;
+			max-width: 80vw;
+			width: 100%;
+		}
+
+		.announcement-text {
+			font-size: 0.875rem !important;
+		}
+
+		.announcement-text :global(p),
+		.announcement-text :global(strong),
+		.announcement-text :global(a) {
+			font-size: 0.875rem !important;
+		}
+
+		.announcement-close-btn {
+			width: 100%;
+			max-width: 100%;
+			position: relative;
+			top: auto;
+			right: auto;
+			margin-top: 16px;
+		}
+	}
+
+	/* 手机端：≤480px */
+	@media (max-width: 480px) {
+		.announcement-popup {
+			padding: 12px;
+		}
+
+		.announcement-card {
+			max-width: 90vw;
+		}
+
+		.announcement-emoji {
+			display: none;
+		}
+
+		.announcement-text {
+			font-size: 0.8125rem !important;
+		}
+
+		.announcement-text :global(p),
+		.announcement-text :global(strong),
+		.announcement-text :global(a) {
+			font-size: 0.8125rem !important;
+		}
+
+		.announcement-close-btn {
+			display: flex;
+			flex-direction: column;
+		}
+
+		.flex.items-start.gap-4 {
+			flex-direction: column;
+			gap: 12px;
 		}
 	}
 </style>

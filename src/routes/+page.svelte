@@ -59,20 +59,22 @@
 		}
 		
 		.live-avatar-container {
-			position: relative;
-			display: inline-block;
-		}
-		
-		.live-ring {
-			position: absolute;
-			top: -4px;
-			left: -4px;
-			right: -4px;
-			bottom: -4px;
-			border: 3px solid #ff2d55;
-			border-radius: 50%;
-			animation: live-ring 1.5s ease-out infinite;
-		}
+		position: relative;
+		display: inline-block;
+		max-width: min(8rem, calc(100vw - 2rem));
+	}
+	
+	.live-ring {
+		position: absolute;
+		top: -4px;
+		left: -4px;
+		right: -4px;
+		bottom: -4px;
+		border: 3px solid #ff2d55;
+		border-radius: 50%;
+		animation: live-ring 1.5s ease-out infinite;
+		pointer-events: none;
+	}
 		
 		.live-ring:nth-child(2) {
 			animation-delay: 0.5s;

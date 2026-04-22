@@ -1,10 +1,11 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
-import postImages from './vite-plugins/post-images.js';
+import { postImagesPlugin } from './vite-plugins/post-images.js';
 import redirects from './vite-plugins/redirects.js';
+import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
-	plugins: [sveltekit(), redirects(), postImages()],
+	plugins: [tailwindcss(), sveltekit(), redirects(), postImagesPlugin()],
 	test: {
 		globals: true,
 		environment: 'jsdom',

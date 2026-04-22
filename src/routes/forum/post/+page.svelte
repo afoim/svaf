@@ -290,6 +290,7 @@
 						uploadPostId={postId}
 						placeholder="支持 Markdown，Ctrl/Cmd + Enter 提交"
 						submitting={commentSubmitting}
+						minHeight={420}
 						onsubmit={submitComment}
 					/>
 					<div class="flex items-center justify-end gap-2">

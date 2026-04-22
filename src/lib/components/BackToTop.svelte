@@ -40,9 +40,9 @@
 
 <svelte:window bind:scrollY />
 
-{#if showButton}
-	<div transition:fly={{ y: 20, duration: 300 }} class="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
-		{#if showCommentButton}
+<div class="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
+	{#if showCommentButton}
+		<div transition:fly={{ y: 20, duration: 300 }}>
 			<Button
 				size="icon-lg"
 				onclick={scrollToComments}
@@ -51,14 +51,18 @@
 			>
 				<Icon icon="mdi:comment-multiple-outline" class="size-5" />
 			</Button>
-		{/if}
-		<Button
-			size="icon-lg"
-			onclick={scrollToTop}
-			aria-label="回到顶部"
-			class="size-12 shadow-lg hover:shadow-xl"
-		>
-			<Icon icon="mdi:chevron-up" class="size-5" />
-		</Button>
-	</div>
-{/if}
+		</div>
+	{/if}
+	{#if showButton}
+		<div transition:fly={{ y: 20, duration: 300 }}>
+			<Button
+				size="icon-lg"
+				onclick={scrollToTop}
+				aria-label="回到顶部"
+				class="size-12 shadow-lg hover:shadow-xl"
+			>
+				<Icon icon="mdi:chevron-up" class="size-5" />
+			</Button>
+		</div>
+	{/if}
+</div>

@@ -58,6 +58,9 @@
 	const globalState = getGlobalState();
 	let statusLines = $state<StatusLine[][]>(globalState.statusLines);
 
+	// 监听全局状态变化并同步到本地状态
+	let syncInterval: number | null = null;
+
 	function hexToRgba(hex: string, alpha: number = 1): string {
 		// Remove # if present
 		hex = hex.replace('#', '');
@@ -371,9 +374,25 @@
 	onMount(() => {
 		const state = getGlobalState();
 		
+		// 同步全局状态到本地（每100ms检查一次）
+		syncInterval = window.setInterval(() => {
+			if (state.statusLines !== statusLines) {
+				statusLines = state.statusLines;
+			}
+		}, 100);
+		
 		// 如果已经有数据，直接使用
 		if (state.payload) {
-			updateStatus(state.payload);
+			statusLines = state.statusLines;
+			
+			// 确保定时器在运行
+			if (state.intervalId === null) {
+				state.intervalId = window.setInterval(() => {
+					if (state.payload) {
+						updateStatus(state.payload);
+					}
+				}, 1000);
+			}
 			return;
 		}
 
@@ -400,7 +419,14 @@
 			});
 	});
 
-	// 组件销毁时不清理全局状态和定时器，保持会话持久化
+	onDestroy(() => {
+		// 清理同步定时器
+		if (syncInterval !== null) {
+			clearInterval(syncInterval);
+			syncInterval = null;
+		}
+		// 不清理全局定时器，保持会话持久化
+	});
 
 </script>
 

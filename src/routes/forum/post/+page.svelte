@@ -17,7 +17,7 @@
 	import CommentItem from '$lib/components/forum/CommentItem.svelte';
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
-	import { deletePost, getPost, updatePost } from '$lib/forum/api/posts';
+	import { deletePost, getPost, likePost, updatePost } from '$lib/forum/api/posts';
 	import { getCategories } from '$lib/forum/api/categories';
 	import { getSession } from '$lib/forum/api/auth';
 	import {
@@ -54,6 +54,7 @@
 	let categoriesLoaded = $state(false);
 
 	let composerExpanded = $state(false);
+	let likeBusy = $state(false);
 
 	let commentCount = $derived.by(() => {
 		const walk = (list: ForumComment[]): number =>
@@ -159,6 +160,37 @@
 	function cancelCompose() {
 		composerExpanded = false;
 		commentDraft = '';
+	}
+
+	async function togglePostLike() {
+		if (!post || likeBusy) return;
+		if (!forumAuth.getToken()) {
+			emitErrorToast('点赞', '请先登录后再点赞。');
+			return;
+		}
+		likeBusy = true;
+		const previousLiked = Boolean(post.liked);
+		const previousCount = post.likeCount || 0;
+		// 乐观更新
+		post = {
+			...post,
+			liked: !previousLiked,
+			likeCount: previousCount + (previousLiked ? -1 : 1)
+		};
+		try {
+			const result = await likePost(post.id);
+			post = {
+				...post,
+				liked: Boolean(result.liked),
+				likeCount: typeof result.likeCount === 'number' ? result.likeCount : post.likeCount
+			};
+		} catch (e) {
+			// 回滚
+			post = { ...post, liked: previousLiked, likeCount: previousCount };
+			emitErrorToast('点赞', e instanceof Error ? e.message : '点赞失败，请稍后再试。');
+		} finally {
+			likeBusy = false;
+		}
 	}
 
 	async function ensureCategoriesLoaded() {
@@ -355,11 +387,20 @@
 									返回
 								</Button>
 							</a>
-							<Button variant="outline" size="sm" disabled title="下一阶段实现">
+							<span
+								class="inline-flex items-center gap-1.5 rounded-md border bg-muted/30 px-2.5 py-1 text-xs"
+								title="访问量"
+							>
 								<Icon icon="mdi:eye-outline" class="size-4" />
 								{post.viewCount || 0}
-							</Button>
-							<Button variant="outline" size="sm" disabled title="登录后可点赞">
+							</span>
+							<Button
+								variant="outline"
+								size="sm"
+								onclick={togglePostLike}
+								disabled={likeBusy}
+								title={$forumAuth.token ? (post.liked ? '取消点赞' : '点赞') : '登录后可点赞'}
+							>
 								<Icon
 									icon={post.liked ? 'mdi:heart' : 'mdi:heart-outline'}
 									class="size-4 {post.liked ? 'text-primary' : ''}"

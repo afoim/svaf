@@ -5,7 +5,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import type { ForumComment } from '$lib/forum/types/comment';
 	import { formatForumDateTime } from '$lib/forum/utils/markdown';
-	import { deleteComment } from '$lib/forum/api/comments';
+	import { deleteComment, likeComment } from '$lib/forum/api/comments';
 	import { forumAuth } from '$lib/forum/stores/auth';
 	import { emitErrorToast, emitSuccessToast } from '$lib/forum/utils/toast';
 	import ForumMarkdownContent from './ForumMarkdownContent.svelte';
@@ -22,6 +22,9 @@
 	} = $props();
 
 	let deleting = $state(false);
+	let likeBusy = $state(false);
+	let liked = $state(Boolean(comment.liked));
+	let likeCount = $state(comment.likeCount || 0);
 
 	let canDelete = $derived.by(() => {
 		const u = $forumAuth.user;
@@ -48,6 +51,30 @@
 			emitErrorToast('删除评论', e instanceof Error ? e.message : '删除失败，请稍后再试。');
 		} finally {
 			deleting = false;
+		}
+	}
+
+	async function toggleLike() {
+		if (likeBusy) return;
+		if (!$forumAuth.token) {
+			emitErrorToast('点赞', '请先登录后再点赞。');
+			return;
+		}
+		likeBusy = true;
+		const previousLiked = liked;
+		const previousCount = likeCount;
+		liked = !previousLiked;
+		likeCount = previousCount + (previousLiked ? -1 : 1);
+		try {
+			const result = await likeComment(comment.id);
+			liked = Boolean(result.liked);
+			if (typeof result.likeCount === 'number') likeCount = result.likeCount;
+		} catch (e) {
+			liked = previousLiked;
+			likeCount = previousCount;
+			emitErrorToast('点赞', e instanceof Error ? e.message : '点赞失败，请稍后再试。');
+		} finally {
+			likeBusy = false;
 		}
 	}
 </script>
@@ -114,13 +141,19 @@
 	<ForumMarkdownContent content={comment.content} />
 
 	<div class="mt-3 flex items-center gap-3 text-xs text-muted-foreground">
-		<span class="flex items-center gap-1">
+		<button
+			type="button"
+			class="flex items-center gap-1 rounded-md px-1.5 py-0.5 transition hover:bg-muted hover:text-foreground disabled:opacity-60"
+			onclick={toggleLike}
+			disabled={likeBusy}
+			aria-label={liked ? '取消点赞' : '点赞'}
+		>
 			<Icon
-				icon={comment.liked ? 'mdi:heart' : 'mdi:heart-outline'}
-				class="size-4 {comment.liked ? 'text-primary' : ''}"
+				icon={liked ? 'mdi:heart' : 'mdi:heart-outline'}
+				class="size-4 {liked ? 'text-primary' : ''}"
 			/>
-			{comment.likeCount || 0}
-		</span>
+			{likeCount}
+		</button>
 	</div>
 
 	{#if comment.replies && comment.replies.length > 0}

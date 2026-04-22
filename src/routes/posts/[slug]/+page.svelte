@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
+	import { Badge } from '$lib/components/ui/badge';
 	import { siteConfig } from '$lib/config/site';
 	import ImageViewer from '$lib/components/ImageViewer.svelte';
 	import Giscus from '$lib/components/Giscus.svelte';
@@ -40,9 +41,7 @@
 	<header class="mb-8">
 		<div class="mb-4 flex items-center gap-2">
 			{#if data.post.metadata.pinned}
-				<span class="rounded-full bg-primary px-3 py-1 text-sm text-primary-foreground">
-					置顶
-				</span>
+				<Badge>置顶</Badge>
 			{/if}
 			<time class="text-sm text-muted-foreground">
 				{formatDate(data.post.metadata.published)}

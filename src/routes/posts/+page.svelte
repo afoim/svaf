@@ -2,6 +2,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
 	import { Checkbox } from '$lib/components/ui/checkbox';
+	import { Badge } from '$lib/components/ui/badge';
 	import * as Card from '$lib/components/ui/card';
 	import * as Pagination from '$lib/components/ui/pagination';
 	import Icon from '@iconify/svelte';
@@ -298,9 +299,7 @@
 							<div class="flex-1">
 								<div class="mb-2 flex items-center gap-2">
 									{#if post.metadata.pinned}
-										<span class="rounded-full bg-primary px-2 py-1 text-xs text-primary-foreground">
-											置顶
-										</span>
+										<Badge>置顶</Badge>
 									{/if}
 									<time class="text-sm text-muted-foreground">
 										{formatDate(post.metadata.published)}

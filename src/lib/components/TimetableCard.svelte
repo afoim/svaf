@@ -22,11 +22,14 @@
 		coursesByDay: Record<number, TimetableCourseView[]>;
 	}
 
-	let status = $state<string>('加载中...');
-	let nextDetail = $state<string>('--');
-	let nextTail = $state<string>('');
-	let nextColor = $state<string>('');
-	let statusColor = $state<string>('');
+	interface StatusLine {
+		text: string;
+		color?: string;
+		strikethrough?: boolean;
+		bold?: boolean;
+	}
+
+	let statusLines = $state<StatusLine[][]>([]);
 	let isVisible = $state<boolean>(false);
 
 	function hexToRgba(hex: string, alpha: number = 1): string {
@@ -70,13 +73,20 @@
 		return { startMinute, endMinute };
 	}
 
-	function formatDuration(totalMinutes: number): string {
-		const safeMinutes = Math.max(0, Math.floor(totalMinutes));
-		const hours = Math.floor(safeMinutes / 60);
-		const minutes = safeMinutes % 60;
-		if (hours > 0 && minutes > 0) return `${hours}小时${minutes}分钟`;
-		if (hours > 0) return `${hours}小时`;
-		return `${minutes}分钟`;
+	function formatDuration(totalSeconds: number): string {
+		const safeSecs = Math.max(0, Math.floor(totalSeconds));
+		const days = Math.floor(safeSecs / 86400);
+		const hours = Math.floor((safeSecs % 86400) / 3600);
+		const minutes = Math.floor((safeSecs % 3600) / 60);
+		const seconds = safeSecs % 60;
+		
+		const parts: string[] = [];
+		if (days > 0) parts.push(`${days}天`);
+		if (hours > 0) parts.push(`${hours}时`);
+		if (minutes > 0) parts.push(`${minutes}分钟`);
+		if (seconds > 0 || parts.length === 0) parts.push(`${seconds}秒`);
+		
+		return parts.join('，');
 	}
 
 	function getTodayCourses(payload: TimetablePayload, now: Date) {
@@ -96,68 +106,180 @@
 			.sort((a, b) => a!.startMinute - b!.startMinute);
 	}
 
-	function resolveLiveState(payload: TimetablePayload) {
+	function getAllCoursesThisWeek(payload: TimetablePayload): any[] {
+		const allCourses: any[] = [];
+		for (let day = 1; day <= 7; day++) {
+			const dayCourses = payload?.coursesByDay?.[day] || [];
+			for (const course of dayCourses) {
+				const range = extractRangeMinutes(course.timeText);
+				if (range) {
+					allCourses.push({
+						...course,
+						day,
+						startMinute: range.startMinute,
+						endMinute: range.endMinute
+					});
+				}
+			}
+		}
+		return allCourses.sort((a, b) => {
+			if (a.day !== b.day) return a.day - b.day;
+			return a.startMinute - b.startMinute;
+		});
+	}
+
+	function resolveLiveState(payload: TimetablePayload): StatusLine[][] {
 		const now = new Date();
-		const currentMinute = now.getHours() * 60 + now.getMinutes();
+		const currentSecond = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
+		const currentMinute = Math.floor(currentSecond / 60);
 		const day = now.getDay() === 0 ? 7 : now.getDay();
 
+		// 周末
 		if (day >= 6) {
-			return {
-				status: '周末',
-				nextDetail: '--',
-				nextTail: '',
-				nextColor: '',
-				statusColor: ''
-			};
+			const allCourses = getAllCoursesThisWeek(payload);
+			const nextWeekFirstCourse = allCourses.find(c => c.day === 1);
+			
+			if (nextWeekFirstCourse) {
+				const daysUntilMonday = day === 6 ? 2 : 1;
+				const secondsUntilCourse = daysUntilMonday * 86400 + nextWeekFirstCourse.startMinute * 60 - (currentMinute * 60 + now.getSeconds());
+				
+				return [
+					[{ text: '### 本周课毕' }],
+					[
+						{ text: '下周首节：', bold: true },
+						{ text: nextWeekFirstCourse.courseName, bold: true, color: hexToRgba(nextWeekFirstCourse.color, 0.8) }
+					],
+					[
+						{ text: '距上课还有：', bold: true },
+						{ text: formatDuration(secondsUntilCourse), bold: true }
+					]
+				];
+			}
+			
+			return [[{ text: '### 周末' }]];
 		}
 
 		const courses = getTodayCourses(payload, now);
+		
+		// 今日无课
 		if (courses.length === 0) {
-			return {
-				status: '无课',
-				nextDetail: '--',
-				nextTail: '',
-				nextColor: '',
-				statusColor: ''
-			};
+			const allCourses = getAllCoursesThisWeek(payload);
+			const nextDayCourse = allCourses.find(c => c.day > day);
+			
+			if (nextDayCourse) {
+				const daysUntil = nextDayCourse.day - day;
+				const secondsUntilCourse = daysUntil * 86400 + nextDayCourse.startMinute * 60 - (currentMinute * 60 + now.getSeconds());
+				
+				return [
+					[{ text: '### 今日课毕' }],
+					[
+						{ text: '翌日首节：', bold: true },
+						{ text: nextDayCourse.courseName, bold: true, color: hexToRgba(nextDayCourse.color, 0.8) }
+					],
+					[
+						{ text: '距上课还有：', bold: true },
+						{ text: formatDuration(secondsUntilCourse), bold: true }
+					]
+				];
+			}
+			
+			return [[{ text: '### 今日无课' }]];
 		}
 
-		let currentStatus = '无课';
-		let statusColor = '';
+		// 查找当前状态
 		for (let index = 0; index < courses.length; index += 1) {
 			const current = courses[index]!;
+			const prev = index > 0 ? courses[index - 1]! : null;
+			const next = courses[index + 1] || null;
+			
+			// 上课中
 			if (currentMinute >= current.startMinute && currentMinute < current.endMinute) {
-				currentStatus = `上课（${current.courseName}）`;
-				statusColor = hexToRgba(current.color, 0.8);
-				break;
+				const remainSeconds = current.endMinute * 60 - currentSecond;
+				
+				return [
+					[{ text: '### 上课' }],
+					...(prev ? [[
+						{ text: '上节：', strikethrough: true },
+						{ text: prev.courseName, strikethrough: true, color: hexToRgba(prev.color, 0.5) }
+					]] : []),
+					[
+						{ text: '本节：', bold: true },
+						{ text: current.courseName, bold: true, color: hexToRgba(current.color, 0.8) }
+					],
+					...(next ? [[
+						{ text: '下节：' },
+						{ text: next.courseName, color: hexToRgba(next.color, 0.8) }
+					]] : []),
+					[
+						{ text: '距下课还有：', bold: true },
+						{ text: formatDuration(remainSeconds), bold: true }
+					]
+				];
 			}
-			const next = courses[index + 1];
+			
+			// 课间
 			if (next && currentMinute >= current.endMinute && currentMinute < next.startMinute) {
-				currentStatus = `课间（下一节：${next.courseName}）`;
-				statusColor = hexToRgba(next.color, 0.8);
-				break;
+				const remainSeconds = next.startMinute * 60 - currentSecond;
+				
+				return [
+					[{ text: '### 课间' }],
+					[
+						{ text: '上节：', strikethrough: true },
+						{ text: current.courseName, strikethrough: true, color: hexToRgba(current.color, 0.5) }
+					],
+					[
+						{ text: '下节：', bold: true },
+						{ text: next.courseName, bold: true, color: hexToRgba(next.color, 0.8) }
+					],
+					[
+						{ text: '距上课还有：', bold: true },
+						{ text: formatDuration(remainSeconds), bold: true }
+					]
+				];
 			}
 		}
 
-		const nextCourse = courses.find((course) => course!.startMinute > currentMinute) || null;
-		if (!nextCourse) {
-			return {
-				status: currentStatus,
-				nextDetail: '--',
-				nextTail: '',
-				nextColor: '',
-				statusColor: statusColor
-			};
+		// 今日课毕
+		const lastCourse = courses[courses.length - 1]!;
+		if (currentMinute >= lastCourse.endMinute) {
+			const allCourses = getAllCoursesThisWeek(payload);
+			const nextDayCourse = allCourses.find(c => c.day > day);
+			
+			if (nextDayCourse) {
+				const daysUntil = nextDayCourse.day - day;
+				const secondsUntilCourse = daysUntil * 86400 + nextDayCourse.startMinute * 60 - (currentMinute * 60 + now.getSeconds());
+				
+				return [
+					[{ text: '### 今日课毕' }],
+					[
+						{ text: '翌日首节：', bold: true },
+						{ text: nextDayCourse.courseName, bold: true, color: hexToRgba(nextDayCourse.color, 0.8) }
+					],
+					[
+						{ text: '距上课还有：', bold: true },
+						{ text: formatDuration(secondsUntilCourse), bold: true }
+					]
+				];
+			}
+			
+			return [[{ text: '### 今日课毕' }]];
 		}
 
-		const remainMinutes = nextCourse.startMinute - currentMinute;
-		return {
-			status: currentStatus,
-			nextDetail: `${nextCourse.courseName} - ${nextCourse.room || '未填写'}`,
-			nextTail: `（${formatDuration(remainMinutes)}后）`,
-			nextColor: hexToRgba(nextCourse.color || '#000000', 0.8),
-			statusColor: statusColor
-		};
+		// 第一节课前
+		const firstCourse = courses[0]!;
+		const remainSeconds = firstCourse.startMinute * 60 - currentSecond;
+		
+		return [
+			[{ text: '### 课前' }],
+			[
+				{ text: '首节：', bold: true },
+				{ text: firstCourse.courseName, bold: true, color: hexToRgba(firstCourse.color, 0.8) }
+			],
+			[
+				{ text: '距上课还有：', bold: true },
+				{ text: formatDuration(remainSeconds), bold: true }
+			]
+		];
 	}
 
 	async function loadTimetableData(): Promise<TimetablePayload> {
@@ -215,12 +337,7 @@
 	}
 
 	function updateStatus(payload: TimetablePayload) {
-		const state = resolveLiveState(payload);
-		status = state.status;
-		nextDetail = state.nextDetail;
-		nextTail = state.nextTail;
-		nextColor = state.nextColor;
-		statusColor = state.statusColor;
+		statusLines = resolveLiveState(payload);
 		isVisible = true;
 	}
 
@@ -229,10 +346,10 @@
 			const payload = await loadTimetableData();
 			updateStatus(payload);
 
-			// Update every 30 seconds
+			// Update every second for accurate countdown
 			const interval = setInterval(() => {
 				updateStatus(payload);
-			}, 30000);
+			}, 1000);
 
 			return () => clearInterval(interval);
 		} catch (error) {
@@ -245,13 +362,23 @@
 
 <a href="/timetable/" class="block transition-transform hover:-translate-y-0.5">
 	<Card class="opacity-0 transition-opacity duration-300" style="opacity: {isVisible ? 1 : 0}">
-		<CardContent class="p-3">
-			<p class="text-xs font-semibold transition-colors" style="color: {statusColor || 'inherit'}">{status}</p>
-			<p class="mt-1 text-xs text-muted-foreground">
-				<span>下一堂课：</span>
-				<span class="font-medium transition-colors" style="color: {nextColor || 'inherit'}">{nextDetail}</span>
-				<span class="ml-0.5">{nextTail}</span>
-			</p>
+		<CardContent class="p-3 space-y-0.5">
+			{#each statusLines as line}
+				<p class="text-xs leading-relaxed">
+					{#each line as segment}
+						<span
+							class="transition-colors"
+							class:font-semibold={segment.text.startsWith('###')}
+							class:font-bold={segment.bold}
+							class:line-through={segment.strikethrough}
+							class:opacity-60={segment.strikethrough}
+							style="color: {segment.color || 'inherit'}"
+						>
+							{segment.text}
+						</span>
+					{/each}
+				</p>
+			{/each}
 		</CardContent>
 	</Card>
 </a>

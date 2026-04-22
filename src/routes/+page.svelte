@@ -179,6 +179,13 @@
 			</Button>
 		</a>
 		
+		<a href="/files">
+			<Button variant="outline" class="flex items-center gap-2">
+				<Icon icon="mdi:folder-open" class="w-5 h-5" />
+				文件
+			</Button>
+		</a>
+		
 		<a href="/friends">
 			<Button variant="outline" class="flex items-center gap-2">
 				<Icon icon="mdi:link-variant" class="w-5 h-5" />

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
-	import { Input } from '$lib/components/ui/input';
+	import { SearchInput } from '$lib/components/ui/search-input';
 	import { Checkbox } from '$lib/components/ui/checkbox';
 	import { Badge } from '$lib/components/ui/badge';
 	import * as Card from '$lib/components/ui/card';
@@ -238,15 +238,16 @@
 	</div>
 
 	<div class="mb-8">
-		<Input
-			type="text"
+		<SearchInput
 			bind:value={searchQuery}
 			onfocus={loadRSS}
 			placeholder="搜索文章标题、描述或内容..."
+			{isLoading}
 			class="w-full"
 		/>
 		
-		<div class="mt-3 flex flex-wrap gap-4">
+		<div class="mt-4 flex flex-wrap items-center gap-4">
+			<span class="text-sm text-muted-foreground">搜索范围：</span>
 			<label class="flex items-center gap-2 cursor-pointer">
 				<Checkbox bind:checked={searchFilters.title} />
 				<span class="text-sm">标题</span>
@@ -266,15 +267,22 @@
 		</div>
 		
 		{#if searchQuery}
-			<div class="mt-2 min-h-[20px]">
+			<div class="mt-3 min-h-[24px] transition-all duration-200">
 				{#if !hasAnyFilter}
-					<p class="text-sm text-red-500">你什么都不选怎么搜啊喂！</p>
-				{:else if isLoading}
-					<p class="text-sm text-muted-foreground">搜索中...</p>
+					<div class="flex items-center gap-2 text-sm text-destructive">
+						<Icon icon="mdi:alert-circle-outline" class="h-4 w-4" />
+						<span>请至少选择一个搜索范围</span>
+					</div>
 				{:else if filteredPostsWithMatches().length === 0}
-					<p class="text-sm text-muted-foreground">未找到匹配的文章</p>
+					<div class="flex items-center gap-2 text-sm text-muted-foreground">
+						<Icon icon="mdi:file-search-outline" class="h-4 w-4" />
+						<span>未找到匹配「{searchQuery}」的文章，试试其他关键词？</span>
+					</div>
 				{:else}
-					<p class="text-sm text-muted-foreground">找到 {filteredPostsWithMatches().length} 篇文章</p>
+					<div class="flex items-center gap-2 text-sm text-muted-foreground">
+						<Icon icon="mdi:check-circle-outline" class="h-4 w-4 text-primary" />
+						<span>找到 <strong class="text-foreground">{filteredPostsWithMatches().length}</strong> 篇相关文章</span>
+					</div>
 				{/if}
 			</div>
 		{/if}

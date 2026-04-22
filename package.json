@@ -15,7 +15,9 @@
 		"prepare": "svelte-kit sync || echo ''",
 		"new-post": "node scripts/new-post.js",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"test": "vitest run",
+		"test:watch": "vitest"
 	},
 	"devDependencies": {
 		"@iconify/svelte": "^5.2.1",

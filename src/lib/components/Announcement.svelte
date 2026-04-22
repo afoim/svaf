@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Card, CardContent } from '$lib/components/ui/card';
 	import Content, { metadata as rawMetadata } from '../../content/announcement/index.md';
+	import { onMount } from 'svelte';
 
 	const metadata = (rawMetadata ?? {}) as {
 		enable?: boolean;
@@ -34,15 +35,72 @@
 	const isHappy = level === 'happy';
 	const currentIconPath = iconPathMap[level] || iconPathMap.info;
 	const currentColor = colorMap[level] || colorMap.info;
+
+	let isVisible = $state(false);
+	let shouldRender = $state(false);
+	let closeBtnRef: HTMLButtonElement | undefined = $state();
+
+	const STORAGE_KEY = 'announcement-closed';
+	const ANIMATION_DURATION = 350;
+
+	function wasClosed(): boolean {
+		if (typeof window === 'undefined') return false;
+		try {
+			const closed = localStorage.getItem(STORAGE_KEY);
+			if (!closed) return false;
+			const closedTime = parseInt(closed, 10);
+			const twentyFourHours = 24 * 60 * 60 * 1000;
+			return Date.now() - closedTime < twentyFourHours;
+		} catch {
+			return false;
+		}
+	}
+
+	function handleClose() {
+		isVisible = false;
+		try {
+			localStorage.setItem(STORAGE_KEY, Date.now().toString());
+		} catch {
+			// localStorage not available
+		}
+	}
+
+	onMount(() => {
+		if (!enable || wasClosed()) return;
+
+		shouldRender = true;
+		requestAnimationFrame(() => {
+			requestAnimationFrame(() => {
+				isVisible = true;
+			});
+		});
+	});
 </script>
 
-{#if enable}
-	<div class="flex w-full justify-center">
+{#if shouldRender}
+	<div
+		class="announcement-popup"
+		class:announcement-visible={isVisible}
+		role="alert"
+		aria-live="polite"
+	>
 		<Card
-			class={`w-full max-w-2xl ${isHappy ? 'announcement-happy' : ''}`}
+			class={`announcement-card ${isHappy ? 'announcement-happy' : ''}`}
 			style={isHappy ? '' : `border-color: ${currentColor};`}
 		>
-			<CardContent class="flex items-center gap-3">
+			<CardContent class="flex items-center gap-3 relative">
+				<button
+					bind:this={closeBtnRef}
+					type="button"
+					class="announcement-close-btn"
+					onclick={handleClose}
+					aria-label="关闭公告"
+				>
+					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+						<line x1="18" y1="6" x2="6" y2="18"></line>
+						<line x1="6" y1="6" x2="18" y2="18"></line>
+					</svg>
+				</button>
 				<div
 					class="flex shrink-0 items-center justify-center"
 					style={isHappy ? '' : `color: ${currentColor};`}
@@ -79,6 +137,64 @@
 {/if}
 
 <style>
+	.announcement-popup {
+		position: fixed;
+		top: 0;
+		left: 0;
+		z-index: 9999;
+		max-width: 480px;
+		width: calc(100vw - 32px);
+		transform: translateX(-100%);
+		opacity: 0;
+		transition: transform 350ms ease-out, opacity 350ms ease-out;
+		pointer-events: none;
+	}
+
+	.announcement-popup.announcement-visible {
+		transform: translateX(0);
+		opacity: 1;
+		pointer-events: auto;
+	}
+
+	.announcement-card {
+		margin: 16px;
+		box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.2);
+	}
+
+	.announcement-close-btn {
+		position: absolute;
+		top: 8px;
+		left: 8px;
+		width: 32px;
+		height: 32px;
+		min-width: 24px;
+		min-height: 24px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: transparent;
+		border: none;
+		border-radius: 6px;
+		cursor: pointer;
+		color: var(--muted-foreground, #666);
+		transition: background-color 150ms ease, color 150ms ease;
+		z-index: 1;
+	}
+
+	.announcement-close-btn:hover {
+		background: var(--muted, #f0f0f0);
+		color: var(--foreground, #333);
+	}
+
+	.announcement-close-btn:focus-visible {
+		outline: 2px solid var(--ring, #888);
+		outline-offset: 2px;
+	}
+
+	.announcement-close-btn:active {
+		transform: scale(0.95);
+	}
+
 	@keyframes rainbow-flow {
 		0% {
 			background-position: 0% 50%;
@@ -136,5 +252,15 @@
 		background-clip: text;
 		color: transparent;
 		animation: rainbow-flow 3s linear infinite;
+	}
+
+	@media (max-width: 480px) {
+		.announcement-popup {
+			width: calc(100vw - 16px);
+		}
+
+		.announcement-card {
+			margin: 8px;
+		}
 	}
 </style>

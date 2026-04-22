@@ -69,7 +69,8 @@
 			const r = parseInt(hex.substring(0, 2), 16);
 			const g = parseInt(hex.substring(2, 4), 16);
 			const b = parseInt(hex.substring(4, 6), 16);
-			return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+			// 降低明度：将 RGB 值乘以 0.7
+			return `rgba(${Math.floor(r * 0.7)}, ${Math.floor(g * 0.7)}, ${Math.floor(b * 0.7)}, ${alpha})`;
 		}
 		
 		// Handle 6-digit hex
@@ -77,7 +78,8 @@
 			const r = parseInt(hex.substring(0, 2), 16);
 			const g = parseInt(hex.substring(2, 4), 16);
 			const b = parseInt(hex.substring(4, 6), 16);
-			return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+			// 降低明度：将 RGB 值乘以 0.7
+			return `rgba(${Math.floor(r * 0.7)}, ${Math.floor(g * 0.7)}, ${Math.floor(b * 0.7)}, ${alpha})`;
 		}
 		
 		return `rgba(0, 0, 0, ${alpha})`;

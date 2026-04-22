@@ -23,7 +23,6 @@
 
 	interface StatusLine {
 		text: string;
-		color?: string;
 		strikethrough?: boolean;
 		bold?: boolean;
 	}
@@ -177,7 +176,7 @@
 					[{ text: '### 本周课毕' }],
 					[
 						{ text: '下周首节：' },
-						{ text: `${nextWeekFirstCourse.courseName} - ${nextWeekFirstCourse.room || '未知'}`, bold: true, color: hexToRgba(nextWeekFirstCourse.color, 0.8) }
+						{ text: `${nextWeekFirstCourse.courseName} - ${nextWeekFirstCourse.room || '未知'}`, bold: true }
 					],
 					[
 						{ text: '距上课还有：' },
@@ -204,7 +203,7 @@
 					[{ text: '### 今日课毕' }],
 					[
 						{ text: '翌日首节：' },
-						{ text: `${nextDayCourse.courseName} - ${nextDayCourse.room || '未知'}`, bold: true, color: hexToRgba(nextDayCourse.color, 0.8) }
+						{ text: `${nextDayCourse.courseName} - ${nextDayCourse.room || '未知'}`, bold: true }
 					],
 					[
 						{ text: '距上课还有：' },
@@ -230,15 +229,15 @@
 					[{ text: '### 上课' }],
 					...(prev ? [[
 						{ text: '上节：', strikethrough: true },
-						{ text: `${prev.courseName} - ${prev.room || '未知'}`, strikethrough: true, color: hexToRgba(prev.color, 0.5) }
+						{ text: `${prev.courseName} - ${prev.room || '未知'}`, strikethrough: true }
 					]] : []),
 					[
 						{ text: '本节：' },
-						{ text: `${current.courseName} - ${current.room || '未知'}`, bold: true, color: hexToRgba(current.color, 0.8) }
+						{ text: `${current.courseName} - ${current.room || '未知'}`, bold: true }
 					],
 					...(next ? [[
 						{ text: '下节：' },
-						{ text: `${next.courseName} - ${next.room || '未知'}`, color: hexToRgba(next.color, 0.8) }
+						{ text: `${next.courseName} - ${next.room || '未知'}` }
 					]] : []),
 					[
 						{ text: '距下课还有：' },
@@ -255,11 +254,11 @@
 					[{ text: '### 课间' }],
 					[
 						{ text: '上节：', strikethrough: true },
-						{ text: `${current.courseName} - ${current.room || '未知'}`, strikethrough: true, color: hexToRgba(current.color, 0.5) }
+						{ text: `${current.courseName} - ${current.room || '未知'}`, strikethrough: true }
 					],
 					[
 						{ text: '下节：' },
-						{ text: `${next.courseName} - ${next.room || '未知'}`, bold: true, color: hexToRgba(next.color, 0.8) }
+						{ text: `${next.courseName} - ${next.room || '未知'}`, bold: true }
 					],
 					[
 						{ text: '距上课还有：' },
@@ -283,7 +282,7 @@
 					[{ text: '### 今日课毕' }],
 					[
 						{ text: '翌日首节：' },
-						{ text: `${nextDayCourse.courseName} - ${nextDayCourse.room || '未知'}`, bold: true, color: hexToRgba(nextDayCourse.color, 0.8) }
+						{ text: `${nextDayCourse.courseName} - ${nextDayCourse.room || '未知'}`, bold: true }
 					],
 					[
 						{ text: '距上课还有：' },
@@ -303,7 +302,7 @@
 			[{ text: '### 课前' }],
 			[
 				{ text: '首节：' },
-				{ text: `${firstCourse.courseName} - ${firstCourse.room || '未知'}`, bold: true, color: hexToRgba(firstCourse.color, 0.8) }
+				{ text: `${firstCourse.courseName} - ${firstCourse.room || '未知'}`, bold: true }
 			],
 			[
 				{ text: '距上课还有：' },
@@ -434,6 +433,7 @@
 <a href="/timetable/" class="block">
 	<div
 		class="ring-foreground/10 bg-card text-card-foreground overflow-hidden rounded-2xl text-sm ring-1 p-3 space-y-0.5"
+		style="border: 2px solid rgb(201, 237, 110);"
 	>
 		{#each statusLines as line}
 			<p class="text-xs leading-relaxed">
@@ -441,7 +441,6 @@
 					{#if segment.text.startsWith('###')}
 						<span
 							class="text-sm font-bold transition-colors"
-							style="color: {segment.color || 'inherit'}"
 						>
 							{segment.text.replace('###', '').trim()}
 						</span>
@@ -451,7 +450,6 @@
 							class:font-bold={segment.bold}
 							class:line-through={segment.strikethrough}
 							class:opacity-60={segment.strikethrough}
-							style="color: {segment.color || 'inherit'}"
 						>
 							{segment.text}
 						</span>

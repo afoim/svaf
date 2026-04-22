@@ -267,3 +267,34 @@ export function logout(): Promise<{ success: boolean }> {
 		requiresAuth: true
 	});
 }
+
+export type ForumUploadType = 'post' | 'comment' | 'avatar';
+
+interface UploadPayload {
+	file: File;
+	type: ForumUploadType;
+	postId?: string;
+}
+
+interface UploadResult {
+	url?: string;
+	path?: string;
+}
+
+export async function uploadFile({ file, type, postId }: UploadPayload): Promise<string> {
+	const formData = new FormData();
+	formData.append('file', file);
+	formData.append('type', type);
+	if (postId) formData.append('post_id', postId);
+
+	const result = await forumRequest<UploadResult>('/api/upload', {
+		method: 'POST',
+		requiresAuth: true,
+		body: formData
+	});
+	return result.url || result.path || '';
+}
+
+export function uploadAvatar(file: File): Promise<string> {
+	return uploadFile({ file, type: 'avatar' });
+}

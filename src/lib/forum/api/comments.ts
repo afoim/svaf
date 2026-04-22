@@ -1,4 +1,4 @@
-import type { ForumComment } from '../types/comment';
+import type { ForumComment, ForumCommentInput } from '../types/comment';
 import { forumRequest } from './client';
 
 interface RawCommentRecord {
@@ -80,4 +80,46 @@ export function buildCommentTree(flat: ForumComment[]): ForumComment[] {
 		}
 	}
 	return roots;
+}
+
+export async function createComment(payload: ForumCommentInput): Promise<ForumComment> {
+	const result = await forumRequest<RawCommentRecord>(
+		`/api/posts/${payload.postId}/comments`,
+		{
+			method: 'POST',
+			requiresAuth: true,
+			json: {
+				content: payload.content,
+				parent_id: payload.parentId,
+				'cf-turnstile-response': payload.turnstileToken
+			}
+		}
+	);
+	return normalizeComment(result);
+}
+
+export function deleteComment(commentId: string): Promise<{ success: boolean }> {
+	return forumRequest<{ success: boolean }>(`/api/comments/${commentId}`, {
+		method: 'DELETE',
+		requiresAuth: true
+	});
+}
+
+interface CommentLikeResult {
+	liked: boolean;
+	likeCount?: number;
+	like_count?: number;
+}
+
+export async function likeComment(
+	commentId: string
+): Promise<{ liked: boolean; likeCount?: number }> {
+	const result = await forumRequest<CommentLikeResult>(`/api/comments/${commentId}/like`, {
+		method: 'POST',
+		requiresAuth: true
+	});
+	return {
+		liked: Boolean(result.liked),
+		likeCount: typeof result.likeCount === 'number' ? result.likeCount : result.like_count
+	};
 }

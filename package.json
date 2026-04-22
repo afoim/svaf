@@ -36,6 +36,8 @@
 		"vite": "^8.0.7"
 	},
 	"dependencies": {
+		"@toast-ui/editor": "^3.2.2",
+		"browser-image-compression": "^2.0.2",
 		"dompurify": "^3.4.1",
 		"feed": "^5.2.1",
 		"markdown-it": "^14.1.1",

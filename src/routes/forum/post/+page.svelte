@@ -13,10 +13,12 @@
 	} from '$lib/components/ui/select';
 	import { goto } from '$app/navigation';
 	import ForumMarkdownContent from '$lib/components/forum/ForumMarkdownContent.svelte';
+	import ForumMarkdownEditor from '$lib/components/forum/ForumMarkdownEditor.svelte';
 	import CommentList from '$lib/components/forum/CommentList.svelte';
 	import { getPost } from '$lib/forum/api/posts';
 	import {
 		buildCommentTree,
+		createComment,
 		getComments,
 		type CommentListQuery
 	} from '$lib/forum/api/comments';
@@ -25,6 +27,8 @@
 	import type { ForumComment } from '$lib/forum/types/comment';
 	import { formatForumDateTime } from '$lib/forum/utils/markdown';
 	import { forumEnv } from '$lib/forum/stores/env';
+	import { forumAuth } from '$lib/forum/stores/auth';
+	import { emitErrorToast, emitSuccessToast } from '$lib/forum/utils/toast';
 
 	let postId = $state('');
 	let post = $state<ForumPostDetail | null>(null);
@@ -34,6 +38,8 @@
 	let loadErrorKind = $state<'not-found' | 'unreachable' | 'unknown' | null>(null);
 	let loadErrorMessage = $state('');
 	let commentSort = $state('hot');
+	let commentDraft = $state('');
+	let commentSubmitting = $state(false);
 
 	const sortLabels: Record<string, string> = {
 		hot: '最热',
@@ -99,6 +105,26 @@
 		if (commentSort === next || commentsLoading) return;
 		commentSort = next;
 		void loadComments();
+	}
+
+	async function submitComment() {
+		const content = commentDraft.trim();
+		if (!content || commentSubmitting || !postId) return;
+		if (!forumAuth.getToken()) {
+			emitErrorToast('评论', '请先登录后再发表评论。');
+			return;
+		}
+		commentSubmitting = true;
+		try {
+			await createComment({ postId, content });
+			commentDraft = '';
+			emitSuccessToast('评论', '评论已发表。');
+			await loadComments();
+		} catch (e) {
+			emitErrorToast('评论', e instanceof Error ? e.message : '评论失败，请稍后再试。');
+		} finally {
+			commentSubmitting = false;
+		}
 	}
 
 	function resolvePostId() {
@@ -253,12 +279,47 @@
 
 			<CommentList {comments} loading={commentsLoading} />
 
-			<Alert>
-				<Icon icon="mdi:information-outline" />
-				<AlertDescription>
-					当前阶段仅支持只读浏览。登录、点赞、发表评论与回复将在后续阶段实现。
-				</AlertDescription>
-			</Alert>
+			{#if $forumAuth.token}
+				<Card class="p-4 md:p-5 space-y-3">
+					<div class="flex items-center gap-2 text-sm font-medium">
+						<Icon icon="mdi:comment-edit-outline" class="size-4 text-primary" />
+						发表评论
+					</div>
+					<ForumMarkdownEditor
+						bind:value={commentDraft}
+						mode="comment"
+						uploadType="comment"
+						uploadPostId={postId}
+						placeholder="支持 Markdown，Ctrl/Cmd + Enter 提交"
+						submitting={commentSubmitting}
+						onsubmit={submitComment}
+					/>
+					<div class="flex items-center justify-end gap-2">
+						<span class="text-xs text-muted-foreground">Ctrl/Cmd + Enter 提交</span>
+						<Button onclick={submitComment} disabled={commentSubmitting || !commentDraft.trim()}>
+							{#if commentSubmitting}
+								<Icon icon="mdi:loading" class="size-4 animate-spin" />
+							{:else}
+								<Icon icon="mdi:send" class="size-4" />
+							{/if}
+							发表
+						</Button>
+					</div>
+				</Card>
+			{:else}
+				<Alert>
+					<Icon icon="mdi:information-outline" />
+					<AlertDescription class="flex flex-wrap items-center gap-2">
+						<span>登录后即可发表评论。</span>
+						<a
+							href="/forum/auth/login/"
+							class="text-primary underline decoration-dashed underline-offset-4"
+						>
+							去登录
+						</a>
+					</AlertDescription>
+				</Alert>
+			{/if}
 		</section>
 	{/if}
 </div>

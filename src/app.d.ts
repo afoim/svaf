@@ -10,4 +10,12 @@ declare global {
 	}
 }
 
+declare module '@toast-ui/editor' {
+	const Editor: any;
+	export default Editor;
+	export type EditorOptions = any;
+}
+
+declare module '@toast-ui/editor/dist/toastui-editor.css';
+
 export {};

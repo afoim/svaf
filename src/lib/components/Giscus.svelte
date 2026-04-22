@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { Alert, AlertTitle, AlertDescription } from '$lib/components/ui/alert';
+	import Icon from '@iconify/svelte';
 
 	let loaded = $state(false);
 
@@ -47,11 +49,12 @@
 
 <div id="giscus-container" class="mt-12">
 	{#if !loaded}
-		<div class="text-center text-muted-foreground py-8">
-			<p>评论功能需要启用功能性 Cookie</p>
-			<p class="text-sm mt-2">
+		<Alert>
+			<Icon icon="mdi:information-outline" />
+			<AlertTitle>评论功能需要启用功能性 Cookie</AlertTitle>
+			<AlertDescription>
 				请在 <a href="#" id="open_preferences_center" class="text-primary underline">Cookie 设置</a> 中启用
-			</p>
-		</div>
+			</AlertDescription>
+		</Alert>
 	{/if}
 </div>

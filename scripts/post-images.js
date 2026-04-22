@@ -17,21 +17,12 @@ const AVIF_OPTIONS = {
 async function convertToAvif(srcPath, destPath, cacheFile) {
   try {
     const srcStat = fs.statSync(srcPath);
-    const srcHash = `${srcPath}:${srcStat.size}:${srcStat.mtimeMs}`;
+    const srcHash = `${srcStat.size}:${srcStat.mtimeMs}`;
     
-    // 检查缓存记录
+    // 检查缓存记录和目标文件是否存在
     if (cacheFile && cacheFile[srcPath] === srcHash && fs.existsSync(destPath)) {
-      return { skipped: true };
-    }
-    
-    // 检查目标文件是否已存在且较新
-    if (fs.existsSync(destPath)) {
       const destStat = fs.statSync(destPath);
-      if (destStat.mtimeMs >= srcStat.mtimeMs) {
-        // 更新缓存
-        if (cacheFile) cacheFile[srcPath] = srcHash;
-        return { skipped: true };
-      }
+      return { skipped: true, srcSize: srcStat.size, outSize: destStat.size };
     }
     
     await sharp(srcPath, { failOn: 'none' })
@@ -143,6 +134,8 @@ async function main() {
       done++;
       if (r.skipped) {
         skipped++;
+        if (r.srcSize) totalSrc += r.srcSize;
+        if (r.outSize) totalOut += r.outSize;
         console.log(`[post-images] (${done}/${total}) 跳过 ${rel}`);
       } else {
         converted++;

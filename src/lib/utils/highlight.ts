@@ -31,19 +31,27 @@ function ensureThemeLink() {
 	if (themeInjected || typeof document === 'undefined') return;
 	if (document.querySelector(`link[data-hljs-theme]`)) {
 		themeInjected = true;
+		console.log('[hljs] theme link already present');
 		return;
 	}
 	const link = document.createElement('link');
 	link.rel = 'stylesheet';
 	link.href = THEME_CDN;
 	link.setAttribute('data-hljs-theme', 'github');
+	link.onload = () => console.log('[hljs] theme CSS loaded:', THEME_CDN);
+	link.onerror = (e) => console.error('[hljs] theme CSS load failed:', THEME_CDN, e);
 	document.head.appendChild(link);
 	themeInjected = true;
+	console.log('[hljs] theme link appended:', THEME_CDN);
 }
 
 async function getHljs(): Promise<HLJSApi> {
 	if (!hljsPromise) {
-		hljsPromise = import('highlight.js/lib/core').then((m) => m.default);
+		console.log('[hljs] loading core module...');
+		hljsPromise = import('highlight.js/lib/core').then((m) => {
+			console.log('[hljs] core module loaded');
+			return m.default;
+		});
 	}
 	return hljsPromise;
 }
@@ -53,14 +61,18 @@ async function ensureLang(hljs: HLJSApi, raw: string): Promise<string | null> {
 	if (loadedLangs.has(name)) return name;
 	if (hljs.getLanguage(name)) {
 		loadedLangs.add(name);
+		console.log(`[hljs] lang already registered: ${name}`);
 		return name;
 	}
 	try {
+		console.log(`[hljs] loading lang module: ${name} (requested: ${raw})`);
 		const mod = await import(`highlight.js/lib/languages/${name}`);
 		hljs.registerLanguage(name, mod.default);
 		loadedLangs.add(name);
+		console.log(`[hljs] lang loaded: ${name}`);
 		return name;
-	} catch {
+	} catch (err) {
+		console.warn(`[hljs] failed to load lang: ${name}`, err);
 		return null;
 	}
 }
@@ -70,31 +82,58 @@ async function ensureLang(hljs: HLJSApi, raw: string): Promise<string | null> {
  * 高亮后给 <code> 加 hljs class，由 CDN 主题 CSS 自动接管样式（包含整体背景）。
  */
 export async function highlightCodeBlocksIn(container: HTMLElement | null | undefined) {
-	if (!container) return;
+	console.log('[hljs] highlightCodeBlocksIn called, container:', container);
+	if (!container) {
+		console.warn('[hljs] no container provided');
+		return;
+	}
+
+	// 列出容器内所有 pre 元素，便于排查"嵌套"或选择器不命中
+	const allPres = container.querySelectorAll('pre');
+	console.log(`[hljs] container has ${allPres.length} <pre> elements`);
+
 	const blocks = container.querySelectorAll<HTMLElement>('pre > code');
-	if (blocks.length === 0) return;
+	console.log(`[hljs] selector "pre > code" matched ${blocks.length} blocks`);
+
+	if (blocks.length === 0) {
+		// 兼容备份：有些 markdown 渲染会把 code 嵌套更深，列出来看看
+		const looseBlocks = container.querySelectorAll('pre code');
+		console.log(
+			`[hljs] fallback selector "pre code" matched ${looseBlocks.length} blocks`,
+			Array.from(looseBlocks).slice(0, 3)
+		);
+		return;
+	}
 
 	ensureThemeLink();
 	const hljs = await getHljs();
 
+	let i = 0;
 	for (const code of Array.from(blocks)) {
-		if (code.dataset.hljsRendered === '1') continue;
+		i++;
+		if (code.dataset.hljsRendered === '1') {
+			console.log(`[hljs] block ${i} already rendered, skip`);
+			continue;
+		}
 		const cls = code.className || '';
 		const m = cls.match(/language-([\w+#-]+)/i);
 		const requested = (m && m[1].toLowerCase()) || 'plaintext';
+		console.log(`[hljs] block ${i}: className="${cls}", lang="${requested}"`);
 		const lang = await ensureLang(hljs, requested);
 		try {
 			if (lang) {
 				const result = hljs.highlight(code.textContent || '', { language: lang });
 				code.innerHTML = result.value;
 				code.classList.add('hljs', `language-${lang}`);
+				console.log(`[hljs] block ${i}: highlighted as ${lang}`);
 			} else {
-				// 未知语言：仅加 hljs class 让主题 CSS 给个统一背景
 				code.classList.add('hljs');
+				console.log(`[hljs] block ${i}: no lang resolved, only hljs class added`);
 			}
 			code.dataset.hljsRendered = '1';
-		} catch {
-			// 忽略单个代码块失败
+		} catch (err) {
+			console.error(`[hljs] block ${i}: highlight failed`, err);
 		}
 	}
+	console.log(`[hljs] done, processed ${i} blocks`);
 }

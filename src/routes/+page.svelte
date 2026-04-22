@@ -7,6 +7,7 @@
 	import { spaCache } from '$lib/utils/spaCache';
 	import PageViews from '$lib/components/PageViews.svelte';
 	import TimetableCard from '$lib/components/TimetableCard.svelte';
+	import SponsorBanners from '$lib/components/SponsorBanners.svelte';
 	
 	let isLive = $state<boolean>(false);
 	
@@ -249,4 +250,8 @@
 			</Button>
 		</a>
 	</div>
+
+	<Separator class="max-w-xs" />
+
+	<SponsorBanners />
 </div>

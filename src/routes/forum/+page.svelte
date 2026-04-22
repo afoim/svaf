@@ -279,7 +279,7 @@
 					<Icon icon="mdi:plus" class="size-4" />
 					发布帖子
 				</Button>
-				<Button variant="outline" disabled title="后续阶段实现">
+				<Button variant="outline" href="/forum/me/">
 					<Icon icon="mdi:account" class="size-4" />
 					个人中心
 				</Button>

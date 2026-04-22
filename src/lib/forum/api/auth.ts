@@ -298,3 +298,134 @@ export async function uploadFile({ file, type, postId }: UploadPayload): Promise
 export function uploadAvatar(file: File): Promise<string> {
 	return uploadFile({ file, type: 'avatar' });
 }
+
+interface ProfilePayload {
+	username?: string;
+	avatarUrl?: string;
+	emailNotifications?: boolean;
+	articleNotifications?: boolean;
+}
+
+interface RawProfileResult extends RawSessionResult {
+	success?: boolean;
+	message?: string;
+	data?: { user?: RawSessionUser | null } | null;
+}
+
+export async function updateProfile(payload: ProfilePayload): Promise<ForumUser | null> {
+	const result = await forumRequest<RawProfileResult>('/api/user/profile', {
+		method: 'POST',
+		requiresAuth: true,
+		json: {
+			username: payload.username,
+			avatar_url: payload.avatarUrl,
+			email_notifications: payload.emailNotifications,
+			article_notifications: payload.articleNotifications
+		}
+	});
+	const resolved = result.data?.user ?? result.user ?? resolveSessionUser(result);
+	if (!resolved && (result.success !== undefined || result.message)) return null;
+	return normalizeUser(resolved);
+}
+
+export async function updateMyProfile(
+	payload: ForumProfilePayload
+): Promise<ForumUser | null> {
+	const result = await forumRequest<RawProfileResult>('/api/user/me/profile', {
+		method: 'POST',
+		requiresAuth: true,
+		json: {
+			gender: payload.gender,
+			bio: payload.bio,
+			age: payload.age,
+			region: payload.region
+		}
+	});
+	const resolved = result.data?.user ?? result.user ?? resolveSessionUser(result);
+	if (!resolved && (result.success !== undefined || result.message)) return null;
+	return normalizeUser(resolved);
+}
+
+export function changeEmail(payload: {
+	newEmail: string;
+	totpCode?: string;
+}): Promise<{ success?: boolean; message?: string }> {
+	return forumRequest<{ success?: boolean; message?: string }>('/api/user/change-email', {
+		method: 'POST',
+		requiresAuth: true,
+		json: { new_email: payload.newEmail, totp_code: payload.totpCode }
+	});
+}
+
+export async function verifyEmailChange(
+	token?: string
+): Promise<{ success?: boolean; message?: string; user?: ForumUser | null }> {
+	const result = await forumRequest<{
+		success?: boolean;
+		message?: string;
+		user?: RawSessionUser;
+	}>('/api/verify-email-change', {
+		requiresAuth: true,
+		query: { token }
+	});
+	return {
+		success: result.success,
+		message: result.message,
+		user: normalizeUser(result.user)
+	};
+}
+
+export async function getTotpStatus(): Promise<boolean | undefined> {
+	const result = await forumRequest<{ totp_enabled?: boolean | number }>(
+		'/api/user/totp/status',
+		{ requiresAuth: true }
+	);
+	return toOptionalBoolean(result.totp_enabled);
+}
+
+export async function setupTotp(): Promise<{ secret: string; uri: string }> {
+	const result = await forumRequest<{ secret: string; uri?: string; otpauth_url?: string }>(
+		'/api/user/totp/setup',
+		{ method: 'POST', requiresAuth: true, json: {} }
+	);
+	return { secret: result.secret, uri: result.uri || result.otpauth_url || '' };
+}
+
+export async function verifyTotp(payload: {
+	token: string;
+}): Promise<{ success?: boolean; user?: ForumUser | null }> {
+	const result = await forumRequest<{ success?: boolean; user?: RawSessionUser }>(
+		'/api/user/totp/verify',
+		{ method: 'POST', requiresAuth: true, json: payload }
+	);
+	return { success: result.success, user: normalizeUser(result.user) };
+}
+
+export function disableTotp(payload: {
+	password: string;
+	totpCode: string;
+}): Promise<{ success?: boolean }> {
+	return forumRequest<{ success?: boolean }>('/api/user/totp/disable', {
+		method: 'POST',
+		requiresAuth: true,
+		json: { password: payload.password, totp_code: payload.totpCode }
+	});
+}
+
+export function deleteAccount(payload: {
+	password: string;
+	totpCode?: string;
+}): Promise<{ success?: boolean }> {
+	return forumRequest<{ success?: boolean }>('/api/user/delete', {
+		method: 'POST',
+		requiresAuth: true,
+		json: { password: payload.password, totp_code: payload.totpCode }
+	});
+}
+
+export async function getCurrentUserAvatar(): Promise<string> {
+	const result = await forumRequest<{ avatar_url?: string | null }>('/api/user/avatar', {
+		requiresAuth: true
+	});
+	return result.avatar_url || '';
+}

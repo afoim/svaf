@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { siteConfig } from '$lib/config/site';
+	import { Card, CardContent } from '$lib/components/ui/card';
 
 	const iconPathMap: Record<string, string> = {
 		info: 'M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0Zm0 1.5a6.5 6.5 0 1 1 0 13 6.5 6.5 0 0 1 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z',
@@ -33,27 +34,31 @@
 </script>
 
 {#if enable}
-	<div class="announcement-card relative w-full max-w-2xl">
-		<div
-			class="announcement-content flex items-center gap-3 rounded-xl border-2 p-4 transition-colors"
-			class:announcement-happy={isHappy}
-			style={isHappy ? '' : `border-color: ${currentColor}; color: ${currentColor};`}
+	<div class="flex w-full justify-center">
+		<Card
+			class={`w-full max-w-2xl ${isHappy ? 'announcement-happy' : ''}`}
+			style={isHappy ? '' : `border-color: ${currentColor};`}
 		>
-			<div class="flex shrink-0 items-center justify-center">
-				{#if isHappy}
-					<span class="announcement-emoji" aria-hidden="true">🎉</span>
-				{:else}
-					<svg width="24" height="24" viewBox="0 0 16 16" aria-hidden="true">
-						<path d={currentIconPath} fill="currentColor"></path>
-					</svg>
-				{/if}
-			</div>
-			<div class="grow">
-				<div class="announcement-text text-sm font-bold md:text-base">
-					{@html content}
+			<CardContent class="flex items-center gap-3 text-center">
+				<div class="flex shrink-0 items-center justify-center" style={isHappy ? '' : `color: ${currentColor};`}>
+					{#if isHappy}
+						<span class="announcement-emoji" aria-hidden="true">🎉</span>
+					{:else}
+						<svg width="24" height="24" viewBox="0 0 16 16" aria-hidden="true">
+							<path d={currentIconPath} fill="currentColor"></path>
+						</svg>
+					{/if}
 				</div>
-			</div>
-		</div>
+				<div class="grow text-center">
+					<div
+						class="announcement-text text-sm font-bold md:text-base"
+						style={isHappy ? '' : `color: ${currentColor};`}
+					>
+						{@html content}
+					</div>
+				</div>
+			</CardContent>
+		</Card>
 	</div>
 {/if}
 
@@ -67,7 +72,7 @@
 		}
 	}
 
-	.announcement-happy {
+	:global(.announcement-happy) {
 		--notice-gradient: linear-gradient(
 			90deg,
 			oklch(0.78 0.18 0),
@@ -82,11 +87,11 @@
 		);
 		border: 2px solid transparent !important;
 		background:
-			linear-gradient(hsl(var(--background)), hsl(var(--background))) padding-box,
-			var(--notice-gradient) border-box;
+			linear-gradient(hsl(var(--card)), hsl(var(--card))) padding-box,
+			var(--notice-gradient) border-box !important;
 		background-size:
 			100% 100%,
-			200% 100%;
+			200% 100% !important;
 		animation: rainbow-flow 3s linear infinite;
 	}
 

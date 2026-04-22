@@ -494,7 +494,7 @@
 			</Card>
 		</article>
 
-		<Card class="p-4 md:p-5 space-y-4">
+		<Card class="p-4 md:p-5 space-y-4" id="comments">
 			<div class="flex items-center justify-between border-b pb-3">
 				<h2 class="flex items-center gap-2 text-lg font-bold">
 					<Icon icon="mdi:comment-multiple-outline" class="size-5 text-primary" />

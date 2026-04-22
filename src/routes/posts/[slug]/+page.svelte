@@ -103,7 +103,9 @@
 	<MermaidRenderer />
 
 	<!-- 评论区 -->
-	<Giscus />
+	<div id="comments">
+		<Giscus />
+	</div>
 
 	<!-- 文章底部 -->
 	<footer class="mt-12 border-t pt-8">

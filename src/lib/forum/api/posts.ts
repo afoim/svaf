@@ -1,5 +1,5 @@
 import type { ApiListResult } from '../types/api';
-import type { ForumPostSummary } from '../types/post';
+import type { ForumPostDetail, ForumPostSummary } from '../types/post';
 import { extractFirstImageUrlFromMarkdown } from '../utils/markdown';
 import { forumRequest } from './client';
 
@@ -127,4 +127,24 @@ export interface NewPostCountResult {
 
 export function getNewPostCount(): Promise<NewPostCountResult> {
 	return forumRequest<NewPostCountResult>('/api/posts/new-count', { requiresAuth: true });
+}
+
+export async function getPost(id: string): Promise<ForumPostDetail> {
+	const result = await forumRequest<
+		RawPostRecord | { post?: RawPostRecord; data?: RawPostRecord }
+	>(`/api/posts/${id}`);
+	const post =
+		'id' in (result as RawPostRecord)
+			? (result as RawPostRecord)
+			: (result as { post?: RawPostRecord; data?: RawPostRecord }).post ||
+			  (result as { post?: RawPostRecord; data?: RawPostRecord }).data;
+	if (!post) throw new Error('帖子不存在');
+	return normalizePost(post) as ForumPostDetail;
+}
+
+export function likePost(id: string): Promise<{ liked: boolean; likeCount: number }> {
+	return forumRequest<{ liked: boolean; likeCount: number }>(
+		`/api/posts/${id}/like`,
+		{ method: 'POST', requiresAuth: true }
+	);
 }

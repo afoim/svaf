@@ -1,5 +1,5 @@
 import type { ApiListResult } from '../types/api';
-import type { ForumPostDetail, ForumPostSummary } from '../types/post';
+import type { ForumPostDetail, ForumPostInput, ForumPostSummary } from '../types/post';
 import { extractFirstImageUrlFromMarkdown } from '../utils/markdown';
 import { forumRequest } from './client';
 
@@ -147,4 +147,62 @@ export function likePost(id: string): Promise<{ liked: boolean; likeCount: numbe
 		`/api/posts/${id}/like`,
 		{ method: 'POST', requiresAuth: true }
 	);
+}
+
+interface RawMutatePostResult {
+	success?: boolean;
+	id?: string | number | null;
+	post?: RawPostRecord;
+	data?: RawPostRecord;
+}
+
+export async function createPost(payload: ForumPostInput): Promise<ForumPostDetail> {
+	const result = await forumRequest<RawMutatePostResult>('/api/posts', {
+		method: 'POST',
+		requiresAuth: true,
+		json: payload
+	});
+	const post = result.post || result.data;
+	if (post) return normalizePost(post) as ForumPostDetail;
+	if (result.id !== undefined && result.id !== null && result.id !== '') {
+		return {
+			id: String(result.id),
+			title: payload.title,
+			content: payload.content,
+			categoryId: payload.categoryId,
+			excerpt: payload.excerpt
+		} satisfies ForumPostDetail;
+	}
+	throw new Error('发帖成功，但未拿到帖子 ID');
+}
+
+export async function updatePost(
+	id: string,
+	payload: ForumPostInput
+): Promise<ForumPostDetail> {
+	const result = await forumRequest<RawMutatePostResult>(`/api/posts/${id}`, {
+		method: 'PUT',
+		requiresAuth: true,
+		json: payload
+	});
+	const post = result.post || result.data;
+	if (post) return normalizePost(post) as ForumPostDetail;
+	const nextId = result.id ?? id;
+	if (nextId !== undefined && nextId !== null && nextId !== '') {
+		return {
+			id: String(nextId),
+			title: payload.title,
+			content: payload.content,
+			categoryId: payload.categoryId,
+			excerpt: payload.excerpt
+		} satisfies ForumPostDetail;
+	}
+	throw new Error('保存成功，但未拿到帖子 ID');
+}
+
+export function deletePost(id: string): Promise<{ success: boolean }> {
+	return forumRequest<{ success: boolean }>(`/api/posts/${id}`, {
+		method: 'DELETE',
+		requiresAuth: true
+	});
 }

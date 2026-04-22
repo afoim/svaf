@@ -15,7 +15,11 @@
 	import ForumMarkdownContent from '$lib/components/forum/ForumMarkdownContent.svelte';
 	import ForumMarkdownEditor from '$lib/components/forum/ForumMarkdownEditor.svelte';
 	import CommentList from '$lib/components/forum/CommentList.svelte';
-	import { getPost } from '$lib/forum/api/posts';
+	import { Input } from '$lib/components/ui/input';
+	import { Label } from '$lib/components/ui/label';
+	import { deletePost, getPost, updatePost } from '$lib/forum/api/posts';
+	import { getCategories } from '$lib/forum/api/categories';
+	import { getSession } from '$lib/forum/api/auth';
 	import {
 		buildCommentTree,
 		createComment,
@@ -23,7 +27,7 @@
 		type CommentListQuery
 	} from '$lib/forum/api/comments';
 	import { ForumApiError } from '$lib/forum/types/api';
-	import type { ForumPostDetail } from '$lib/forum/types/post';
+	import type { ForumCategory, ForumPostDetail } from '$lib/forum/types/post';
 	import type { ForumComment } from '$lib/forum/types/comment';
 	import { formatForumDateTime } from '$lib/forum/utils/markdown';
 	import { forumEnv } from '$lib/forum/stores/env';
@@ -40,6 +44,22 @@
 	let commentSort = $state('hot');
 	let commentDraft = $state('');
 	let commentSubmitting = $state(false);
+
+	let editing = $state(false);
+	let editTitle = $state('');
+	let editContent = $state('');
+	let editCategoryId = $state('');
+	let editSubmitting = $state(false);
+	let categories = $state<ForumCategory[]>([]);
+	let categoriesLoaded = $state(false);
+
+	let canEdit = $derived.by(() => {
+		const u = $forumAuth.user;
+		if (!u) return false;
+		if (u.role === 'admin') return true;
+		if (!post) return false;
+		return Boolean(u.id) && u.id === post.authorId;
+	});
 
 	const sortLabels: Record<string, string> = {
 		hot: '最热',
@@ -127,6 +147,86 @@
 		}
 	}
 
+	async function ensureCategoriesLoaded() {
+		if (categoriesLoaded) return;
+		try {
+			categories = await getCategories();
+		} catch (e) {
+			console.error(e);
+			categories = [];
+		} finally {
+			categoriesLoaded = true;
+		}
+	}
+
+	async function startEdit() {
+		if (!post) return;
+		editTitle = post.title || '';
+		editContent = post.content || '';
+		editCategoryId = post.categoryId || post.category?.id || '';
+		editing = true;
+		await ensureCategoriesLoaded();
+	}
+
+	function cancelEdit() {
+		editing = false;
+	}
+
+	async function saveEdit() {
+		if (!post || editSubmitting) return;
+		const title = editTitle.trim();
+		const content = editContent.trim();
+		if (!title) {
+			emitErrorToast('编辑帖子', '标题不能为空。');
+			return;
+		}
+		if (!content) {
+			emitErrorToast('编辑帖子', '内容不能为空。');
+			return;
+		}
+		editSubmitting = true;
+		try {
+			const updated = await updatePost(post.id, {
+				title,
+				content,
+				categoryId: editCategoryId || undefined
+			});
+			post = { ...post, ...updated };
+			editing = false;
+			emitSuccessToast('编辑帖子', '保存成功。');
+			if (typeof document !== 'undefined' && post.title) {
+				document.title = `${post.title} - 论坛 - 二叉树树`;
+			}
+		} catch (e) {
+			emitErrorToast('编辑帖子', e instanceof Error ? e.message : '保存失败，请稍后再试。');
+		} finally {
+			editSubmitting = false;
+		}
+	}
+
+	async function removePost() {
+		if (!post) return;
+		if (typeof window !== 'undefined' && !window.confirm('确认删除这篇帖子？此操作不可撤销。'))
+			return;
+		try {
+			await deletePost(post.id);
+			emitSuccessToast('删除帖子', '帖子已删除。');
+			void goto('/forum/');
+		} catch (e) {
+			emitErrorToast('删除帖子', e instanceof Error ? e.message : '删除失败，请稍后再试。');
+		}
+	}
+
+	async function hydrateSession() {
+		if (!forumAuth.getToken()) return;
+		try {
+			const session = await getSession();
+			forumAuth.setSession(session);
+		} catch {
+			// 静默
+		}
+	}
+
 	function resolvePostId() {
 		if (typeof window === 'undefined') return '';
 		return new URLSearchParams(window.location.search).get('id') || '';
@@ -149,6 +249,7 @@
 
 	onMount(() => {
 		postId = resolvePostId();
+		void hydrateSession();
 		if (postId) {
 			loadPost();
 			loadComments();
@@ -251,12 +352,79 @@
 								/>
 								{post.likeCount || 0}
 							</Button>
+							{#if canEdit && !editing}
+								<Button variant="outline" size="sm" onclick={startEdit}>
+									<Icon icon="mdi:pencil" class="size-4" />
+									编辑
+								</Button>
+								<Button variant="outline" size="sm" onclick={removePost}>
+									<Icon icon="mdi:trash-can-outline" class="size-4" />
+									删除
+								</Button>
+							{/if}
 						</div>
 					</div>
-					<h1 class="text-3xl font-bold leading-tight">{post.title}</h1>
+					{#if editing}
+						<div class="space-y-3">
+							<div class="space-y-2">
+								<Label for="edit-title">标题</Label>
+								<Input id="edit-title" bind:value={editTitle} placeholder="帖子标题" />
+							</div>
+							<div class="space-y-2">
+								<Label for="edit-category">分类</Label>
+								<Select
+									type="single"
+									value={editCategoryId}
+									onValueChange={(v) => (editCategoryId = v ?? '')}
+								>
+									<SelectTrigger class="w-48" id="edit-category">
+										{categories.find((c) => c.id === editCategoryId)?.name || '未分类'}
+									</SelectTrigger>
+									<SelectContent>
+										<SelectItem value="">未分类</SelectItem>
+										{#each categories as item (item.id)}
+											<SelectItem value={item.id}>{item.name}</SelectItem>
+										{/each}
+									</SelectContent>
+								</Select>
+							</div>
+						</div>
+					{:else}
+						<h1 class="text-3xl font-bold leading-tight">{post.title}</h1>
+					{/if}
 				</div>
 
-				<ForumMarkdownContent content={post.content || post.excerpt || ''} />
+				{#if editing}
+					<div class="space-y-3">
+						<ForumMarkdownEditor
+							bind:value={editContent}
+							mode="post"
+							uploadType="post"
+							uploadPostId={post.id}
+							placeholder="支持 Markdown，Ctrl/Cmd + Enter 保存"
+							submitting={editSubmitting}
+							minHeight={520}
+							onsubmit={saveEdit}
+							onescape={cancelEdit}
+						/>
+						<div class="flex items-center justify-end gap-2">
+							<Button variant="outline" onclick={cancelEdit} disabled={editSubmitting}>
+								<Icon icon="mdi:close" class="size-4" />
+								取消
+							</Button>
+							<Button onclick={saveEdit} disabled={editSubmitting || !editTitle.trim() || !editContent.trim()}>
+								{#if editSubmitting}
+									<Icon icon="mdi:loading" class="size-4 animate-spin" />
+								{:else}
+									<Icon icon="mdi:content-save-outline" class="size-4" />
+								{/if}
+								保存
+							</Button>
+						</div>
+					</div>
+				{:else}
+					<ForumMarkdownContent content={post.content || post.excerpt || ''} />
+				{/if}
 			</Card>
 		</article>
 

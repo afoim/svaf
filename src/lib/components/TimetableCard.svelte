@@ -26,6 +26,7 @@
 	let nextDetail = $state<string>('--');
 	let nextTail = $state<string>('');
 	let nextColor = $state<string>('');
+	let statusColor = $state<string>('');
 	let isVisible = $state<boolean>(false);
 
 	function parseTimeToMinute(text: string): number | null {
@@ -82,7 +83,8 @@
 				status: '周末',
 				nextDetail: '--',
 				nextTail: '',
-				nextColor: ''
+				nextColor: '',
+				statusColor: ''
 			};
 		}
 
@@ -92,20 +94,24 @@
 				status: '无课',
 				nextDetail: '--',
 				nextTail: '',
-				nextColor: ''
+				nextColor: '',
+				statusColor: ''
 			};
 		}
 
 		let currentStatus = '无课';
+		let statusColor = '';
 		for (let index = 0; index < courses.length; index += 1) {
 			const current = courses[index]!;
 			if (currentMinute >= current.startMinute && currentMinute < current.endMinute) {
 				currentStatus = `上课（${current.courseName}）`;
+				statusColor = current.color;
 				break;
 			}
 			const next = courses[index + 1];
 			if (next && currentMinute >= current.endMinute && currentMinute < next.startMinute) {
 				currentStatus = `课间（下一节：${next.courseName}）`;
+				statusColor = next.color;
 				break;
 			}
 		}
@@ -116,7 +122,8 @@
 				status: currentStatus,
 				nextDetail: '--',
 				nextTail: '',
-				nextColor: ''
+				nextColor: '',
+				statusColor: statusColor
 			};
 		}
 
@@ -125,7 +132,8 @@
 			status: currentStatus,
 			nextDetail: `${nextCourse.courseName} - ${nextCourse.room || '未填写'}`,
 			nextTail: `（${formatDuration(remainMinutes)}后）`,
-			nextColor: nextCourse.color || ''
+			nextColor: nextCourse.color || '',
+			statusColor: statusColor
 		};
 	}
 
@@ -189,6 +197,7 @@
 		nextDetail = state.nextDetail;
 		nextTail = state.nextTail;
 		nextColor = state.nextColor;
+		statusColor = state.statusColor;
 		isVisible = true;
 	}
 
@@ -213,12 +222,12 @@
 
 <a href="/timetable/" class="block transition-transform hover:-translate-y-0.5">
 	<Card class="opacity-0 transition-opacity duration-300" style="opacity: {isVisible ? 1 : 0}">
-		<CardContent class="p-4">
-			<p class="text-sm font-semibold">{status}</p>
-			<p class="mt-1 text-sm text-muted-foreground">
+		<CardContent class="p-3">
+			<p class="text-xs font-semibold transition-colors" style="color: {statusColor || 'inherit'}">{status}</p>
+			<p class="mt-1 text-xs text-muted-foreground">
 				<span>下一堂课：</span>
 				<span class="font-medium transition-colors" style="color: {nextColor || 'inherit'}">{nextDetail}</span>
-				<span>{nextTail}</span>
+				<span class="ml-0.5">{nextTail}</span>
 			</p>
 		</CardContent>
 	</Card>

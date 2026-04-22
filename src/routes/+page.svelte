@@ -130,7 +130,7 @@
 	</div>
 
 	<!-- 课程表卡片 -->
-	<div class="w-full max-w-md">
+	<div class="w-full max-w-xs">
 		<TimetableCard />
 	</div>
 

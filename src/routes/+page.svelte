@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
+	import { Separator } from '$lib/components/ui/separator';
 	import { siteConfig } from '$lib/config/site';
 	import Icon from '@iconify/svelte';
 	import { onMount } from 'svelte';
@@ -154,7 +155,9 @@
 		{/each}
 	</div>
 	
-	<div class="mt-4 flex flex-wrap gap-3">
+	<Separator class="max-w-xs" />
+
+	<div class="flex flex-wrap gap-3 justify-center">
 		<a href="/posts">
 			<Button class="flex items-center gap-2">
 				<Icon icon="mdi:post-outline" class="w-5 h-5" />

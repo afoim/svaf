@@ -10,7 +10,7 @@
 	},
 	"scripts": {
 		"dev": "vite dev",
-		"build": "vite build",
+		"build": "vite build && node scripts/post-images.js",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
 		"new-post": "node scripts/new-post.js",

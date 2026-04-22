@@ -14,7 +14,7 @@
 	import { goto } from '$app/navigation';
 	import ForumMarkdownContent from '$lib/components/forum/ForumMarkdownContent.svelte';
 	import ForumMarkdownEditor from '$lib/components/forum/ForumMarkdownEditor.svelte';
-	import CommentList from '$lib/components/forum/CommentList.svelte';
+	import CommentItem from '$lib/components/forum/CommentItem.svelte';
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
 	import { deletePost, getPost, updatePost } from '$lib/forum/api/posts';
@@ -52,6 +52,14 @@
 	let editSubmitting = $state(false);
 	let categories = $state<ForumCategory[]>([]);
 	let categoriesLoaded = $state(false);
+
+	let composerExpanded = $state(false);
+
+	let commentCount = $derived.by(() => {
+		const walk = (list: ForumComment[]): number =>
+			list.reduce((acc, c) => acc + 1 + (c.replies ? walk(c.replies) : 0), 0);
+		return walk(comments);
+	});
 
 	let canEdit = $derived.by(() => {
 		const u = $forumAuth.user;
@@ -138,6 +146,7 @@
 		try {
 			await createComment({ postId, content });
 			commentDraft = '';
+			composerExpanded = false;
 			emitSuccessToast('评论', '评论已发表。');
 			await loadComments();
 		} catch (e) {
@@ -145,6 +154,11 @@
 		} finally {
 			commentSubmitting = false;
 		}
+	}
+
+	function cancelCompose() {
+		composerExpanded = false;
+		commentDraft = '';
 	}
 
 	async function ensureCategoriesLoaded() {
@@ -428,35 +442,68 @@
 			</Card>
 		</article>
 
-		<section class="space-y-3">
+		<Card class="p-4 md:p-5 space-y-4">
+			<div class="flex items-center justify-between border-b pb-3">
+				<h2 class="flex items-center gap-2 text-lg font-bold">
+					<Icon icon="mdi:comment-multiple-outline" class="size-5 text-primary" />
+					评论
+					<Badge variant="secondary">{commentCount}</Badge>
+				</h2>
+				<Select
+					type="single"
+					value={commentSort}
+					onValueChange={(v) => changeCommentSort(v ?? 'hot')}
+				>
+					<SelectTrigger class="w-28">{sortLabels[commentSort] || '最热'}</SelectTrigger>
+					<SelectContent>
+						{#each Object.entries(sortLabels) as [k, v] (k)}
+							<SelectItem value={k}>{v}</SelectItem>
+						{/each}
+					</SelectContent>
+				</Select>
+			</div>
+
 			{#if $forumAuth.token}
-				<Card class="p-4 md:p-5 space-y-3">
-					<div class="flex items-center gap-2 text-sm font-medium">
+				{#if composerExpanded}
+					<div class="space-y-3">
+						<ForumMarkdownEditor
+							bind:value={commentDraft}
+							mode="comment"
+							uploadType="comment"
+							uploadPostId={postId}
+							placeholder="支持 Markdown，Ctrl/Cmd + Enter 提交"
+							submitting={commentSubmitting}
+							minHeight={420}
+							autoFocus
+							onsubmit={submitComment}
+							onescape={cancelCompose}
+						/>
+						<div class="flex items-center justify-end gap-2">
+							<span class="text-xs text-muted-foreground">Ctrl/Cmd + Enter 提交</span>
+							<Button variant="outline" onclick={cancelCompose} disabled={commentSubmitting}>
+								<Icon icon="mdi:close" class="size-4" />
+								取消
+							</Button>
+							<Button onclick={submitComment} disabled={commentSubmitting || !commentDraft.trim()}>
+								{#if commentSubmitting}
+									<Icon icon="mdi:loading" class="size-4 animate-spin" />
+								{:else}
+									<Icon icon="mdi:send" class="size-4" />
+								{/if}
+								发表
+							</Button>
+						</div>
+					</div>
+				{:else}
+					<button
+						type="button"
+						class="flex w-full items-center gap-2 rounded-lg border bg-muted/30 px-4 py-3 text-left text-sm text-muted-foreground transition hover:bg-muted/60"
+						onclick={() => (composerExpanded = true)}
+					>
 						<Icon icon="mdi:comment-edit-outline" class="size-4 text-primary" />
-						发表评论
-					</div>
-					<ForumMarkdownEditor
-						bind:value={commentDraft}
-						mode="comment"
-						uploadType="comment"
-						uploadPostId={postId}
-						placeholder="支持 Markdown，Ctrl/Cmd + Enter 提交"
-						submitting={commentSubmitting}
-						minHeight={420}
-						onsubmit={submitComment}
-					/>
-					<div class="flex items-center justify-end gap-2">
-						<span class="text-xs text-muted-foreground">Ctrl/Cmd + Enter 提交</span>
-						<Button onclick={submitComment} disabled={commentSubmitting || !commentDraft.trim()}>
-							{#if commentSubmitting}
-								<Icon icon="mdi:loading" class="size-4 animate-spin" />
-							{:else}
-								<Icon icon="mdi:send" class="size-4" />
-							{/if}
-							发表
-						</Button>
-					</div>
-				</Card>
+						撰写评论...
+					</button>
+				{/if}
 			{:else}
 				<Alert>
 					<Icon icon="mdi:information-outline" />
@@ -472,23 +519,25 @@
 				</Alert>
 			{/if}
 
-			<div class="flex items-center justify-end gap-2">
-				<span class="text-sm text-muted-foreground">排序</span>
-				<Select
-					type="single"
-					value={commentSort}
-					onValueChange={(v) => changeCommentSort(v ?? 'hot')}
-				>
-					<SelectTrigger class="w-28">{sortLabels[commentSort] || '最热'}</SelectTrigger>
-					<SelectContent>
-						{#each Object.entries(sortLabels) as [k, v] (k)}
-							<SelectItem value={k}>{v}</SelectItem>
-						{/each}
-					</SelectContent>
-				</Select>
-			</div>
-
-			<CommentList {comments} loading={commentsLoading} onDeleted={loadComments} />
-		</section>
+			{#if commentsLoading}
+				<div class="space-y-3">
+					{#each Array(3) as _, i (i)}
+						<div class="space-y-2">
+							<div class="h-4 w-32 rounded bg-muted"></div>
+							<div class="h-4 w-full rounded bg-muted/70"></div>
+							<div class="h-4 w-3/4 rounded bg-muted/70"></div>
+						</div>
+					{/each}
+				</div>
+			{:else if comments.length === 0}
+				<p class="py-6 text-center text-sm text-muted-foreground">还没有评论，沙发就是你的了。</p>
+			{:else}
+				<div class="space-y-4">
+					{#each comments as comment (comment.id)}
+						<CommentItem {comment} depth={0} onDeleted={loadComments} />
+					{/each}
+				</div>
+			{/if}
+		</Card>
 	{/if}
 </div>

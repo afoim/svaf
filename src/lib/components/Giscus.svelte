@@ -5,7 +5,31 @@
 
 	let loaded = $state(false);
 
+	const STORAGE_KEY = 'cookie-consent-preferences';
+	const CONSENT_VERSION = '1.0';
+
+	function checkExistingConsent(): boolean {
+		try {
+			const stored = localStorage.getItem(STORAGE_KEY);
+			if (stored) {
+				const data = JSON.parse(stored);
+				if (data.version === CONSENT_VERSION && data.preferences?.functional) {
+					return true;
+				}
+			}
+		} catch (e) {
+			console.error('Failed to read cookie preferences:', e);
+		}
+		return false;
+	}
+
 	onMount(() => {
+		// 首次挂载时检查已存在的 consent
+		if (checkExistingConsent()) {
+			loadGiscus();
+			loaded = true;
+		}
+
 		// 监听 Cookie Consent 更新事件
 		const handleConsentUpdate = (e: CustomEvent) => {
 			const preferences = e.detail;

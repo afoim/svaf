@@ -29,6 +29,29 @@
 	let statusColor = $state<string>('');
 	let isVisible = $state<boolean>(false);
 
+	function hexToRgba(hex: string, alpha: number = 1): string {
+		// Remove # if present
+		hex = hex.replace('#', '');
+		
+		// Handle 8-digit hex (with alpha)
+		if (hex.length === 8) {
+			const r = parseInt(hex.substring(0, 2), 16);
+			const g = parseInt(hex.substring(2, 4), 16);
+			const b = parseInt(hex.substring(4, 6), 16);
+			return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+		}
+		
+		// Handle 6-digit hex
+		if (hex.length === 6) {
+			const r = parseInt(hex.substring(0, 2), 16);
+			const g = parseInt(hex.substring(2, 4), 16);
+			const b = parseInt(hex.substring(4, 6), 16);
+			return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+		}
+		
+		return `rgba(0, 0, 0, ${alpha})`;
+	}
+
 	function parseTimeToMinute(text: string): number | null {
 		const parts = String(text || '').split(':');
 		if (parts.length !== 2) return null;
@@ -105,13 +128,13 @@
 			const current = courses[index]!;
 			if (currentMinute >= current.startMinute && currentMinute < current.endMinute) {
 				currentStatus = `上课（${current.courseName}）`;
-				statusColor = current.color;
+				statusColor = hexToRgba(current.color, 0.8);
 				break;
 			}
 			const next = courses[index + 1];
 			if (next && currentMinute >= current.endMinute && currentMinute < next.startMinute) {
 				currentStatus = `课间（下一节：${next.courseName}）`;
-				statusColor = next.color;
+				statusColor = hexToRgba(next.color, 0.8);
 				break;
 			}
 		}
@@ -132,7 +155,7 @@
 			status: currentStatus,
 			nextDetail: `${nextCourse.courseName} - ${nextCourse.room || '未填写'}`,
 			nextTail: `（${formatDuration(remainMinutes)}后）`,
-			nextColor: nextCourse.color || '',
+			nextColor: hexToRgba(nextCourse.color || '#000000', 0.8),
 			statusColor: statusColor
 		};
 	}

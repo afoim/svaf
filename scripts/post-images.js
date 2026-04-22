@@ -14,18 +14,35 @@ const AVIF_OPTIONS = {
   chromaSubsampling: '4:2:0'
 };
 
-async function convertToAvif(srcPath, destPath) {
+async function convertToAvif(srcPath, destPath, cacheFile) {
   try {
     const srcStat = fs.statSync(srcPath);
+    const srcHash = `${srcPath}:${srcStat.size}:${srcStat.mtimeMs}`;
+    
+    // 检查缓存记录
+    if (cacheFile && cacheFile[srcPath] === srcHash && fs.existsSync(destPath)) {
+      return { skipped: true };
+    }
+    
+    // 检查目标文件是否已存在且较新
     if (fs.existsSync(destPath)) {
       const destStat = fs.statSync(destPath);
-      if (destStat.mtimeMs >= srcStat.mtimeMs) return { skipped: true };
+      if (destStat.mtimeMs >= srcStat.mtimeMs) {
+        // 更新缓存
+        if (cacheFile) cacheFile[srcPath] = srcHash;
+        return { skipped: true };
+      }
     }
+    
     await sharp(srcPath, { failOn: 'none' })
       .rotate()
       .avif(AVIF_OPTIONS)
       .toFile(destPath);
     const outStat = fs.statSync(destPath);
+    
+    // 更新缓存
+    if (cacheFile) cacheFile[srcPath] = srcHash;
+    
     return { skipped: false, srcSize: srcStat.size, outSize: outStat.size };
   } catch (err) {
     console.warn(`[post-images] AVIF 转换失败 ${srcPath}: ${err.message}，回退为原文件复制`);
@@ -51,6 +68,7 @@ async function processWithConcurrency(items, limit, worker) {
 async function main() {
   const postsDir = path.join(process.cwd(), 'src/content/posts');
   const outputDir = path.join(process.cwd(), 'build/posts');
+  const cacheFilePath = path.join(process.cwd(), '.image-cache.json');
 
   if (!fs.existsSync(postsDir)) {
     console.log('[post-images] src/content/posts 不存在，跳过');
@@ -59,6 +77,16 @@ async function main() {
   if (!fs.existsSync(path.join(process.cwd(), 'build'))) {
     console.error('[post-images] build/ 目录不存在，请先执行 vite build');
     process.exit(1);
+  }
+
+  // 加载缓存文件
+  let cacheFile = {};
+  if (fs.existsSync(cacheFilePath)) {
+    try {
+      cacheFile = JSON.parse(fs.readFileSync(cacheFilePath, 'utf8'));
+    } catch (err) {
+      console.warn('[post-images] 缓存文件读取失败，将重新创建');
+    }
   }
 
   const tasks = [];
@@ -111,7 +139,7 @@ async function main() {
   await processWithConcurrency(tasks, concurrency, async (task) => {
     const rel = path.relative(postsDir, task.srcPath).replace(/\\/g, '/');
     if (task.type === 'avif') {
-      const r = await convertToAvif(task.srcPath, task.destPath);
+      const r = await convertToAvif(task.srcPath, task.destPath, cacheFile);
       done++;
       if (r.skipped) {
         skipped++;
@@ -138,6 +166,14 @@ async function main() {
   console.log(
     `[post-images] AVIF 转换完成: 转换 ${converted}, 跳过 ${skipped}, 复制 ${copied}, 节省 ${ratio}% (${(totalSrc / 1024 / 1024).toFixed(2)}MB → ${(totalOut / 1024 / 1024).toFixed(2)}MB), 耗时 ${cost}s`
   );
+
+  // 保存缓存文件
+  try {
+    fs.writeFileSync(cacheFilePath, JSON.stringify(cacheFile, null, 2), 'utf8');
+    console.log('[post-images] 缓存文件已保存');
+  } catch (err) {
+    console.warn('[post-images] 缓存文件保存失败:', err.message);
+  }
 }
 
 main().catch((err) => {

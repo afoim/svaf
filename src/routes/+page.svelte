@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
+	import { Badge } from '$lib/components/ui/badge';
 	import { Separator } from '$lib/components/ui/separator';
 	import { siteConfig } from '$lib/config/site';
 	import Icon from '@iconify/svelte';
@@ -163,6 +164,14 @@
 			<Button class="flex items-center gap-2">
 				<Icon icon="mdi:post-outline" class="w-5 h-5" />
 				博客
+			</Button>
+		</a>
+		
+		<a href="/forum">
+			<Button class="flex items-center gap-2 ring-2 ring-primary/40 shadow-md shadow-primary/20">
+				<Icon icon="mdi:forum" class="w-5 h-5" />
+				论坛
+				<Badge variant="secondary" class="ml-0.5">NEW</Badge>
 			</Button>
 		</a>
 		

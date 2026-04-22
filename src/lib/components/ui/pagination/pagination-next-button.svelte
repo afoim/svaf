@@ -1,7 +1,6 @@
 <script lang="ts">
+	import Icon from '@iconify/svelte';
 	import { Pagination as PaginationPrimitive } from "bits-ui";
-	import { HugeiconsIcon } from "@hugeicons/svelte"
-	import { ArrowRightIcon } from '@hugeicons/core-free-icons';
 	import { cn } from "$lib/utils.js";
 	import { buttonVariants } from "../button/index.js";
 
@@ -15,7 +14,7 @@
 
 {#snippet Fallback()}
 	<span>Next</span>
-	<HugeiconsIcon icon={ArrowRightIcon} strokeWidth={2} class={cn("size-4", className)} />
+	<Icon icon="hugeicons:arrow-right" class={cn("size-4", className)}  />
 {/snippet}
 
 <PaginationPrimitive.NextButton

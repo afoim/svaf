@@ -1,9 +1,7 @@
 <script lang="ts">
+	import Icon from '@iconify/svelte';
 	import { Select as SelectPrimitive } from "bits-ui";
 	import { cn, type WithoutChild } from "$lib/utils.js";
-	import { HugeiconsIcon } from "@hugeicons/svelte"
-	import { Tick02Icon } from '@hugeicons/core-free-icons';
-
 	let {
 		ref = $bindable(null),
 		class: className,
@@ -27,7 +25,7 @@
 	{#snippet children({ selected, highlighted })}
 		<span class="absolute end-2 flex size-3.5 items-center justify-center">
 			{#if selected}
-				<HugeiconsIcon icon={Tick02Icon} strokeWidth={2} class="cn-select-item-indicator-icon" />
+				<Icon icon="hugeicons:tick-02" class="cn-select-item-indicator-icon"  />
 			{/if}
 		</span>
 		{#if childrenProp}

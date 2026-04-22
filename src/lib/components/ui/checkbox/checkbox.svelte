@@ -1,10 +1,7 @@
 <script lang="ts">
+	import Icon from '@iconify/svelte';
 	import { Checkbox as CheckboxPrimitive } from "bits-ui";
 	import { cn, type WithoutChildrenOrChild } from "$lib/utils.js";
-	import { HugeiconsIcon } from "@hugeicons/svelte"
-	import { Tick02Icon } from '@hugeicons/core-free-icons';
-	import { MinusSignIcon } from '@hugeicons/core-free-icons';
-
 	let {
 		ref = $bindable(null),
 		checked = $bindable(false),
@@ -31,9 +28,9 @@
 			class="[&>svg]:size-3.5 grid place-content-center text-current transition-none"
 		>
 			{#if checked}
-				<HugeiconsIcon icon={Tick02Icon} strokeWidth={2}  />
+				<Icon icon="hugeicons:tick-02"   />
 			{:else if indeterminate}
-				<HugeiconsIcon icon={MinusSignIcon} strokeWidth={2}  />
+				<Icon icon="hugeicons:minus-sign"   />
 			{/if}
 		</div>
 	{/snippet}

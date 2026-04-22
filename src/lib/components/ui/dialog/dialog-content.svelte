@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Icon from '@iconify/svelte';
 	import { Dialog as DialogPrimitive } from "bits-ui";
 	import DialogPortal from "./dialog-portal.svelte";
 	import type { Snippet } from "svelte";
@@ -6,9 +7,6 @@
 	import { cn, type WithoutChildrenOrChild } from "$lib/utils.js";
 	import type { ComponentProps } from "svelte";
 	import { Button } from "$lib/components/ui/button/index.js";
-	import { HugeiconsIcon } from "@hugeicons/svelte"
-	import { Cancel01Icon } from '@hugeicons/core-free-icons';
-
 	let {
 		ref = $bindable(null),
 		class: className,
@@ -39,7 +37,7 @@
 			<DialogPrimitive.Close data-slot="dialog-close">
 				{#snippet child({ props })}
 					<Button variant="ghost" class="absolute top-4 right-4" size="icon-sm" {...props}>
-						<HugeiconsIcon icon={Cancel01Icon} strokeWidth={2}  />
+						<Icon icon="hugeicons:cancel-01"   />
 						<span class="sr-only">Close</span>
 					</Button>
 				{/snippet}

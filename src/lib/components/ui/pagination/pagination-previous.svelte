@@ -1,10 +1,8 @@
 <script lang="ts">
+	import Icon from '@iconify/svelte';
 	import type { ComponentProps } from "svelte";
 	import { cn } from "$lib/utils.js";
 	import { PaginationLink } from "./index.js";
-	import { HugeiconsIcon } from "@hugeicons/svelte"
-	import { ArrowLeft01Icon } from '@hugeicons/core-free-icons';
-
 	type PaginationPreviousProps = ComponentProps<typeof PaginationLink>;
 
 	let { class: className, ...restProps }: PaginationPreviousProps = $props();
@@ -16,6 +14,6 @@
 	class={cn("pl-2!", className)}
 	{...restProps}
 >
-	<HugeiconsIcon icon={ArrowLeft01Icon} strokeWidth={2} data-icon="inline-start" />
+	<Icon icon="hugeicons:arrow-left-01" data-icon="inline-start"  />
 	<span class="cn-pagination-previous-text hidden sm:block">Previous</span>
 </PaginationLink>

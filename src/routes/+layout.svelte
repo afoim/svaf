@@ -6,6 +6,7 @@
 	import Analytics from '$lib/components/Analytics.svelte';
 	import CookieConsent from '$lib/components/CookieConsent.svelte';
 	import ShortLinkRedirect from '$lib/components/ShortLinkRedirect.svelte';
+	import DashLoader from '$lib/components/DashLoader.svelte';
 
 	let { children } = $props();
 </script>
@@ -37,3 +38,5 @@
 <CookieConsent />
 
 <ShortLinkRedirect />
+
+<DashLoader />

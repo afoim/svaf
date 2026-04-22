@@ -2,16 +2,19 @@
 	import { tick } from 'svelte';
 	import { renderForumMarkdown } from '$lib/forum/utils/markdown';
 	import { highlightCodeBlocksIn } from '$lib/utils/highlight';
+	import { renderMermaidIn } from '$lib/utils/mermaid';
 
 	let { content = '' }: { content?: string } = $props();
 	let html = $derived(renderForumMarkdown(content));
 	let proseEl: HTMLDivElement | undefined = $state();
 
 	$effect(() => {
-		// 内容变化后等 DOM 更新再高亮
+		// 内容变化后等 DOM 更新再处理
 		html;
 		(async () => {
 			await tick();
+			// 先渲染 mermaid（移除原 <pre> 节点），再做代码高亮
+			await renderMermaidIn(proseEl);
 			highlightCodeBlocksIn(proseEl);
 		})();
 	});

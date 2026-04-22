@@ -6,6 +6,46 @@ const BASE = `https://cdnjs.cloudflare.com/ajax/libs/highlight.js/${VER}`;
 const THEME_URL = `${BASE}/styles/github.min.css`;
 const CORE_URL = `${BASE}/highlight.min.js`;
 
+// cdnjs 的 highlight.min.js 已内置以下"common"语言，不需要再单独加载脚本
+const BUILTIN_LANGS = new Set([
+	'bash',
+	'c',
+	'cpp',
+	'csharp',
+	'css',
+	'diff',
+	'go',
+	'graphql',
+	'ini',
+	'java',
+	'javascript',
+	'json',
+	'kotlin',
+	'less',
+	'lua',
+	'makefile',
+	'markdown',
+	'objectivec',
+	'perl',
+	'php',
+	'php-template',
+	'plaintext',
+	'python',
+	'python-repl',
+	'r',
+	'ruby',
+	'rust',
+	'scss',
+	'shell',
+	'sql',
+	'swift',
+	'typescript',
+	'vbnet',
+	'wasm',
+	'xml',
+	'yaml'
+]);
+
 const PRELOAD_LANGS = [
 	'bash',
 	'shell',
@@ -20,6 +60,8 @@ const PRELOAD_LANGS = [
 	'cpp',
 	'csharp',
 	'java',
+	'javascript',
+	'typescript',
 	'php',
 	'ruby',
 	'kotlin',
@@ -120,6 +162,11 @@ async function ensureLang(name: string): Promise<boolean> {
 	const real = LANG_ALIASES[name] || name;
 	if (loadedLangs.has(real)) return true;
 	if (window.hljs?.getLanguage(real)) {
+		loadedLangs.add(real);
+		return true;
+	}
+	// 内置语言不需要单独加载脚本（即便核心已经注册过也不会进这里）
+	if (BUILTIN_LANGS.has(real)) {
 		loadedLangs.add(real);
 		return true;
 	}

@@ -488,7 +488,7 @@
 				</Alert>
 			{/if}
 
-			<CommentList {comments} loading={commentsLoading} />
+			<CommentList {comments} loading={commentsLoading} onDeleted={loadComments} />
 		</section>
 	{/if}
 </div>

@@ -10,10 +10,12 @@
 
 	let {
 		comments = [],
-		loading = false
+		loading = false,
+		onDeleted
 	}: {
 		comments?: ForumComment[];
 		loading?: boolean;
+		onDeleted?: () => void;
 	} = $props();
 
 	let count = $derived.by(() => {
@@ -47,7 +49,7 @@
 	{:else}
 		<div class="space-y-4">
 			{#each comments as comment (comment.id)}
-				<CommentItem {comment} depth={0} />
+				<CommentItem {comment} depth={0} {onDeleted} />
 			{/each}
 		</div>
 	{/if}

@@ -33,7 +33,7 @@
 			size="icon-lg"
 			onclick={scrollToTop}
 			aria-label="回到顶部"
-			class="size-12 shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl"
+			class="size-12 shadow-lg hover:shadow-xl"
 		>
 			<Icon icon="mdi:chevron-up" class="size-5" />
 		</Button>

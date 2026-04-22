@@ -65,6 +65,7 @@ export async function forumRequest<T>(
 	}
 
 	if (options.requiresAuth && token) headers.set('Authorization', `Bearer ${token}`);
+	else if (token && !headers.has('Authorization')) headers.set('Authorization', `Bearer ${token}`);
 
 	const requestInit: RequestInit = {
 		...options,

@@ -27,3 +27,21 @@ export interface ApiListResult<T> {
 	page?: number;
 	pageSize?: number;
 }
+
+export interface SessionResult {
+	user: import('./user').ForumUser | null;
+	token?: string | null;
+	requiresTotp?: boolean;
+}
+
+export interface RegisterResult {
+	success?: boolean;
+	message?: string;
+}
+
+export interface ForumConfig {
+	turnstileEnabled: boolean;
+	turnstileSiteKey?: string;
+	allowRegistration?: boolean;
+	userCount?: number;
+}

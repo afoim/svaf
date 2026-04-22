@@ -118,7 +118,7 @@
 	</style>
 </svelte:head>
 
-<div class="flex min-h-screen flex-col items-center justify-center gap-6 px-4">
+<div class="flex min-h-screen flex-col items-center justify-center gap-6 px-4 pt-48">
 	<Announcement />
 
 	<div class="live-avatar-container">

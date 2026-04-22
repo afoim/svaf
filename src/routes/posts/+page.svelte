@@ -221,6 +221,69 @@
 	});
 </script>
 
+<style>
+	.search-filter-label {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.5rem 1rem;
+		border-radius: 0.75rem;
+		cursor: pointer;
+		transition: all 0.2s ease-out;
+		background-color: color-mix(in oklch, var(--muted) 40%, transparent);
+		border: 1px solid color-mix(in oklch, var(--border) 50%, transparent);
+	}
+	
+	.search-filter-label:hover {
+		background-color: color-mix(in oklch, var(--muted) 70%, transparent);
+		border-color: var(--border);
+	}
+	
+	.search-filter-label:active {
+		transform: scale(0.98);
+	}
+	
+	.search-filter-label:has(:global([data-state="checked"])) {
+		background-color: color-mix(in oklch, var(--primary) 10%, transparent);
+		border-color: color-mix(in oklch, var(--primary) 40%, transparent);
+	}
+	
+	.search-filter-label:has(:global([data-state="checked"])):hover {
+		background-color: color-mix(in oklch, var(--primary) 15%, transparent);
+		border-color: color-mix(in oklch, var(--primary) 60%, transparent);
+	}
+	
+	.search-filter-label:focus-within {
+		outline: 2px solid color-mix(in oklch, var(--ring) 30%, transparent);
+		outline-offset: 2px;
+	}
+	
+	.search-filter-text {
+		font-size: 0.875rem;
+		font-weight: 500;
+		color: color-mix(in oklch, var(--foreground) 70%, transparent);
+		transition: color 0.2s;
+		user-select: none;
+	}
+	
+	.search-filter-label:hover .search-filter-text {
+		color: color-mix(in oklch, var(--foreground) 90%, transparent);
+	}
+	
+	.search-filter-label:has(:global([data-state="checked"])) .search-filter-text {
+		color: var(--primary);
+		font-weight: 600;
+	}
+	
+	@media (max-width: 640px) {
+		.search-filter-label {
+			padding: 0.5rem 0.75rem;
+			font-size: 0.75rem;
+			gap: 0.5rem;
+		}
+	}
+</style>
+
 <svelte:head>
 	<title>文章列表 - {siteConfig.title}</title>
 	<meta name="description" content="浏览所有文章" />
@@ -246,23 +309,23 @@
 			class="w-full"
 		/>
 		
-		<div class="mt-4 flex flex-wrap items-center gap-4">
-			<span class="text-sm text-muted-foreground">搜索范围：</span>
-			<label class="flex items-center gap-2 cursor-pointer">
+		<div class="mt-6 flex flex-wrap items-center gap-3">
+			<span class="text-sm font-medium text-foreground/80">搜索范围：</span>
+			<label class="search-filter-label group">
 				<Checkbox bind:checked={searchFilters.title} />
-				<span class="text-sm">标题</span>
+				<span class="search-filter-text">标题</span>
 			</label>
-			<label class="flex items-center gap-2 cursor-pointer">
+			<label class="search-filter-label group">
 				<Checkbox bind:checked={searchFilters.description} />
-				<span class="text-sm">简介</span>
+				<span class="search-filter-text">简介</span>
 			</label>
-			<label class="flex items-center gap-2 cursor-pointer">
+			<label class="search-filter-label group">
 				<Checkbox bind:checked={searchFilters.content} />
-				<span class="text-sm">正文</span>
+				<span class="search-filter-text">正文</span>
 			</label>
-			<label class="flex items-center gap-2 cursor-pointer">
+			<label class="search-filter-label group">
 				<Checkbox bind:checked={searchFilters.path} />
-				<span class="text-sm">路径</span>
+				<span class="search-filter-text">路径</span>
 			</label>
 		</div>
 		

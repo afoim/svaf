@@ -84,41 +84,30 @@
 			class={`announcement-card ${isHappy ? 'announcement-happy' : ''}`}
 			style={isHappy ? '' : `border-color: ${currentColor};`}
 		>
-			<CardContent class="relative p-6">
-				<button
-					bind:this={closeBtnRef}
-					type="button"
-					class="announcement-close-btn"
-					onclick={handleClose}
-					aria-label="关闭公告"
-				>
-					<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<line x1="18" y1="6" x2="6" y2="18"></line>
-						<line x1="6" y1="6" x2="18" y2="18"></line>
-					</svg>
-				</button>
-				<div class="flex items-start gap-4">
-					<div
-						class="flex shrink-0 items-center justify-center mt-0.5"
-						style={isHappy ? '' : `color: ${currentColor};`}
+			<CardContent class="relative px-4 py-2">
+				<div class="flex items-center gap-3">
+					<button
+						bind:this={closeBtnRef}
+						type="button"
+						class="announcement-close-btn"
+						onclick={handleClose}
+						aria-label="关闭公告"
 					>
-						{#if isHappy}
-							<span class="announcement-emoji" aria-hidden="true">🎉</span>
-						{:else}
-							<svg width="24" height="24" viewBox="0 0 16 16" aria-hidden="true">
-								<path d={currentIconPath} fill="currentColor"></path>
-							</svg>
-						{/if}
-					</div>
+						<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+							<line x1="18" y1="6" x2="6" y2="18"></line>
+							<line x1="6" y1="6" x2="18" y2="18"></line>
+						</svg>
+					</button>
+					<div class="flex items-center gap-3 flex-1">
 					<div class="flex-1 min-w-0">
 						<div
-							class="announcement-text prose prose-neutral dark:prose-invert max-w-none text-sm md:text-base
-								prose-headings:text-foreground prose-headings:my-0 prose-headings:mb-2
-								prose-p:text-foreground prose-p:my-0 prose-p:leading-relaxed
+							class="announcement-text prose prose-neutral dark:prose-invert max-w-none text-sm
+								prose-headings:text-foreground prose-headings:my-0
+								prose-p:text-foreground prose-p:my-0 prose-p:leading-tight
 								prose-strong:text-foreground
-								prose-a:text-primary prose-a:underline prose-a:underline-offset-4 hover:prose-a:opacity-80
+								prose-a:text-primary prose-a:underline prose-a:underline-offset-2 hover:prose-a:opacity-80
 								prose-blockquote:border-l-primary prose-blockquote:text-muted-foreground prose-blockquote:my-0
-								prose-code:bg-muted prose-code:text-foreground prose-code:rounded prose-code:px-1.5 prose-code:py-0.5 prose-code:before:content-none prose-code:after:content-none
+								prose-code:bg-muted prose-code:text-foreground prose-code:rounded prose-code:px-1 prose-code:py-0.5 prose-code:before:content-none prose-code:after:content-none
 								prose-pre:bg-transparent prose-pre:p-0 prose-pre:text-foreground prose-pre:my-0
 								prose-hr:border-border
 								prose-ul:my-0 prose-ol:my-0 prose-li:my-0
@@ -128,6 +117,7 @@
 							<Content />
 						</div>
 					</div>
+				</div>
 				</div>
 			</CardContent>
 		</Card>
@@ -140,7 +130,7 @@
 		top: 80px;
 		left: 16px;
 		z-index: 9999;
-		max-width: 600px;
+		max-width: 520px;
 		width: calc(100vw - 32px);
 		transform: translateX(-120%);
 		opacity: 0;
@@ -158,23 +148,22 @@
 		box-shadow: 0 20px 60px -15px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.05);
 		border-radius: 12px;
 		overflow: hidden;
-		backdrop-filter: blur(10px);
+		background: hsl(var(--card));
+		opacity: 1;
 	}
 
 	.announcement-close-btn {
-		position: absolute;
-		top: 12px;
-		right: 12px;
-		min-width: 44px;
-		min-height: 44px;
-		width: 44px;
-		height: 44px;
+		flex-shrink: 0;
+		min-width: 32px;
+		min-height: 20px;
+		width: 32px;
+		height: 20px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		background: hsl(var(--muted) / 0.5);
 		border: none;
-		border-radius: 8px;
+		border-radius: 4px;
 		cursor: pointer;
 		color: hsl(var(--muted-foreground));
 		transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -238,7 +227,7 @@
 	}
 
 	.announcement-emoji {
-		font-size: 1.5rem;
+		font-size: 1.25rem;
 		line-height: 1;
 	}
 
@@ -258,30 +247,13 @@
 	/* 平板端：≤768px */
 	@media (max-width: 768px) {
 		.announcement-popup {
-			position: fixed;
-			top: 0;
-			left: 0;
-			right: 0;
-			bottom: 0;
-			max-width: none;
-			width: 100vw;
-			height: 100vh;
-			background: rgba(0, 0, 0, 0.5);
-			backdrop-filter: blur(4px);
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			padding: 16px;
-			transform: translateX(0);
-		}
-
-		.announcement-popup.announcement-visible {
-			transform: translateX(0);
+			top: 60px;
+			max-width: 460px;
 		}
 
 		.announcement-card {
-			max-width: 80vw;
-			width: 100%;
+			background: hsl(var(--card));
+			opacity: 1;
 		}
 
 		.announcement-text {
@@ -292,26 +264,22 @@
 		.announcement-text :global(strong),
 		.announcement-text :global(a) {
 			font-size: 0.875rem !important;
-		}
-
-		.announcement-close-btn {
-			width: 100%;
-			max-width: 100%;
-			position: relative;
-			top: auto;
-			right: auto;
-			margin-top: 16px;
+			line-height: 1.3 !important;
 		}
 	}
 
 	/* 手机端：≤480px */
 	@media (max-width: 480px) {
 		.announcement-popup {
-			padding: 12px;
+			top: 35px;
+			left: 8px;
+			max-width: 380px;
+			width: calc(100vw - 16px);
 		}
 
 		.announcement-card {
-			max-width: 90vw;
+			background: hsl(var(--card));
+			opacity: 1;
 		}
 
 		.announcement-emoji {
@@ -326,16 +294,7 @@
 		.announcement-text :global(strong),
 		.announcement-text :global(a) {
 			font-size: 0.8125rem !important;
-		}
-
-		.announcement-close-btn {
-			display: flex;
-			flex-direction: column;
-		}
-
-		.flex.items-start.gap-4 {
-			flex-direction: column;
-			gap: 12px;
+			line-height: 1.3 !important;
 		}
 	}
 </style>

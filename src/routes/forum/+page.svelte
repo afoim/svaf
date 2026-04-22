@@ -22,7 +22,7 @@
 		type NewPostCountResult
 	} from '$lib/forum/api/posts';
 	import { forumAuth } from '$lib/forum/stores/auth';
-	import { logout as forumLogout } from '$lib/forum/api/auth';
+	import { getSession, logout as forumLogout } from '$lib/forum/api/auth';
 	import { forumEnv } from '$lib/forum/stores/env';
 	import type { ForumCategory, ForumPostSummary } from '$lib/forum/types/post';
 
@@ -220,11 +220,22 @@
 		category ? categories.find((c) => c.id === category)?.name || category : '全部分类'
 	);
 
+	async function hydrateSession() {
+		if (!forumAuth.getToken()) return;
+		try {
+			const session = await getSession();
+			forumAuth.setSession(session);
+		} catch {
+			// 静默
+		}
+	}
+
 	onMount(() => {
 		readQueryState();
 		loadCategories();
 		loadPosts(currentPage, false);
 		checkNewPosts();
+		void hydrateSession();
 		initialized = true;
 		const handle = () => {
 			readQueryState();
@@ -283,6 +294,12 @@
 					<Icon icon="mdi:account" class="size-4" />
 					个人中心
 				</Button>
+				{#if $forumAuth.user?.role === 'admin'}
+					<Button variant="outline" href="/forum/admin/">
+						<Icon icon="mdi:shield-crown-outline" class="size-4" />
+						管理控制台
+					</Button>
+				{/if}
 				{#if $forumAuth.token}
 					<Button variant="outline" onclick={handleLogout}>
 						<Icon icon="mdi:logout" class="size-4" />

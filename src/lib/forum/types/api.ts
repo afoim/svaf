@@ -45,3 +45,57 @@ export interface ForumConfig {
 	allowRegistration?: boolean;
 	userCount?: number;
 }
+
+export interface AdminStats {
+	users: number;
+	posts: number;
+	comments: number;
+}
+
+export interface ForumAdminSettings {
+	turnstileEnabled: boolean;
+	notifyOnUserDelete: boolean;
+	notifyOnPostDelete: boolean;
+	notifyOnUsernameChange: boolean;
+	notifyOnAvatarChange: boolean;
+	notifyOnManualVerify: boolean;
+	sessionTtlDays: number;
+}
+
+export interface AdminEmailTestResult {
+	template: string;
+	label?: string;
+	success: boolean;
+	error?: string;
+}
+
+export interface AdminEmailTestOptions {
+	to: string;
+	template?: string;
+	payload?: Record<string, string>;
+}
+
+export interface AdminUserActionResult {
+	success?: boolean;
+	message?: string;
+	user?: import('./user').ForumUser | null;
+}
+
+export interface AdminUserUpdatePayload {
+	username?: string;
+	email?: string;
+	avatarUrl?: string;
+	password?: string;
+}
+
+export interface AdminStorageGcScanResult {
+	total_files?: number;
+	used_files?: number;
+	orphaned_files?: number;
+	orphans?: string[];
+}
+
+export interface AdminStorageGcCleanupResult {
+	success?: boolean;
+	message?: string;
+}

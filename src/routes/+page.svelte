@@ -61,7 +61,14 @@
 		.live-avatar-container {
 		position: relative;
 		display: inline-block;
-		max-width: min(8rem, calc(100vw - 2rem));
+		width: min(8rem, calc(100vw - 2rem));
+		height: min(8rem, calc(100vw - 2rem));
+	}
+	
+	.live-avatar-container img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
 	}
 	
 	.live-ring {
@@ -120,7 +127,7 @@
 			<div class="live-ring"></div>
 			<div class="live-ring"></div>
 		{/if}
-		<img src={siteConfig.bio.avatar} alt="Avatar" class="h-32 w-32 rounded-full" />
+		<img src={siteConfig.bio.avatar} alt="Avatar" class="rounded-full" />
 		{#if isLive}
 			<div class="live-badge">
 				<div class="live-dot"></div>

@@ -5,6 +5,7 @@
 	import ImageViewer from '$lib/components/ImageViewer.svelte';
 	import Giscus from '$lib/components/Giscus.svelte';
 	import PageViews from '$lib/components/PageViews.svelte';
+	import MermaidRenderer from '$lib/components/MermaidRenderer.svelte';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
@@ -87,6 +88,8 @@
 	>
 		<data.component />
 	</div>
+
+	<MermaidRenderer />
 
 	<!-- 评论区 -->
 	<Giscus />

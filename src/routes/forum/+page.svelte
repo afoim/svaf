@@ -22,6 +22,7 @@
 		type NewPostCountResult
 	} from '$lib/forum/api/posts';
 	import { forumAuth } from '$lib/forum/stores/auth';
+	import { logout as forumLogout } from '$lib/forum/api/auth';
 	import { forumEnv } from '$lib/forum/stores/env';
 	import type { ForumCategory, ForumPostSummary } from '$lib/forum/types/post';
 
@@ -192,6 +193,15 @@
 		}
 	}
 
+	async function handleLogout() {
+		try {
+			await forumLogout();
+		} catch {
+			// 即便接口失败也清除本地态
+		}
+		forumAuth.clear();
+	}
+
 	// 切换 baseUrl 后自动刷新
 	let isFirst = true;
 	$effect(() => {
@@ -273,6 +283,17 @@
 					<Icon icon="mdi:account" class="size-4" />
 					个人中心
 				</Button>
+				{#if $forumAuth.token}
+					<Button variant="outline" onclick={handleLogout}>
+						<Icon icon="mdi:logout" class="size-4" />
+						退出登录
+					</Button>
+				{:else}
+					<Button variant="outline" href="/forum/auth/login/">
+						<Icon icon="mdi:login" class="size-4" />
+						登录
+					</Button>
+				{/if}
 			</div>
 
 			<EnvironmentSwitcher />

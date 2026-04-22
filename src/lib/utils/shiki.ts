@@ -94,17 +94,6 @@ function postProcessShikiHtml(html: string, lang: string): string {
 	out = out.replace(/<code\b([^>]*)>/, `<code$1 style="display:block;min-width:100%;width:max-content;">`);
 	return out;
 }
-	if (!/<code[^>]*data-language=/.test(out)) {
-		out = out.replace(/<code\b/, `<code data-language="${lang}"`);
-	}
-	// 让 <pre> 的背景覆盖整个滚动区域，而不是只在每行底色
-	out = out.replace(
-		/<pre\b([^>]*?)style="([^"]*)"/,
-		(_m, attrs, style) =>
-			`<pre${attrs}style="${style};display:block;overflow-x:auto;padding:1rem;border-radius:0.5rem;"`
-	);
-	return out;
-}
 
 /**
  * 扫描容器中所有 <pre><code class="language-xx"> 代码块，用 shiki 替换为双主题高亮版本。

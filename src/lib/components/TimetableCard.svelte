@@ -366,16 +366,24 @@
 			{#each statusLines as line}
 				<p class="text-xs leading-relaxed">
 					{#each line as segment}
-						<span
-							class="transition-colors"
-							class:font-semibold={segment.text.startsWith('###')}
-							class:font-bold={segment.bold}
-							class:line-through={segment.strikethrough}
-							class:opacity-60={segment.strikethrough}
-							style="color: {segment.color || 'inherit'}"
-						>
-							{segment.text}
-						</span>
+						{#if segment.text.startsWith('###')}
+							<span
+								class="text-sm font-bold transition-colors"
+								style="color: {segment.color || 'inherit'}"
+							>
+								{segment.text.replace('###', '').trim()}
+							</span>
+						{:else}
+							<span
+								class="transition-colors"
+								class:font-bold={segment.bold}
+								class:line-through={segment.strikethrough}
+								class:opacity-60={segment.strikethrough}
+								style="color: {segment.color || 'inherit'}"
+							>
+								{segment.text}
+							</span>
+						{/if}
 					{/each}
 				</p>
 			{/each}

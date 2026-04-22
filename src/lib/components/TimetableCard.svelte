@@ -23,6 +23,7 @@
 
 	interface StatusLine {
 		text: string;
+		color?: string;
 		strikethrough?: boolean;
 		bold?: boolean;
 	}
@@ -59,7 +60,7 @@
 	// 监听全局状态变化并同步到本地状态
 	let syncInterval: number | null = null;
 
-	function hexToRgba(hex: string, alpha: number = 1): string {
+	function hexToRgb(hex: string): string {
 		// Remove # if present
 		hex = hex.replace('#', '');
 		
@@ -68,8 +69,7 @@
 			const r = parseInt(hex.substring(0, 2), 16);
 			const g = parseInt(hex.substring(2, 4), 16);
 			const b = parseInt(hex.substring(4, 6), 16);
-			// 降低明度：将 RGB 值乘以 0.7
-			return `rgba(${Math.floor(r * 0.7)}, ${Math.floor(g * 0.7)}, ${Math.floor(b * 0.7)}, ${alpha})`;
+			return `rgb(${r}, ${g}, ${b})`;
 		}
 		
 		// Handle 6-digit hex
@@ -77,11 +77,10 @@
 			const r = parseInt(hex.substring(0, 2), 16);
 			const g = parseInt(hex.substring(2, 4), 16);
 			const b = parseInt(hex.substring(4, 6), 16);
-			// 降低明度：将 RGB 值乘以 0.7
-			return `rgba(${Math.floor(r * 0.7)}, ${Math.floor(g * 0.7)}, ${Math.floor(b * 0.7)}, ${alpha})`;
+			return `rgb(${r}, ${g}, ${b})`;
 		}
 		
-		return `rgba(0, 0, 0, ${alpha})`;
+		return 'rgb(0, 0, 0)';
 	}
 
 	function parseTimeToMinute(text: string): number | null {
@@ -176,7 +175,7 @@
 					[{ text: '### 本周课毕' }],
 					[
 						{ text: '下周首节：' },
-						{ text: `${nextWeekFirstCourse.courseName} - ${nextWeekFirstCourse.room || '未知'}`, bold: true }
+						{ text: `${nextWeekFirstCourse.courseName} - ${nextWeekFirstCourse.room || '未知'}`, bold: true, color: hexToRgb(nextWeekFirstCourse.color) }
 					],
 					[
 						{ text: '距上课还有：' },
@@ -203,7 +202,7 @@
 					[{ text: '### 今日课毕' }],
 					[
 						{ text: '翌日首节：' },
-						{ text: `${nextDayCourse.courseName} - ${nextDayCourse.room || '未知'}`, bold: true }
+						{ text: `${nextDayCourse.courseName} - ${nextDayCourse.room || '未知'}`, bold: true, color: hexToRgb(nextDayCourse.color) }
 					],
 					[
 						{ text: '距上课还有：' },
@@ -229,15 +228,15 @@
 					[{ text: '### 上课' }],
 					...(prev ? [[
 						{ text: '上节：', strikethrough: true },
-						{ text: `${prev.courseName} - ${prev.room || '未知'}`, strikethrough: true }
+						{ text: `${prev.courseName} - ${prev.room || '未知'}`, strikethrough: true, color: hexToRgb(prev.color) }
 					]] : []),
 					[
 						{ text: '本节：' },
-						{ text: `${current.courseName} - ${current.room || '未知'}`, bold: true }
+						{ text: `${current.courseName} - ${current.room || '未知'}`, bold: true, color: hexToRgb(current.color) }
 					],
 					...(next ? [[
 						{ text: '下节：' },
-						{ text: `${next.courseName} - ${next.room || '未知'}` }
+						{ text: `${next.courseName} - ${next.room || '未知'}`, color: hexToRgb(next.color) }
 					]] : []),
 					[
 						{ text: '距下课还有：' },
@@ -254,11 +253,11 @@
 					[{ text: '### 课间' }],
 					[
 						{ text: '上节：', strikethrough: true },
-						{ text: `${current.courseName} - ${current.room || '未知'}`, strikethrough: true }
+						{ text: `${current.courseName} - ${current.room || '未知'}`, strikethrough: true, color: hexToRgb(current.color) }
 					],
 					[
 						{ text: '下节：' },
-						{ text: `${next.courseName} - ${next.room || '未知'}`, bold: true }
+						{ text: `${next.courseName} - ${next.room || '未知'}`, bold: true, color: hexToRgb(next.color) }
 					],
 					[
 						{ text: '距上课还有：' },
@@ -282,7 +281,7 @@
 					[{ text: '### 今日课毕' }],
 					[
 						{ text: '翌日首节：' },
-						{ text: `${nextDayCourse.courseName} - ${nextDayCourse.room || '未知'}`, bold: true }
+						{ text: `${nextDayCourse.courseName} - ${nextDayCourse.room || '未知'}`, bold: true, color: hexToRgb(nextDayCourse.color) }
 					],
 					[
 						{ text: '距上课还有：' },
@@ -302,7 +301,7 @@
 			[{ text: '### 课前' }],
 			[
 				{ text: '首节：' },
-				{ text: `${firstCourse.courseName} - ${firstCourse.room || '未知'}`, bold: true }
+				{ text: `${firstCourse.courseName} - ${firstCourse.room || '未知'}`, bold: true, color: hexToRgb(firstCourse.color) }
 			],
 			[
 				{ text: '距上课还有：' },
@@ -433,7 +432,6 @@
 <a href="/timetable/" class="block">
 	<div
 		class="ring-foreground/10 bg-card text-card-foreground overflow-hidden rounded-2xl text-sm ring-1 p-3 space-y-0.5"
-		style="border: 2px solid rgb(201, 237, 110);"
 	>
 		{#each statusLines as line}
 			<p class="text-xs leading-relaxed">
@@ -441,6 +439,7 @@
 					{#if segment.text.startsWith('###')}
 						<span
 							class="text-sm font-bold transition-colors"
+							style="color: {segment.color || 'inherit'}"
 						>
 							{segment.text.replace('###', '').trim()}
 						</span>
@@ -450,6 +449,7 @@
 							class:font-bold={segment.bold}
 							class:line-through={segment.strikethrough}
 							class:opacity-60={segment.strikethrough}
+							style="color: {segment.color || 'inherit'}"
 						>
 							{segment.text}
 						</span>

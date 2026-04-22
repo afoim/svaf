@@ -17,7 +17,7 @@ dist/
 .cache/
 .turbo/
 .parcel-cache/
-.image-cache.json
+.image-cache/
 
 # OS Files
 .DS_Store

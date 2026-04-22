@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
+import crypto from 'crypto';
 import sharp from 'sharp';
 
 // 可转换为 AVIF 的栅格图扩展名
@@ -14,25 +15,55 @@ const AVIF_OPTIONS = {
   chromaSubsampling: '4:2:0'
 };
 
-async function convertToAvif(srcPath, destPath, cacheFile) {
+function getFileHash(filePath) {
+  const stat = fs.statSync(filePath);
+  return `${stat.size}:${stat.mtimeMs}`;
+}
+
+function getCachePath(srcPath, cacheDir) {
+  const hash = crypto.createHash('md5').update(srcPath).digest('hex');
+  return path.join(cacheDir, `${hash}.avif`);
+}
+
+async function convertToAvif(srcPath, destPath, cacheDir) {
   try {
-    const srcStat = fs.statSync(srcPath);
-    const srcHash = `${srcStat.size}:${srcStat.mtimeMs}`;
+    const srcHash = getFileHash(srcPath);
+    const cachePath = getCachePath(srcPath, cacheDir);
+    const metaPath = `${cachePath}.meta`;
     
-    // 检查缓存记录和目标文件是否存在
-    if (cacheFile && cacheFile[srcPath] === srcHash && fs.existsSync(destPath)) {
-      const destStat = fs.statSync(destPath);
-      return { skipped: true, srcSize: srcStat.size, outSize: destStat.size };
+    // 检查缓存
+    if (fs.existsSync(cachePath) && fs.existsSync(metaPath)) {
+      try {
+        const meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
+        if (meta.srcHash === srcHash) {
+          // 从缓存复制
+          fs.copyFileSync(cachePath, destPath);
+          const stat = fs.statSync(cachePath);
+          return { skipped: true, srcSize: meta.srcSize, outSize: stat.size };
+        }
+      } catch {}
     }
     
+    // 压缩并缓存
+    const srcStat = fs.statSync(srcPath);
     await sharp(srcPath, { failOn: 'none' })
       .rotate()
       .avif(AVIF_OPTIONS)
-      .toFile(destPath);
-    const outStat = fs.statSync(destPath);
+      .toFile(cachePath);
     
-    // 更新缓存
-    if (cacheFile) cacheFile[srcPath] = srcHash;
+    const outStat = fs.statSync(cachePath);
+    
+    // 保存元数据
+    fs.writeFileSync(metaPath, JSON.stringify({
+      srcPath,
+      srcHash,
+      srcSize: srcStat.size,
+      outSize: outStat.size,
+      timestamp: Date.now()
+    }), 'utf8');
+    
+    // 复制到目标
+    fs.copyFileSync(cachePath, destPath);
     
     return { skipped: false, srcSize: srcStat.size, outSize: outStat.size };
   } catch (err) {
@@ -59,7 +90,7 @@ async function processWithConcurrency(items, limit, worker) {
 async function main() {
   const postsDir = path.join(process.cwd(), 'src/content/posts');
   const outputDir = path.join(process.cwd(), 'build/posts');
-  const cacheFilePath = path.join(process.cwd(), '.image-cache.json');
+  const cacheDir = path.join(process.cwd(), '.image-cache');
 
   if (!fs.existsSync(postsDir)) {
     console.log('[post-images] src/content/posts 不存在，跳过');
@@ -70,15 +101,8 @@ async function main() {
     process.exit(1);
   }
 
-  // 加载缓存文件
-  let cacheFile = {};
-  if (fs.existsSync(cacheFilePath)) {
-    try {
-      cacheFile = JSON.parse(fs.readFileSync(cacheFilePath, 'utf8'));
-    } catch (err) {
-      console.warn('[post-images] 缓存文件读取失败，将重新创建');
-    }
-  }
+  // 创建缓存目录
+  fs.mkdirSync(cacheDir, { recursive: true });
 
   const tasks = [];
   const postDirs = fs.readdirSync(postsDir);
@@ -130,13 +154,13 @@ async function main() {
   await processWithConcurrency(tasks, concurrency, async (task) => {
     const rel = path.relative(postsDir, task.srcPath).replace(/\\/g, '/');
     if (task.type === 'avif') {
-      const r = await convertToAvif(task.srcPath, task.destPath, cacheFile);
+      const r = await convertToAvif(task.srcPath, task.destPath, cacheDir);
       done++;
       if (r.skipped) {
         skipped++;
         if (r.srcSize) totalSrc += r.srcSize;
         if (r.outSize) totalOut += r.outSize;
-        console.log(`[post-images] (${done}/${total}) 跳过 ${rel}`);
+        console.log(`[post-images] (${done}/${total}) 缓存 ${rel}`);
       } else {
         converted++;
         if (r.srcSize) totalSrc += r.srcSize;
@@ -157,16 +181,8 @@ async function main() {
   const cost = ((Date.now() - start) / 1000).toFixed(2);
   const ratio = totalSrc > 0 ? ((1 - totalOut / totalSrc) * 100).toFixed(1) : '0.0';
   console.log(
-    `[post-images] AVIF 转换完成: 转换 ${converted}, 跳过 ${skipped}, 复制 ${copied}, 节省 ${ratio}% (${(totalSrc / 1024 / 1024).toFixed(2)}MB → ${(totalOut / 1024 / 1024).toFixed(2)}MB), 耗时 ${cost}s`
+    `[post-images] AVIF 转换完成: 转换 ${converted}, 缓存 ${skipped}, 复制 ${copied}, 节省 ${ratio}% (${(totalSrc / 1024 / 1024).toFixed(2)}MB → ${(totalOut / 1024 / 1024).toFixed(2)}MB), 耗时 ${cost}s`
   );
-
-  // 保存缓存文件
-  try {
-    fs.writeFileSync(cacheFilePath, JSON.stringify(cacheFile, null, 2), 'utf8');
-    console.log('[post-images] 缓存文件已保存');
-  } catch (err) {
-    console.warn('[post-images] 缓存文件保存失败:', err.message);
-  }
 }
 
 main().catch((err) => {

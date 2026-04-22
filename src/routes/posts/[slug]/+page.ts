@@ -1,7 +1,13 @@
-import { getPostBySlug, getPostComponent } from '$lib/utils/posts';
+import { getAllPosts, getPostBySlug, getPostComponent } from '$lib/utils/posts';
 import { resolvePostAssetPath } from '$lib/utils/markdown';
 import { error } from '@sveltejs/kit';
-import type { PageLoad } from './$types';
+import type { EntryGenerator, PageLoad } from './$types';
+
+export const prerender = true;
+
+export const entries: EntryGenerator = () => {
+	return getAllPosts().map((post) => ({ slug: post.slug }));
+};
 
 export const load: PageLoad = async ({ params }) => {
 	const post = getPostBySlug(params.slug);

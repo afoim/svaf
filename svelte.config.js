@@ -25,6 +25,9 @@ const config = {
 			fallback: '200.html',
 			strict: false
 		}),
+		prerender: {
+			entries: ['*', '/robots.txt']
+		},
 		paths: {
 			base: process.env.NODE_ENV === 'production' ? '' : ''
 		}

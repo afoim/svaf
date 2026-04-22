@@ -52,9 +52,16 @@ async function processWithConcurrency(items, limit, worker) {
 }
 
 export function postImagesPlugin() {
+  let isSsrBuild = false;
   return {
     name: 'post-images',
     apply: undefined, // 同时作用于 dev 和 build
+    config(_config, env) {
+      isSsrBuild = !!env.isSsrBuild;
+    },
+    configResolved(config) {
+      isSsrBuild = !!config.build?.ssr;
+    },
     configureServer(server) {
       // 开发模式下处理图片请求
       server.middlewares.use('/posts', (req, res, next) => {
@@ -94,8 +101,9 @@ export function postImagesPlugin() {
     },
 
     async closeBundle() {
-      // 仅在构建时（非 dev）执行：将文章图片转换为 AVIF 输出到 build/posts
+      // 仅在生产构建的客户端阶段执行一次（避免 SSR/客户端各跑一遍）
       if (process.env.NODE_ENV !== 'production') return;
+      if (isSsrBuild) return;
 
       const postsDir = path.join(process.cwd(), 'src/content/posts');
       const outputDir = path.join(process.cwd(), 'build/posts');

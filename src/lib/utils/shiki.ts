@@ -84,6 +84,25 @@ function postProcessShikiHtml(html: string, lang: string): string {
 	if (!/<code[^>]*data-language=/.test(out)) {
 		out = out.replace(/<code\b/, `<code data-language="${lang}"`);
 	}
+	// 整体背景 + 横向滚动
+	out = out.replace(
+		/<pre\b([^>]*?)style="([^"]*)"/,
+		(_m, attrs, style) =>
+			`<pre${attrs}style="${style};display:block;overflow-x:auto;padding:1rem;border-radius:0.5rem;"`
+	);
+	// 让 <code> 撑满 <pre>，避免长行只有内容宽部分有背景的视觉
+	out = out.replace(/<code\b([^>]*)>/, `<code$1 style="display:block;min-width:100%;width:max-content;">`);
+	return out;
+}
+	if (!/<code[^>]*data-language=/.test(out)) {
+		out = out.replace(/<code\b/, `<code data-language="${lang}"`);
+	}
+	// 让 <pre> 的背景覆盖整个滚动区域，而不是只在每行底色
+	out = out.replace(
+		/<pre\b([^>]*?)style="([^"]*)"/,
+		(_m, attrs, style) =>
+			`<pre${attrs}style="${style};display:block;overflow-x:auto;padding:1rem;border-radius:0.5rem;"`
+	);
 	return out;
 }
 

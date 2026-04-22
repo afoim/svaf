@@ -1,0 +1,1 @@
+var e=new class{cache=new Map;async get(e,t,n){let r=this.cache.get(e),i=Date.now();if(r&&(!n||i-r.timestamp<n))return r.data;let a=await t();return this.cache.set(e,{data:a,timestamp:i}),a}set(e,t){this.cache.set(e,{data:t,timestamp:Date.now()})}clear(e){this.cache.delete(e)}clearAll(){this.cache.clear()}has(e){return this.cache.has(e)}};export{e as t};

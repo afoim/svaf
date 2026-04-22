@@ -1,0 +1,9 @@
+import{n as e}from"./pn1seLaS.js";import{D as t,F as n,L as r,Mt as i,jt as a,ot as o,st as s}from"./R8CaXVlq.js";import"./ZsEnWiqm.js";var c=e({default:()=>y,metadata:()=>l}),l={title:`有自己的开源项目？来申请Netlify的Open Source计划！`,published:`2025-08-08T16:00:01.000Z`,description:`昨天在乱翻Netlify的网站，突然发现了一个开源计划的申请入口，故申请，没想到今天就通过了😋`,image:`img/2025-08-09-05-14-11-image.avif`,tags:[`Netlify`],category:`记录`,draft:!1,lang:``},{title:u,published:d,description:f,image:p,tags:m,category:h,draft:g,lang:_}=l,v=r(`<h1>正式开始</h1> <blockquote><p>[! WARNING]</p> <p>Netlify OSS计划不受理个人博客</p></blockquote> <p>确保你有一个开源项目，并且已经托管在了Netlify，Github的也有你网站的链接 <img src="img/2025-08-09-12-30-32-image.avif"/></p> <p>前往 <a href="https://opensource-form.netlify.com/" rel="nofollow">https://opensource-form.netlify.com/</a></p> <p>填写相关信息，提交。</p> <p>我是这样写的</p> <pre class="language-bash"></pre> <p><img src="img/2025-08-09-05-17-05-image.avif"/></p> <p>一天后收到已开通 <code>Open Source</code> 计划的邮件。如果没有通过也没关系，你可以直接回复这封邮件，带上你的疑问，注意使用英文</p> <p><img src="img/2025-08-09-05-17-36-image.avif"/></p> <p>账户也自动从 <code>Starter</code> 升级到了 <code>Open Source</code> 计划</p> <p><img src="img/2025-08-09-05-18-12-image.avif"/></p>`,1);function y(e){var r=v(),c=s(o(r),12);t(c,()=>`<code class="language-bash">Open Source Team Application
+Applicant Name: no name provided
+Applicant Email: acofork@gmail.com
+Project Name: afoim/fuwari
+Proof of Contributors:
+Code of Conduct URL: https://2x.nz
+Project License URL: MIT license
+Netlify Site URL: https://2x.nz/posts/static-web/<span class="token comment">#netlify</span>
+Notes:</code>`,!0),i(c),a(10),n(e,r)}export{c as t};

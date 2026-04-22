@@ -1,0 +1,1 @@
+function e(e,t){return t.startsWith(`/`)||t.startsWith(`http://`)||t.startsWith(`https://`)?t:`/posts/${e}/${t}`}export{e as t};

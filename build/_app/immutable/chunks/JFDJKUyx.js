@@ -1,0 +1,1 @@
+function e(e,t,n=!0){!n&&typeof window<`u`&&alert(`${e}\n\n${t}`)}function t(e,t){typeof window<`u`&&alert(`${e}\n\n${t}`)}export{e as n,t};

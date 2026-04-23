@@ -20,35 +20,28 @@ function getFileHash(filePath) {
   return crypto.createHash('md5').update(content).digest('hex');
 }
 
-function getCachePath(srcPath, cacheDir) {
-  const contentHash = getFileHash(srcPath);
-  return path.join(cacheDir, `${contentHash}.avif`);
-}
-
-async function convertToAvif(srcPath, destPath, cacheDir) {
+async function convertToAvif(srcPath, destPath, cachePath) {
   try {
     const srcHash = getFileHash(srcPath);
-    const cachePath = getCachePath(srcPath, cacheDir);
     const metaPath = `${cachePath}.meta`;
-    
+
     console.log(`[DEBUG] 处理文件: ${srcPath}`);
     console.log(`[DEBUG] 源文件内容哈希: ${srcHash}`);
     console.log(`[DEBUG] 缓存路径: ${cachePath}`);
-    
-    // 检查缓存
+
+    // 检查缓存：同名文件存在 + 哈希匹配
     if (fs.existsSync(cachePath) && fs.existsSync(metaPath)) {
       try {
         const meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
         console.log(`[DEBUG] 缓存元数据哈希: ${meta.srcHash}`);
         console.log(`[DEBUG] 哈希匹配: ${meta.srcHash === srcHash}`);
         if (meta.srcHash === srcHash) {
-          // 从缓存复制
           fs.copyFileSync(cachePath, destPath);
           const stat = fs.statSync(cachePath);
           console.log(`[DEBUG] ✓ 缓存命中，跳过压缩`);
           return { skipped: true, srcSize: meta.srcSize, outSize: stat.size };
         } else {
-          console.log(`[DEBUG] ✗ 缓存未命中，需要重新压缩`);
+          console.log(`[DEBUG] ✗ 哈希不匹配，需要重新压缩`);
         }
       } catch (e) {
         console.log(`[DEBUG] 缓存元数据读取失败: ${e.message}`);
@@ -56,6 +49,9 @@ async function convertToAvif(srcPath, destPath, cacheDir) {
     } else {
       console.log(`[DEBUG] 缓存文件不存在`);
     }
+
+    // 确保缓存目标目录存在
+    fs.mkdirSync(path.dirname(cachePath), { recursive: true });
     
     // 压缩并缓存
     console.log(`[DEBUG] 开始 AVIF 压缩...`);
@@ -120,12 +116,8 @@ async function main() {
 
   // 创建缓存目录
   fs.mkdirSync(cacheDir, { recursive: true });
-  
-  // 检查缓存目录状态
-  const cacheFiles = fs.existsSync(cacheDir) ? fs.readdirSync(cacheDir) : [];
-  const cacheCount = cacheFiles.filter(f => f.endsWith('.avif')).length;
+
   console.log(`[post-images] 缓存目录: ${cacheDir}`);
-  console.log(`[post-images] 现有缓存文件数: ${cacheCount}`);
   console.log(`[post-images] Git 工作目录: ${process.cwd()}`);
 
   const tasks = [];
@@ -148,7 +140,8 @@ async function main() {
 
       if (CONVERTIBLE_EXTS.has(ext)) {
         const destPath = path.join(outputImgDir, `${baseName}.avif`);
-        tasks.push({ type: 'avif', postDir, srcPath, destPath });
+        const cachePath = path.join(cacheDir, postDir, 'img', `${baseName}.avif`);
+        tasks.push({ type: 'avif', postDir, srcPath, destPath, cachePath });
       } else if (COPY_EXTS.has(ext) || ext === '.avif') {
         const destPath = path.join(outputImgDir, image);
         tasks.push({ type: 'copy', postDir, srcPath, destPath });
@@ -178,7 +171,7 @@ async function main() {
   await processWithConcurrency(tasks, concurrency, async (task) => {
     const rel = path.relative(postsDir, task.srcPath).replace(/\\/g, '/');
     if (task.type === 'avif') {
-      const r = await convertToAvif(task.srcPath, task.destPath, cacheDir);
+      const r = await convertToAvif(task.srcPath, task.destPath, task.cachePath);
       done++;
       if (r.skipped) {
         skipped++;

@@ -22,62 +22,62 @@ function getFileHash(filePath) {
 
 async function convertToAvif(srcPath, destPath, cachePath) {
   try {
-    const srcHash = getFileHash(srcPath);
     const metaPath = `${cachePath}.meta`;
+    const srcStat = fs.statSync(srcPath);
 
-    console.log(`[DEBUG] 处理文件: ${srcPath}`);
-    console.log(`[DEBUG] 源文件内容哈希: ${srcHash}`);
-    console.log(`[DEBUG] 缓存路径: ${cachePath}`);
-
-    // 检查缓存：同名文件存在 + 哈希匹配
+    // 缓存命中检查
     if (fs.existsSync(cachePath) && fs.existsSync(metaPath)) {
       try {
         const meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
-        console.log(`[DEBUG] 缓存元数据哈希: ${meta.srcHash}`);
-        console.log(`[DEBUG] 哈希匹配: ${meta.srcHash === srcHash}`);
-        if (meta.srcHash === srcHash) {
+
+        // 快路径：size + mtime 匹配则直接信任缓存，跳过哈希计算
+        if (meta.srcSize === srcStat.size && meta.srcMtimeMs === srcStat.mtimeMs) {
           fs.copyFileSync(cachePath, destPath);
-          const stat = fs.statSync(cachePath);
-          console.log(`[DEBUG] ✓ 缓存命中，跳过压缩`);
-          return { skipped: true, srcSize: meta.srcSize, outSize: stat.size };
-        } else {
-          console.log(`[DEBUG] ✗ 哈希不匹配，需要重新压缩`);
+          return { skipped: true, srcSize: meta.srcSize, outSize: meta.outSize };
         }
-      } catch (e) {
-        console.log(`[DEBUG] 缓存元数据读取失败: ${e.message}`);
+
+        // 慢路径：mtime 不一致（如 git checkout 后），用哈希再校验一次
+        if (meta.srcSize === srcStat.size) {
+          const srcHash = getFileHash(srcPath);
+          if (meta.srcHash === srcHash) {
+            fs.copyFileSync(cachePath, destPath);
+            // 更新 mtime 让下次走快路径
+            fs.writeFileSync(
+              metaPath,
+              JSON.stringify({ ...meta, srcMtimeMs: srcStat.mtimeMs }),
+              'utf8'
+            );
+            return { skipped: true, srcSize: meta.srcSize, outSize: meta.outSize };
+          }
+        }
+      } catch {
+        // meta 损坏，按未命中处理
       }
-    } else {
-      console.log(`[DEBUG] 缓存文件不存在`);
     }
 
-    // 确保缓存目标目录存在
+    // 未命中：压缩
     fs.mkdirSync(path.dirname(cachePath), { recursive: true });
-    
-    // 压缩并缓存
-    console.log(`[DEBUG] 开始 AVIF 压缩...`);
-    const srcStat = fs.statSync(srcPath);
     await sharp(srcPath, { failOn: 'none' })
       .rotate()
       .avif(AVIF_OPTIONS)
       .toFile(cachePath);
-    
+
     const outStat = fs.statSync(cachePath);
-    console.log(`[DEBUG] 压缩完成: ${srcStat.size} -> ${outStat.size} bytes`);
-    
-    // 保存元数据
-    const metaData = {
-      srcPath,
-      srcHash,
-      srcSize: srcStat.size,
-      outSize: outStat.size,
-      timestamp: Date.now()
-    };
-    fs.writeFileSync(metaPath, JSON.stringify(metaData), 'utf8');
-    console.log(`[DEBUG] 元数据已保存: ${JSON.stringify(metaData)}`);
-    
-    // 复制到目标
+    const srcHash = getFileHash(srcPath);
+
+    fs.writeFileSync(
+      metaPath,
+      JSON.stringify({
+        srcHash,
+        srcSize: srcStat.size,
+        srcMtimeMs: srcStat.mtimeMs,
+        outSize: outStat.size
+      }),
+      'utf8'
+    );
+
     fs.copyFileSync(cachePath, destPath);
-    
+
     return { skipped: false, srcSize: srcStat.size, outSize: outStat.size };
   } catch (err) {
     console.warn(`[post-images] AVIF 转换失败 ${srcPath}: ${err.message}，回退为原文件复制`);

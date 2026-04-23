@@ -21,7 +21,9 @@ function getFileHash(filePath) {
 }
 
 function getCachePath(srcPath, cacheDir) {
-  const hash = crypto.createHash('md5').update(srcPath).digest('hex');
+  // 使用相对路径（相对于项目根目录）生成缓存文件名，确保不同环境下路径一致
+  const relativePath = path.relative(process.cwd(), srcPath);
+  const hash = crypto.createHash('md5').update(relativePath).digest('hex');
   return path.join(cacheDir, `${hash}.avif`);
 }
 

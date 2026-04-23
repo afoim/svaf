@@ -21,9 +21,8 @@ function getFileHash(filePath) {
 }
 
 function getCachePath(srcPath, cacheDir) {
-  const relPath = path.relative(process.cwd(), srcPath).replace(/\\/g, '/');
-  const hash = crypto.createHash('md5').update(relPath).digest('hex');
-  return path.join(cacheDir, `${hash}.avif`);
+  const contentHash = getFileHash(srcPath);
+  return path.join(cacheDir, `${contentHash}.avif`);
 }
 
 async function convertToAvif(srcPath, destPath, cacheDir) {

@@ -6,6 +6,7 @@
 	import ImageViewer from '$lib/components/ImageViewer.svelte';
 	import Giscus from '$lib/components/Giscus.svelte';
 	import PageViews from '$lib/components/PageViews.svelte';
+	import PostToc from '$lib/components/PostToc.svelte';
 	import { highlightCodeBlocksIn } from '$lib/utils/highlight';
 	import { renderMermaidIn } from '$lib/utils/mermaid';
 	import type { PageData } from './$types';
@@ -106,6 +107,8 @@
 	>
 		<data.component />
 	</div>
+
+	<PostToc container={proseEl} trigger={data.component} />
 
 	<!-- 评论区 -->
 	<div id="comments">

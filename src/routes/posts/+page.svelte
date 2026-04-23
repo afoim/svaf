@@ -16,12 +16,15 @@
 	let allPosts = $state<Array<{ title: string; link: string; description: string; date: string; content: string; wordCount: number; readTime: number }>>([]);
 	let isLoading = $state(false);
 	let hasLoaded = $state(false);
-	
+
 	let pageViews = $state<Record<string, number>>({});
 	let isLoadingViews = $state(false);
-	
+
 	let currentPage = $state(1);
 	const postsPerPage = 10;
+
+	// 每个搜索结果卡片的展开状态（key: post.slug）
+	let expandedCards = $state<Record<string, boolean>>({});
 	
 	let searchFilters = $state({
 		title: true,
@@ -142,7 +145,6 @@
 			const trimmed = line.trim();
 			if (trimmed && !trimmed.startsWith('#') && trimmed.length > 10) {
 				matched.push(trimmed);
-				if (matched.length >= 3) break;
 			}
 		}
 
@@ -219,6 +221,7 @@
 		searchFilters.content;
 		searchFilters.path;
 		currentPage = 1;
+		expandedCards = {}; // 重置展开状态
 	});
 	
 	// 监听页码变化，加载对应页面的访问量
@@ -361,14 +364,56 @@
 								<p class="text-muted-foreground">
 									{@html highlightText(post.metadata.description, searchQuery)}
 								</p>
-								
+
 								{#if matchedLines.length > 0}
-									<div class="mt-3 space-y-1 border-l-2 border-primary/30 pl-3">
-										{#each matchedLines as line}
-											<p class="text-sm text-muted-foreground">
-												{@html highlightText(line, searchQuery)}
-											</p>
-										{/each}
+									{@const isExpanded = expandedCards[post.slug] ?? false}
+									{@const displayLines = isExpanded ? matchedLines : matchedLines.slice(0, 3)}
+									{@const hasMore = matchedLines.length > 3}
+
+									<div class="mt-3 space-y-2">
+										<div class="space-y-1 border-l-2 border-primary/30 pl-3">
+											{#each displayLines as line, idx}
+												<button
+													type="button"
+													onclick={(e) => {
+														e.preventDefault();
+														e.stopPropagation();
+														// 在 URL 中传递搜索词，文章页会自动高亮并滚动到匹配位置
+														const url = `/posts/${post.slug}?highlight=${encodeURIComponent(searchQuery)}`;
+														window.open(url, '_blank');
+													}}
+													class="block w-full text-left text-sm text-muted-foreground hover:text-foreground transition-colors"
+												>
+													<span class="inline-flex items-start gap-1.5">
+														<Icon
+															icon="mdi:arrow-right-thin"
+															class="size-4 flex-shrink-0 mt-0.5 opacity-50"
+														/>
+														<span>{@html highlightText(line, searchQuery)}</span>
+													</span>
+												</button>
+											{/each}
+										</div>
+
+										{#if hasMore}
+											<button
+												type="button"
+												onclick={(e) => {
+													e.preventDefault();
+													e.stopPropagation();
+													expandedCards[post.slug] = !isExpanded;
+												}}
+												class="text-xs text-primary hover:underline flex items-center gap-1"
+											>
+												<Icon
+													icon={isExpanded ? 'mdi:chevron-up' : 'mdi:chevron-down'}
+													class="size-4"
+												/>
+												{isExpanded
+													? '收起'
+													: `展开 (还有 ${matchedLines.length - 3} 行)`}
+											</button>
+										{/if}
 									</div>
 								{/if}
 							</div>

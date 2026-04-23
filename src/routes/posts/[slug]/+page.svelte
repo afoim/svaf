@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { tick } from 'svelte';
+	import { tick, onMount } from 'svelte';
+	import { page } from '$app/stores';
 	import { Button } from '$lib/components/ui/button';
 	import { Badge } from '$lib/components/ui/badge';
 	import { siteConfig } from '$lib/config/site';
@@ -24,15 +25,96 @@
 		});
 	}
 
+	function parseQueryTerms(query: string): string[] {
+		const terms: string[] = [];
+		const re = /"([^"]+)"|(\S+)/g;
+		let m: RegExpExecArray | null;
+		while ((m = re.exec(query)) !== null) {
+			const t = (m[1] ?? m[2] ?? '').trim().toLowerCase();
+			if (t) terms.push(t);
+		}
+		return terms;
+	}
+
+	function highlightSearchTerms(container: HTMLElement, query: string) {
+		const terms = parseQueryTerms(query);
+		if (terms.length === 0) return;
+
+		const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, {
+			acceptNode: (node) => {
+				const parent = node.parentElement;
+				if (!parent) return NodeFilter.FILTER_REJECT;
+				// 跳过已高亮、代码块、script/style
+				if (
+					parent.tagName === 'MARK' ||
+					parent.tagName === 'SCRIPT' ||
+					parent.tagName === 'STYLE' ||
+					parent.closest('pre, code')
+				) {
+					return NodeFilter.FILTER_REJECT;
+				}
+				return NodeFilter.FILTER_ACCEPT;
+			}
+		});
+
+		const textNodes: Text[] = [];
+		let node: Node | null;
+		while ((node = walker.nextNode())) textNodes.push(node as Text);
+
+		const escaped = terms
+			.map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+			.sort((a, b) => b.length - a.length);
+		const regex = new RegExp(`(${escaped.join('|')})`, 'gi');
+
+		for (const textNode of textNodes) {
+			const text = textNode.textContent || '';
+			if (!regex.test(text)) continue;
+			regex.lastIndex = 0;
+
+			const frag = document.createDocumentFragment();
+			let lastIdx = 0;
+			let match: RegExpExecArray | null;
+			while ((match = regex.exec(text)) !== null) {
+				if (match.index > lastIdx) {
+					frag.appendChild(document.createTextNode(text.slice(lastIdx, match.index)));
+				}
+				const mark = document.createElement('mark');
+				mark.className = 'bg-yellow-200 dark:bg-yellow-800 search-highlight';
+				mark.textContent = match[0];
+				frag.appendChild(mark);
+				lastIdx = regex.lastIndex;
+			}
+			if (lastIdx < text.length) {
+				frag.appendChild(document.createTextNode(text.slice(lastIdx)));
+			}
+			textNode.replaceWith(frag);
+		}
+	}
+
+	function scrollToFirstMatch() {
+		const firstMark = proseEl?.querySelector('mark.search-highlight');
+		if (firstMark) {
+			const top = (firstMark as HTMLElement).getBoundingClientRect().top + window.scrollY - 100;
+			window.scrollTo({ top, behavior: 'smooth' });
+		}
+	}
+
 	// 文章组件变化（首次挂载 + 同路由切换 slug）后重新渲染代码高亮与 mermaid
 	$effect(() => {
-		// 显式依赖 component，触发 effect
 		void data.component;
 		(async () => {
 			await tick();
 			if (!proseEl) return;
 			await renderMermaidIn(proseEl);
 			highlightCodeBlocksIn(proseEl);
+
+			// 处理搜索高亮
+			const highlight = $page.url.searchParams.get('highlight');
+			if (highlight) {
+				highlightSearchTerms(proseEl, highlight);
+				// 延迟滚动，等高亮 DOM 更新
+				setTimeout(scrollToFirstMatch, 100);
+			}
 		})();
 	});
 </script>

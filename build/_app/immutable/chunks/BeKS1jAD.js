@@ -1,1 +1,0 @@
-globalThis.bitsIdCounter??={current:0};function e(e=`bits`){return globalThis.bitsIdCounter.current++,`${e}-${globalThis.bitsIdCounter.current}`}export{e as t};

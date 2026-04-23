@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://2x.nz/sitemap.xml

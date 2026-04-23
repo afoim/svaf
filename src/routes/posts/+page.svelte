@@ -107,28 +107,45 @@
 		isLoadingViews = false;
 	}
 
+	function parseQueryTerms(query: string): string[] {
+		// 按空格切分；保留双引号包裹的短语作为单个 term
+		const terms: string[] = [];
+		const re = /"([^"]+)"|(\S+)/g;
+		let m: RegExpExecArray | null;
+		while ((m = re.exec(query)) !== null) {
+			const t = (m[1] ?? m[2] ?? '').trim().toLowerCase();
+			if (t) terms.push(t);
+		}
+		return terms;
+	}
+
 	function highlightText(text: string, query: string): string {
-		if (!query.trim()) return text;
-		const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+		const terms = parseQueryTerms(query);
+		if (terms.length === 0) return text;
+		const escaped = terms
+			.map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+			.sort((a, b) => b.length - a.length); // 长 term 优先，避免短 term 抢匹配
+		const regex = new RegExp(`(${escaped.join('|')})`, 'gi');
 		return text.replace(regex, '<mark class="bg-yellow-200 dark:bg-yellow-800">$1</mark>');
 	}
 
 	function getMatchedContentLines(content: string, query: string): string[] {
-		if (!query.trim()) return [];
+		const terms = parseQueryTerms(query);
+		if (terms.length === 0) return [];
 		const lines = content.split('\n');
-		const queryLower = query.toLowerCase();
 		const matched: string[] = [];
-		
+
 		for (const line of lines) {
-			if (line.toLowerCase().includes(queryLower)) {
-				const trimmed = line.trim();
-				if (trimmed && !trimmed.startsWith('#') && trimmed.length > 10) {
-					matched.push(trimmed);
-					if (matched.length >= 3) break;
-				}
+			const lower = line.toLowerCase();
+			// 行内必须命中所有 term 才算匹配
+			if (!terms.every((t) => lower.includes(t))) continue;
+			const trimmed = line.trim();
+			if (trimmed && !trimmed.startsWith('#') && trimmed.length > 10) {
+				matched.push(trimmed);
+				if (matched.length >= 3) break;
 			}
 		}
-		
+
 		return matched;
 	}
 
@@ -139,31 +156,49 @@
 
 	let filteredPostsWithMatches = $derived(() => {
 		if (!searchQuery.trim()) return posts.map(p => ({ post: p, matchedLines: [] }));
-		
+
 		// 检查是否至少选择了一个过滤器
 		const hasAnyFilter = searchFilters.title || searchFilters.description || searchFilters.content || searchFilters.path;
 		if (!hasAnyFilter) return [];
-		
-		const query = searchQuery.toLowerCase();
+
+		const terms = parseQueryTerms(searchQuery);
+		if (terms.length === 0) return posts.map(p => ({ post: p, matchedLines: [] }));
+
 		const results: Array<{ post: typeof posts[0], matchedLines: string[] }> = [];
-		
+
 		for (const post of posts) {
 			const rssPost = allPosts.find(rss => rss.link.includes(post.slug));
 			if (!rssPost) continue;
-			
-			const titleMatch = searchFilters.title && rssPost.title.toLowerCase().includes(query);
-			const descMatch = searchFilters.description && rssPost.description.toLowerCase().includes(query);
-			const contentMatch = searchFilters.content && rssPost.content.toLowerCase().includes(query);
-			const pathMatch = searchFilters.path && post.slug.toLowerCase().includes(query);
-			
-			if (titleMatch || descMatch || contentMatch || pathMatch) {
-				const matchedLines = contentMatch && !titleMatch && !descMatch && !pathMatch
-					? getMatchedContentLines(rssPost.content, query)
+
+			const title = rssPost.title.toLowerCase();
+			const desc = rssPost.description.toLowerCase();
+			const content = rssPost.content.toLowerCase();
+			const slug = post.slug.toLowerCase();
+
+			// 每个 term 必须在任一已启用字段中命中（AND 跨 term，OR 跨字段）
+			const allHit = terms.every((t) => {
+				return (
+					(searchFilters.title && title.includes(t)) ||
+					(searchFilters.description && desc.includes(t)) ||
+					(searchFilters.content && content.includes(t)) ||
+					(searchFilters.path && slug.includes(t))
+				);
+			});
+			if (!allHit) continue;
+
+			// 仅当 title/description/path 都没单独命中完整查询时，才尝试给出内容片段
+			const titleHasAll = searchFilters.title && terms.every((t) => title.includes(t));
+			const descHasAll = searchFilters.description && terms.every((t) => desc.includes(t));
+			const pathHasAll = searchFilters.path && terms.every((t) => slug.includes(t));
+			const contentHasAll = searchFilters.content && terms.every((t) => content.includes(t));
+
+			const matchedLines =
+				contentHasAll && !titleHasAll && !descHasAll && !pathHasAll
+					? getMatchedContentLines(rssPost.content, searchQuery)
 					: [];
-				results.push({ post, matchedLines });
-			}
+			results.push({ post, matchedLines });
 		}
-		
+
 		return results;
 	});
 	

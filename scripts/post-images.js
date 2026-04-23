@@ -32,20 +32,34 @@ async function convertToAvif(srcPath, destPath, cacheDir) {
     const cachePath = getCachePath(srcPath, cacheDir);
     const metaPath = `${cachePath}.meta`;
     
+    console.log(`[DEBUG] 处理文件: ${srcPath}`);
+    console.log(`[DEBUG] 源文件内容哈希: ${srcHash}`);
+    console.log(`[DEBUG] 缓存路径: ${cachePath}`);
+    
     // 检查缓存
     if (fs.existsSync(cachePath) && fs.existsSync(metaPath)) {
       try {
         const meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
+        console.log(`[DEBUG] 缓存元数据哈希: ${meta.srcHash}`);
+        console.log(`[DEBUG] 哈希匹配: ${meta.srcHash === srcHash}`);
         if (meta.srcHash === srcHash) {
           // 从缓存复制
           fs.copyFileSync(cachePath, destPath);
           const stat = fs.statSync(cachePath);
+          console.log(`[DEBUG] ✓ 缓存命中，跳过压缩`);
           return { skipped: true, srcSize: meta.srcSize, outSize: stat.size };
+        } else {
+          console.log(`[DEBUG] ✗ 缓存未命中，需要重新压缩`);
         }
-      } catch {}
+      } catch (e) {
+        console.log(`[DEBUG] 缓存元数据读取失败: ${e.message}`);
+      }
+    } else {
+      console.log(`[DEBUG] 缓存文件不存在`);
     }
     
     // 压缩并缓存
+    console.log(`[DEBUG] 开始 AVIF 压缩...`);
     const srcStat = fs.statSync(srcPath);
     await sharp(srcPath, { failOn: 'none' })
       .rotate()
@@ -53,15 +67,18 @@ async function convertToAvif(srcPath, destPath, cacheDir) {
       .toFile(cachePath);
     
     const outStat = fs.statSync(cachePath);
+    console.log(`[DEBUG] 压缩完成: ${srcStat.size} -> ${outStat.size} bytes`);
     
     // 保存元数据
-    fs.writeFileSync(metaPath, JSON.stringify({
+    const metaData = {
       srcPath,
       srcHash,
       srcSize: srcStat.size,
       outSize: outStat.size,
       timestamp: Date.now()
-    }), 'utf8');
+    };
+    fs.writeFileSync(metaPath, JSON.stringify(metaData), 'utf8');
+    console.log(`[DEBUG] 元数据已保存: ${JSON.stringify(metaData)}`);
     
     // 复制到目标
     fs.copyFileSync(cachePath, destPath);

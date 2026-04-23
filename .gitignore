@@ -17,7 +17,7 @@ dist/
 .cache/
 .turbo/
 .parcel-cache/
-.image-cache/
+# .image-cache/
 
 # OS Files
 .DS_Store
@@ -82,6 +82,3 @@ demo
 
 # Obsidian
 src/content/.Obsidian
-
-# 图片缓存
-.image-cache.json

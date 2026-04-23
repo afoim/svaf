@@ -21,7 +21,8 @@ function getFileHash(filePath) {
 }
 
 function getCachePath(srcPath, cacheDir) {
-  const hash = crypto.createHash('md5').update(srcPath).digest('hex');
+  const relPath = path.relative(process.cwd(), srcPath).replace(/\\/g, '/');
+  const hash = crypto.createHash('md5').update(relPath).digest('hex');
   return path.join(cacheDir, `${hash}.avif`);
 }
 

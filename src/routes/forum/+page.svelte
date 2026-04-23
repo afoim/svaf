@@ -353,7 +353,6 @@
 					type="single"
 					value={category}
 					onValueChange={(v) => changeCategory(v ?? '')}
-					disabled={categoriesLoading}
 				>
 					<SelectTrigger class="lg:w-40">
 						{categoryDisplay}

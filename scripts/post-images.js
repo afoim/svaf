@@ -16,8 +16,8 @@ const AVIF_OPTIONS = {
 };
 
 function getFileHash(filePath) {
-  const stat = fs.statSync(filePath);
-  return `${stat.size}:${stat.mtimeMs}`;
+  const content = fs.readFileSync(filePath);
+  return crypto.createHash('md5').update(content).digest('hex');
 }
 
 function getCachePath(srcPath, cacheDir) {

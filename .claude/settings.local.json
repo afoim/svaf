@@ -1,7 +1,12 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npx svelte-check *)"
+      "Bash(npx svelte-check *)",
+      "Bash(pnpm build *)",
+      "Bash(npx vite *)",
+      "Bash(grep *)",
+      "Bash(git add *)",
+      "Bash(git commit *)"
     ]
   }
 }

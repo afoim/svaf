@@ -135,7 +135,7 @@ volumes:
 | 邮箱密码                | 邮箱密码（或者授权码）（**必改**）     |
 | tls                 | 邮箱协议。只能用TLS协议（**必改**）   |
 
-如果需要一个支持SMTP TLS的邮箱服务可以使用[微信企业邮](/posts/exmail-qq/)
+如果需要一个支持SMTP TLS的邮箱服务可以使用[微信企业邮](/posts/domain-email/)
 
 构建：
 

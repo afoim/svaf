@@ -91,7 +91,7 @@ services:
 
 > 为了让软件能正确刮削元数据和剧集，我们需要规范重命名。
 
-注意！你只需要确保番剧名正确就可以了！子目录可以通过后面的脚本自动重命名！如果你不确定番剧名请前往TMDB搜索：[The Movie Database (TMDB) ](themoviedb.org)
+注意！你只需要确保番剧名正确就可以了！子目录可以通过后面的脚本自动重命名！如果你不确定番剧名请前往TMDB搜索：[The Movie Database (TMDB) ](https://www.themoviedb.org/)
 
 > 一级目录（qb 设置的下载目录）：不需要重命名
 
@@ -105,7 +105,7 @@ services:
 
 2. Win 可以通过右键菜单自动获取路径版.bat 通过右键一级目录选择自动剧集命名 。若使用.py 脚本则只能通过`python3 EpisodeReName.py "D:/qbdownloads/bangumi"`
 
-**小贴士：** 可以使用[RaiDrive](https://onani.cn/RaiDrive)或[SSHFS](/SSHFS)将远程的Linux文件映射到Windows上，管理番剧更方便
+**小贴士：** 可以使用[RaiDrive](https://onani.cn/RaiDrive)或[SSHFS](/posts/sshfs/)将远程的Linux文件映射到Windows上，管理番剧更方便
 ![QmY7KM2MjudNksqvSkkFmwFgjjdD7ZQKLDaVPXR3jnXoxw.webp](img/5cf6dfe73164f6a869a59817df53f939e936ab00.webp)
 
 ### 安装 Plex（或者安装飞牛云NAS）

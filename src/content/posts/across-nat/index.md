@@ -121,7 +121,7 @@ Zerotier默认的网络组模式为`Private`。即私密模式，哪怕别人知
 
 # Zerotier授权设备
 
-前往Zerotier的网页控制台：[ZeroTier Central]([https://my.zerotier.com/](https://my.zerotier.com/))
+前往Zerotier的网页控制台：[ZeroTier Central](https://my.zerotier.com/)
 
 授权刚才加入的设备![](img/2024-10-28-17-31-51-image.webp)
 

@@ -12,7 +12,7 @@ title: 飞牛NAS玩机体验
 
 ### 吸引我的东西
 
-1. 影视刮削：飞快，薄纱Plex几条街。通过[AutoBangumi](/autobangumi)可以完美自动追番+刮削一条龙服务。偶尔会有不准，但可以手动匹配，数据源来自[TMDB](https://www.themoviedb.org/)和[IMDB](https://www.imdb.com/)
+1. 影视刮削：飞快，薄纱Plex几条街。通过[AutoBangumi](/posts/autobangumi/)可以完美自动追番+刮削一条龙服务。偶尔会有不准，但可以手动匹配，数据源来自[TMDB](https://www.themoviedb.org/)和[IMDB](https://www.imdb.com/)
    ![QmbNXd4FJ8FM8mwkKxJNdBoNbvhawJ2HdSvW5tFUt3o4ub.webp](img/f1bd7089efdf00097d5474ef967a62dcfca42e98.webp)
 
 2. 相册：可以通过手机APP自动备份，支持仅备份图片，可以多用户使用，存储互不干扰，也可以设置要共享的图片
@@ -26,7 +26,7 @@ title: 飞牛NAS玩机体验
 2. 应用商店安装的软件需要先授予目录访问权限应用才能读取目录（无论是原生还是Docker应用）
    ![QmP4unAVra1zy7gkjEzSCYEDAJMMe1BVWPKoVyjYv8b9Ho.webp](img/79af3b25d8b677b2718c953c0d431ead2f137e1d.webp)
 
-3. 发行版为Debian 12。根目录为系统分区的空间，/vol1 为存储空间1的空间 /vol2 为存储空间2的空间。推荐使用[RaiDrive](https://onani.cn/RaiDrive)或[SSHFS](/SSHFS)挂载Linux目录到Windows
+3. 发行版为Debian 12。根目录为系统分区的空间，/vol1 为存储空间1的空间 /vol2 为存储空间2的空间。推荐使用[RaiDrive](https://onani.cn/RaiDrive)或[SSHFS](/posts/sshfs/)挂载Linux目录到Windows
    ![QmWMQHNpJUUPg9B1Hdw2zmwLx9q6bcS52nUFiB3P9iYvU9.webp](img/d4ec6f87893f4af5d7eedb2e2a19a784fd6c6f92.webp)
 
 4. SSH需要自己开，账密为NAS管理员账密，建议登上之后改为仅密钥登录，参见：[设置 SSH 通过密钥登录](https://www.runoob.com/w3cnote/set-ssh-login-key.html)

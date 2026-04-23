@@ -28,6 +28,8 @@ const config = {
 		prerender: {
 			entries: ['*', '/robots.txt'],
 			handleHttpError: ({ path, referrer, message }) => {
+				// .avif 在 vite build 之后由 post-images.js 生成，prerender 阶段必然 404，静默
+				if (path.endsWith('.avif')) return;
 				console.warn(`[prerender] HTTP error at ${path} (from ${referrer}): ${message}`);
 			},
 			handleMissingId: ({ path, id, referrers }) => {

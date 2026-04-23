@@ -23,8 +23,14 @@
 
 	let deleting = $state(false);
 	let likeBusy = $state(false);
-	let liked = $state(Boolean(comment.liked));
-	let likeCount = $state(comment.likeCount || 0);
+	let liked = $state(false);
+	let likeCount = $state(0);
+
+	// 同步 prop -> 本地状态：comment 变化时重置
+	$effect(() => {
+		liked = Boolean(comment.liked);
+		likeCount = comment.likeCount || 0;
+	});
 
 	let canDelete = $derived.by(() => {
 		const u = $forumAuth.user;

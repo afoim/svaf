@@ -5,9 +5,10 @@
 	import Icon from '@iconify/svelte';
 	import { FORUM_API_BASE_URLS, forumEnv } from '$lib/forum/stores/env';
 
-	let currentEnv = $state(get(forumEnv));
-	let customBaseUrl = $state(FORUM_API_BASE_URLS[currentEnv]);
-	let currentBaseUrl = $state(customBaseUrl);
+	const initialEnv = get(forumEnv);
+	let currentEnv = $state(initialEnv);
+	let customBaseUrl = $state(FORUM_API_BASE_URLS[initialEnv]);
+	let currentBaseUrl = $state(FORUM_API_BASE_URLS[initialEnv]);
 	let open = $state(false);
 
 	$effect(() => {

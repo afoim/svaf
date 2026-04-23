@@ -10,7 +10,7 @@
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
-	const { posts } = data;
+	const posts = $derived(data.posts);
 
 	let searchQuery = $state('');
 	let allPosts = $state<Array<{ title: string; link: string; description: string; date: string; content: string; wordCount: number; readTime: number }>>([]);

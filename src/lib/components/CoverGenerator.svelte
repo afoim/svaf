@@ -75,10 +75,11 @@
 		{ label: '21:9', w: 21, h: 9, checked: false }
 	]);
 
-	// 缩放链接状态
+	// 缩放链接状态：lastFontSize/lastIconSize 是用户上次调整的快照，
+	// 仅由 handleFontSizeChange / handleIconSizeChange 写入，初值与 fontSize/iconSize 同源（64）
 	let linkScale = $state(true);
-	let lastFontSize = $state(fontSize);
-	let lastIconSize = $state(iconSize);
+	let lastFontSize = $state(64);
+	let lastIconSize = $state(64);
 
 	// 导出配置
 	let exportConfig = $state({

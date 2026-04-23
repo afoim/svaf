@@ -5,9 +5,12 @@
 
 	let { items = [] }: { items: FileItem[] } = $props();
 
-	let pathStack = $state<{ name: string; items: FileItem[] }[]>([
-		{ name: '根目录', items }
-	]);
+	let pathStack = $state<{ name: string; items: FileItem[] }[]>([{ name: '根目录', items: [] }]);
+
+	// items prop 变化时重置到根目录视图
+	$effect(() => {
+		pathStack = [{ name: '根目录', items }];
+	});
 
 	let currentView = $derived(pathStack[pathStack.length - 1]);
 

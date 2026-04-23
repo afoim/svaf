@@ -6,16 +6,18 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Label } from '$lib/components/ui/label';
 	import { Alert, AlertDescription } from '$lib/components/ui/alert';
-	import { login } from '$lib/forum/api/auth';
+	import { getCurrentUser, login, startGithubOAuth } from '$lib/forum/api/auth';
 	import { getForumConfig } from '$lib/forum/api/config';
 	import { forumAuth } from '$lib/forum/stores/auth';
 	import { ForumApiError } from '$lib/forum/types/api';
 	import { emitErrorToast, emitSuccessToast } from '$lib/forum/utils/toast';
+	import { describeGithubError } from '$lib/forum/utils/github-oauth';
 
 	let email = $state('');
 	let password = $state('');
 	let totpCode = $state('');
 	let loading = $state(false);
+	let githubLoading = $state(false);
 	let status = $state('');
 	let turnstileEnabled = $state(false);
 
@@ -61,8 +63,68 @@
 		}
 	}
 
+	async function loginWithGithub() {
+		if (githubLoading) return;
+		githubLoading = true;
+		try {
+			const redirect = `${window.location.origin}/forum/auth/login/`;
+			const { authorize_url } = await startGithubOAuth('login', redirect);
+			window.location.assign(authorize_url);
+		} catch (error) {
+			githubLoading = false;
+			emitErrorToast(
+				'GitHub 登录',
+				error instanceof Error ? error.message : 'GitHub 登录初始化失败。'
+			);
+		}
+	}
+
+	/**
+	 * 后端 GitHub callback 成功时通过 URL fragment 传 token 回来：
+	 *   /forum/auth/login/#token=xxx&new=0|1
+	 * 失败时通过 query 传错误码：
+	 *   /forum/auth/login/?github_error=xxx
+	 */
+	async function consumeGithubCallback() {
+		if (typeof window === 'undefined') return;
+
+		const url = new URL(window.location.href);
+		const errorCode = url.searchParams.get('github_error');
+		if (errorCode) {
+			url.searchParams.delete('github_error');
+			window.history.replaceState({}, '', url.pathname + url.search + url.hash);
+			emitErrorToast('GitHub 登录', describeGithubError(errorCode));
+			return;
+		}
+
+		const hash = window.location.hash.startsWith('#') ? window.location.hash.slice(1) : '';
+		if (!hash) return;
+		const params = new URLSearchParams(hash);
+		const token = params.get('token');
+		if (!token) return;
+
+		const isNew = params.get('new') === '1';
+		// 立刻清掉 fragment，避免 token 留在 URL
+		window.history.replaceState({}, '', url.pathname + url.search);
+
+		try {
+			forumAuth.setSession({ user: null, token, requiresTotp: false });
+			const me = await getCurrentUser();
+			forumAuth.setSession({ user: me, token, requiresTotp: false });
+			emitSuccessToast('GitHub 登录', isNew ? '注册并登录成功，正在跳转...' : '登录成功，正在跳转...', true);
+			window.location.href = '/forum/';
+		} catch (error) {
+			forumAuth.clear();
+			emitErrorToast(
+				'GitHub 登录',
+				error instanceof Error ? error.message : '获取用户信息失败，请重试。'
+			);
+		}
+	}
+
 	onMount(() => {
 		loadConfig();
+		void consumeGithubCallback();
 	});
 </script>
 
@@ -154,6 +216,29 @@
 					没有账号？去注册
 				</a>
 			</div>
+
+			<div class="relative my-2">
+				<div class="absolute inset-0 flex items-center">
+					<span class="w-full border-t"></span>
+				</div>
+				<div class="relative flex justify-center text-xs uppercase">
+					<span class="bg-card px-2 text-muted-foreground">或使用第三方账号</span>
+				</div>
+			</div>
+
+			<Button
+				variant="outline"
+				class="w-full"
+				onclick={loginWithGithub}
+				disabled={githubLoading}
+			>
+				{#if githubLoading}
+					<Icon icon="mdi:loading" class="size-4 animate-spin" />
+				{:else}
+					<Icon icon="mdi:github" class="size-4" />
+				{/if}
+				使用 GitHub 登录
+			</Button>
 
 			{#if status}
 				<p class="text-sm text-muted-foreground">{status}</p>

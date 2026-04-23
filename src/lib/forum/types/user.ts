@@ -17,6 +17,10 @@ export interface ForumUser {
 	articleNotifications?: boolean;
 	totpEnabled?: boolean;
 	verified?: boolean;
+	githubId?: number | null;
+	githubLogin?: string | null;
+	githubAvatarUrl?: string | null;
+	hasPassword?: boolean;
 }
 
 export interface LoginPayload {

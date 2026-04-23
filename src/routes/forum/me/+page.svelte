@@ -14,6 +14,8 @@
 		getCurrentUser,
 		logout,
 		setupTotp,
+		startGithubOAuth,
+		unlinkGithub,
 		updateProfile,
 		uploadAvatar,
 		verifyEmailChange,
@@ -22,6 +24,7 @@
 	import { forumAuth } from '$lib/forum/stores/auth';
 	import type { ForumUser } from '$lib/forum/types/user';
 	import { compressAvatarImage } from '$lib/forum/utils/image-compression';
+	import { describeGithubError } from '$lib/forum/utils/github-oauth';
 	import { emitErrorToast, emitSuccessToast } from '$lib/forum/utils/toast';
 
 	let user = $state<ForumUser | null>(null);
@@ -45,6 +48,9 @@
 	let totpCode = $state('');
 	let disableTotpPassword = $state('');
 	let disableTotpCode = $state('');
+
+	let githubLinking = $state(false);
+	let githubUnlinking = $state(false);
 
 	let deletePassword = $state('');
 	let deleteTotp = $state('');
@@ -120,6 +126,21 @@
 				}
 				params.delete('email_change_token');
 				params.delete('token');
+				const qs = params.toString();
+				window.history.replaceState({}, '', qs ? `?${qs}` : window.location.pathname);
+			}
+
+			// GitHub link 模式回调
+			const githubLinked = params.get('github_linked');
+			const githubError = params.get('github_error');
+			if (githubLinked === '1') {
+				emitSuccessToast('GitHub 绑定', 'GitHub 账号绑定成功。');
+			} else if (githubError) {
+				emitErrorToast('GitHub 绑定', describeGithubError(githubError));
+			}
+			if (githubLinked || githubError) {
+				params.delete('github_linked');
+				params.delete('github_error');
 				const qs = params.toString();
 				window.history.replaceState({}, '', qs ? `?${qs}` : window.location.pathname);
 			}
@@ -295,6 +316,38 @@
 		}
 		forumAuth.clear();
 		window.location.href = '/forum/auth/login/';
+	}
+
+	async function linkGithub() {
+		if (githubLinking) return;
+		githubLinking = true;
+		try {
+			const redirect = `${window.location.origin}/forum/me/`;
+			const { authorize_url } = await startGithubOAuth('link', redirect);
+			window.location.assign(authorize_url);
+		} catch (e) {
+			githubLinking = false;
+			emitErrorToast('GitHub 绑定', getErrorMessage(e, '发起 GitHub 绑定失败。'));
+		}
+	}
+
+	async function unlinkGithubAccount() {
+		if (githubUnlinking) return;
+		if (
+			typeof window !== 'undefined' &&
+			!window.confirm('确认解绑 GitHub？解绑后将无法通过 GitHub 一键登录。')
+		)
+			return;
+		githubUnlinking = true;
+		try {
+			await unlinkGithub();
+			emitSuccessToast('GitHub 绑定', 'GitHub 账号已解绑。');
+			await refreshSession();
+		} catch (e) {
+			emitErrorToast('GitHub 绑定', getErrorMessage(e, '解绑 GitHub 失败。'));
+		} finally {
+			githubUnlinking = false;
+		}
 	}
 
 	let isAdmin = $derived(user?.role === 'admin');
@@ -580,6 +633,74 @@
 										</Button>
 									</div>
 								{/if}
+							{/if}
+						</CardContent>
+					</Card>
+
+					<!-- GitHub 绑定 -->
+					<Card>
+						<CardHeader>
+							<CardTitle class="flex items-center gap-2 text-lg">
+								<Icon icon="mdi:github" class="size-5" />
+								GitHub 账号
+							</CardTitle>
+						</CardHeader>
+						<CardContent class="space-y-3">
+							{#if user?.githubLogin}
+								<div class="flex flex-wrap items-center gap-3">
+									{#if user.githubAvatarUrl}
+										<img
+											src={user.githubAvatarUrl}
+											alt={user.githubLogin}
+											class="size-10 rounded-full border"
+										/>
+									{/if}
+									<div class="space-y-0.5">
+										<a
+											href={`https://github.com/${user.githubLogin}`}
+											target="_blank"
+											rel="noopener noreferrer"
+											class="font-medium text-primary hover:underline"
+										>
+											@{user.githubLogin}
+										</a>
+										<p class="text-xs text-muted-foreground">
+											已绑定，可在登录页使用「使用 GitHub 登录」一键进入。
+										</p>
+									</div>
+								</div>
+								{#if user.hasPassword === false}
+									<Alert>
+										<Icon icon="mdi:alert-outline" />
+										<AlertDescription>
+											当前账号尚未设置登录密码，解绑后将无法登录。请先到「修改邮箱 / 密码」处设置密码再解绑。
+										</AlertDescription>
+									</Alert>
+								{/if}
+								<Button
+									variant="outline"
+									onclick={unlinkGithubAccount}
+									disabled={githubUnlinking || user.hasPassword === false}
+								>
+									{#if githubUnlinking}
+										<Icon icon="mdi:loading" class="size-4 animate-spin" />
+									{:else}
+										<Icon icon="mdi:link-variant-off" class="size-4" />
+									{/if}
+									解绑 GitHub
+								</Button>
+							{:else}
+								<p class="text-sm text-muted-foreground">
+									绑定后可使用「GitHub 登录」一键登录论坛，无需输入密码。
+								</p>
+								<Button onclick={linkGithub} disabled={githubLinking}>
+									{#if githubLinking}
+										<Icon icon="mdi:loading" class="size-4 animate-spin" />
+									{:else}
+										<Icon icon="mdi:github" class="size-4" />
+									{/if}
+									绑定 GitHub
+								</Button>
 							{/if}
 						</CardContent>
 					</Card>

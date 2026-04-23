@@ -44,6 +44,14 @@ interface RawSessionUser {
 	verified?: number | boolean;
 	email_verified?: number | boolean;
 	emailVerified?: boolean | number;
+	github_id?: number | string | null;
+	githubId?: number | string | null;
+	github_login?: string | null;
+	githubLogin?: string | null;
+	github_avatar_url?: string | null;
+	githubAvatarUrl?: string | null;
+	has_password?: boolean | number;
+	hasPassword?: boolean | number;
 }
 
 interface RawSessionResult {
@@ -144,7 +152,11 @@ function normalizeUser(user?: RawSessionUser | null): ForumUser | null {
 		totpEnabled: toOptionalBoolean(
 			user.totp_enabled ?? user.totpEnabled ?? user.two_factor_enabled ?? user.mfa_enabled
 		),
-		verified: toOptionalBoolean(user.verified ?? user.email_verified ?? user.emailVerified)
+		verified: toOptionalBoolean(user.verified ?? user.email_verified ?? user.emailVerified),
+		githubId: toOptionalNumber(user.github_id ?? user.githubId) ?? null,
+		githubLogin: user.github_login ?? user.githubLogin ?? null,
+		githubAvatarUrl: user.github_avatar_url ?? user.githubAvatarUrl ?? null,
+		hasPassword: toOptionalBoolean(user.has_password ?? user.hasPassword)
 	};
 }
 
@@ -263,6 +275,36 @@ export function resetPassword(
 
 export function logout(): Promise<{ success: boolean }> {
 	return forumRequest<{ success: boolean }>('/api/logout', {
+		method: 'POST',
+		requiresAuth: true
+	});
+}
+
+export type GithubOAuthMode = 'login' | 'link';
+
+export interface GithubOAuthStartResult {
+	authorize_url: string;
+	state: string;
+}
+
+/**
+ * 请求后端生成 GitHub 授权地址。
+ * - mode=login 时无需登录态
+ * - mode=link 时需要当前账号的 token，会被 forumRequest 自动带上
+ */
+export function startGithubOAuth(
+	mode: GithubOAuthMode,
+	redirect?: string
+): Promise<GithubOAuthStartResult> {
+	return forumRequest<GithubOAuthStartResult>('/api/auth/github/start', {
+		method: 'GET',
+		requiresAuth: mode === 'link',
+		query: { mode, redirect }
+	});
+}
+
+export function unlinkGithub(): Promise<{ success: boolean }> {
+	return forumRequest<{ success: boolean }>('/api/auth/github/unlink', {
 		method: 'POST',
 		requiresAuth: true
 	});

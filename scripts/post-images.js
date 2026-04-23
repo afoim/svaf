@@ -121,6 +121,13 @@ async function main() {
 
   // 创建缓存目录
   fs.mkdirSync(cacheDir, { recursive: true });
+  
+  // 检查缓存目录状态
+  const cacheFiles = fs.existsSync(cacheDir) ? fs.readdirSync(cacheDir) : [];
+  const cacheCount = cacheFiles.filter(f => f.endsWith('.avif')).length;
+  console.log(`[post-images] 缓存目录: ${cacheDir}`);
+  console.log(`[post-images] 现有缓存文件数: ${cacheCount}`);
+  console.log(`[post-images] Git 工作目录: ${process.cwd()}`);
 
   const tasks = [];
   const postDirs = fs.readdirSync(postsDir);

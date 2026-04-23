@@ -359,7 +359,7 @@
 							<Pagination.PrevButton>
 								{#snippet children()}
 									<Icon icon="mdi:chevron-left" class="w-4 h-4" />
-									<span>上一页</span>
+									<span class="hidden sm:inline">上一页</span>
 								{/snippet}
 							</Pagination.PrevButton>
 						</Pagination.Item>
@@ -379,7 +379,7 @@
 						<Pagination.Item>
 							<Pagination.NextButton>
 								{#snippet children()}
-									<span>下一页</span>
+									<span class="hidden sm:inline">下一页</span>
 									<Icon icon="mdi:chevron-right" class="w-4 h-4" />
 								{/snippet}
 							</Pagination.NextButton>

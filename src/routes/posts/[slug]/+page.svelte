@@ -1,13 +1,13 @@
 <script lang="ts">
-	import { onMount, tick } from 'svelte';
+	import { tick } from 'svelte';
 	import { Button } from '$lib/components/ui/button';
 	import { Badge } from '$lib/components/ui/badge';
 	import { siteConfig } from '$lib/config/site';
 	import ImageViewer from '$lib/components/ImageViewer.svelte';
 	import Giscus from '$lib/components/Giscus.svelte';
 	import PageViews from '$lib/components/PageViews.svelte';
-	import MermaidRenderer from '$lib/components/MermaidRenderer.svelte';
 	import { highlightCodeBlocksIn } from '$lib/utils/highlight';
+	import { renderMermaidIn } from '$lib/utils/mermaid';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
@@ -23,9 +23,16 @@
 		});
 	}
 
-	onMount(async () => {
-		await tick();
-		highlightCodeBlocksIn(proseEl);
+	// 文章组件变化（首次挂载 + 同路由切换 slug）后重新渲染代码高亮与 mermaid
+	$effect(() => {
+		// 显式依赖 component，触发 effect
+		void data.component;
+		(async () => {
+			await tick();
+			if (!proseEl) return;
+			await renderMermaidIn(proseEl);
+			highlightCodeBlocksIn(proseEl);
+		})();
 	});
 </script>
 
@@ -84,14 +91,14 @@
 	<!-- 文章内容 - 使用 mdsvex 组件 -->
 	<div
 		bind:this={proseEl}
-		class="prose prose-neutral dark:prose-invert max-w-none
+		class="prose prose-neutral dark:prose-invert max-w-none break-words [overflow-wrap:anywhere]
 			prose-headings:text-foreground
 			prose-p:text-foreground
 			prose-strong:text-foreground
-			prose-a:text-primary prose-a:underline prose-a:underline-offset-4 hover:prose-a:opacity-80
+			prose-a:text-primary prose-a:underline prose-a:underline-offset-4 prose-a:break-all hover:prose-a:opacity-80
 			prose-blockquote:border-l-primary prose-blockquote:text-muted-foreground
 			prose-code:bg-muted prose-code:text-foreground prose-code:rounded prose-code:px-1.5 prose-code:py-0.5 prose-code:before:content-none prose-code:after:content-none
-			prose-pre:bg-transparent prose-pre:p-0 prose-pre:text-foreground
+			prose-pre:bg-transparent prose-pre:p-0 prose-pre:text-foreground prose-pre:overflow-x-auto
 			prose-hr:border-border
 			prose-th:border prose-th:border-border prose-th:bg-muted
 			prose-td:border prose-td:border-border
@@ -99,8 +106,6 @@
 	>
 		<data.component />
 	</div>
-
-	<MermaidRenderer />
 
 	<!-- 评论区 -->
 	<div id="comments">

@@ -1,40 +1,24 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { fly } from 'svelte/transition';
 	import Icon from '@iconify/svelte';
 	import { Button } from '$lib/components/ui/button';
 	import { page } from '$app/stores';
 
-	let showButton = $state(false);
 	let scrollY = $state(0);
+	let showButton = $derived(scrollY > 100);
 
 	let showCommentButton = $derived.by(() => {
 		const id = $page.route?.id || '';
 		return id === '/posts/[slug]' || id === '/forum/post';
 	});
 
-	onMount(() => {
-		const handleScroll = () => {
-			scrollY = window.scrollY;
-			showButton = scrollY > 100; // 滚动超过100px时显示按钮
-		};
-
-		window.addEventListener('scroll', handleScroll);
-		return () => window.removeEventListener('scroll', handleScroll);
-	});
-
 	const scrollToTop = () => {
-		window.scrollTo({
-			top: 0,
-			behavior: 'smooth'
-		});
+		window.scrollTo({ top: 0, behavior: 'smooth' });
 	};
 
 	const scrollToComments = () => {
 		const el = document.getElementById('comments');
-		if (el) {
-			el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-		}
+		if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 	};
 </script>
 

@@ -1,10 +1,13 @@
 import MarkdownIt from 'markdown-it';
 import DOMPurify from 'dompurify';
+import markdownItGithubAlerts from './markdownItGithubAlerts';
 
-const md = new MarkdownIt({ html: false, linkify: true, breaks: true });
+const md = new MarkdownIt({ html: false, linkify: true, breaks: true }).use(markdownItGithubAlerts);
 
 const SANITIZE_OPTS: DOMPurify.Config = {
-	ADD_ATTR: ['target', 'rel', 'loading', 'referrerpolicy', 'style', 'tabindex'],
+	// 允许 SVG profile，使 GitHub 风格提示块的内联图标正常渲染（保留 viewBox/stroke 等专用属性）
+	USE_PROFILES: { html: true, svg: true, svgFilters: true },
+	ADD_ATTR: ['target', 'rel', 'loading', 'referrerpolicy', 'style', 'tabindex', 'aria-hidden'],
 	ADD_TAGS: ['span'],
 	ALLOWED_URI_REGEXP: /^(?:(?:https?|mailto):|[^a-z]|[a-z+.-]+(?:[^a-z+.\-:]|$))/i
 };

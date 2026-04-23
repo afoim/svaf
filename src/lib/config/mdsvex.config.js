@@ -1,5 +1,6 @@
 import { defineMDSveXConfig as defineConfig } from 'mdsvex';
 import remarkAvifRewrite from '../../../vite-plugins/remark-avif-rewrite.js';
+import remarkGithubAlerts from '../../../vite-plugins/remark-github-alerts.js';
 import rehypeExternalLinks from '../../../vite-plugins/rehype-external-links.js';
 
 const config = defineConfig({
@@ -7,7 +8,7 @@ const config = defineConfig({
 	smartypants: {
 		dashes: 'oldschool'
 	},
-	remarkPlugins: [remarkAvifRewrite],
+	remarkPlugins: [remarkGithubAlerts, remarkAvifRewrite],
 	rehypePlugins: [rehypeExternalLinks]
 });
 

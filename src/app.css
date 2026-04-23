@@ -122,8 +122,49 @@
 	}
 	body {
 		@apply bg-background text-foreground;
+		/* 出血线：底部留出空白让浮动按钮（回到顶部 / 评论）不遮挡分页等内容 */
+		padding-bottom: 6rem;
 	}
 	html {
 		@apply font-sans;
 	}
+}
+
+/* GitHub 风格提示块 —— 文章 (mdsvex/remark) 与论坛 (markdown-it) 共用 */
+@layer components {
+	.markdown-alert {
+		--alert-color: var(--muted-foreground);
+		border-left: 4px solid var(--alert-color);
+		background: color-mix(in oklab, var(--alert-color) 8%, var(--background));
+		border-radius: var(--radius-md);
+		padding: 0.75rem 1rem;
+		margin: 1rem 0;
+		color: var(--foreground);
+	}
+	.markdown-alert > :first-child {
+		margin-top: 0;
+	}
+	.markdown-alert > :last-child {
+		margin-bottom: 0;
+	}
+	.markdown-alert-title {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		font-weight: 600;
+		color: var(--alert-color);
+		margin-bottom: 0.4rem;
+		line-height: 1;
+	}
+	.markdown-alert-title svg {
+		width: 1rem;
+		height: 1rem;
+		flex-shrink: 0;
+	}
+	.markdown-alert-note { --alert-color: oklch(0.55 0.18 250); }
+	.markdown-alert-tip { --alert-color: oklch(0.6 0.17 150); }
+	.markdown-alert-info { --alert-color: oklch(0.6 0.15 220); }
+	.markdown-alert-important { --alert-color: oklch(0.55 0.2 300); }
+	.markdown-alert-warning { --alert-color: oklch(0.7 0.18 80); }
+	.markdown-alert-caution { --alert-color: var(--destructive); }
 }

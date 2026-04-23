@@ -9,7 +9,7 @@ node_modules/
 .netlify/
 .wrangler/
 /.svelte-kit/
-# /build/
+/build/
 dist/
 
 # Cache
@@ -82,3 +82,6 @@ demo
 
 # Obsidian
 src/content/.Obsidian
+
+# 图片缓存
+.image-cache.json

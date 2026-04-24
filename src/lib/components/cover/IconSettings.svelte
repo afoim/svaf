@@ -68,7 +68,7 @@
 					{#each searchResults as icon}
 						<button
 							onclick={() => onSelectIcon(icon)}
-							class="aspect-square flex items-center justify-center p-1 sm:p-1.5 lg:p-2 rounded-md border hover:bg-accent transition-colors {icon ===
+							class="aspect-square flex items-center justify-center p-1 sm:p-1.5 rounded-md border hover:bg-accent transition-colors {icon ===
 							iconName
 								? 'border-primary bg-primary/10'
 								: 'border-input'}"

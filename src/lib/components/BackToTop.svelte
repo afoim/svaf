@@ -3,6 +3,7 @@
 	import Icon from '@iconify/svelte';
 	import { Button } from '$lib/components/ui/button';
 	import { page } from '$app/stores';
+	import { tocFloating } from '$lib/stores/toc-floating';
 
 	let scrollY = $state(0);
 	let showButton = $derived(scrollY > 100);
@@ -11,6 +12,9 @@
 		const id = $page.route?.id || '';
 		return id === '/posts/[slug]' || id === '/forum/post';
 	});
+
+	// xl 断点以下才显示 TOC 浮动按钮（桌面端用侧边 aside，不需要按钮）
+	let showTocButton = $derived($tocFloating.available);
 
 	const scrollToTop = () => {
 		window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -25,6 +29,23 @@
 <svelte:window bind:scrollY />
 
 <div class="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
+	{#if showTocButton}
+		<div transition:fly={{ y: 20, duration: 300 }} class="xl:hidden">
+			<Button
+				size="icon-lg"
+				variant="outline"
+				onclick={() => tocFloating.toggle()}
+				aria-label="目录"
+				aria-expanded={$tocFloating.open}
+				class="size-12 shadow-lg hover:shadow-xl bg-card"
+			>
+				<Icon
+					icon={$tocFloating.open ? 'mdi:close' : 'mdi:format-list-bulleted'}
+					class="size-5"
+				/>
+			</Button>
+		</div>
+	{/if}
 	{#if showCommentButton}
 		<div transition:fly={{ y: 20, duration: 300 }}>
 			<Button
@@ -38,7 +59,7 @@
 		</div>
 	{/if}
 	{#if showButton}
-		<div transition:fly={{ y: 20, duration: 300 }}>
+		<div>
 			<Button
 				size="icon-lg"
 				onclick={scrollToTop}

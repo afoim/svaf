@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { tick } from 'svelte';
 	import { fly } from 'svelte/transition';
-	import Icon from '@iconify/svelte';
+	import { tocFloating } from '$lib/stores/toc-floating';
 
 	let {
 		container,
@@ -17,8 +17,9 @@
 
 	let headings = $state<Heading[]>([]);
 	let activeId = $state<string>('');
-	let mobileOpen = $state(false);
 	let observer: IntersectionObserver | undefined;
+
+	const mobileOpen = $derived($tocFloating.open);
 
 	// 把实际标题层级压缩到从 1 起算的视觉缩进，避免文章只用 h2/h3 时第一项就被缩进
 	let minLevel = $derived(headings.length ? Math.min(...headings.map((h) => h.level)) : 1);
@@ -66,6 +67,7 @@
 			list.push({ id, text, level: Number(el.tagName.slice(1)) });
 		}
 		headings = list;
+		tocFloating.setAvailable(list.length > 0);
 
 		if (list.length === 0) return;
 
@@ -95,7 +97,10 @@
 		void trigger;
 		void container;
 		rebuild();
-		return () => observer?.disconnect();
+		return () => {
+			observer?.disconnect();
+			tocFloating.reset();
+		};
 	});
 
 	function handleClick(e: MouseEvent, id: string) {
@@ -105,7 +110,7 @@
 		const top = el.getBoundingClientRect().top + window.scrollY - 72;
 		window.scrollTo({ top, behavior: 'smooth' });
 		history.replaceState(null, '', `#${id}`);
-		mobileOpen = false;
+		tocFloating.setOpen(false);
 	}
 </script>
 
@@ -137,28 +142,18 @@
 		</ul>
 	</aside>
 
-	<!-- 移动端：右下浮动按钮 + 抽屉 -->
-	<div class="xl:hidden">
-		<button
-			type="button"
-			onclick={() => (mobileOpen = !mobileOpen)}
-			aria-label="目录"
-			aria-expanded={mobileOpen}
-			class="fixed bottom-24 right-6 z-40 size-12 rounded-full bg-card border border-border shadow-lg flex items-center justify-center text-foreground hover:bg-accent transition-colors"
-		>
-			<Icon icon={mobileOpen ? 'mdi:close' : 'mdi:format-list-bulleted'} class="size-5" />
-		</button>
-
-		{#if mobileOpen}
+	<!-- 移动端：浮动按钮由 BackToTop 统一渲染，这里只负责抽屉内容 -->
+	{#if mobileOpen}
+		<div class="xl:hidden">
 			<button
 				type="button"
 				aria-label="关闭目录"
 				class="fixed inset-0 z-40 bg-background/60 backdrop-blur-sm"
-				onclick={() => (mobileOpen = false)}
+				onclick={() => tocFloating.setOpen(false)}
 			></button>
 			<div
 				transition:fly={{ y: 20, duration: 200 }}
-				class="fixed bottom-40 right-6 z-50 w-72 max-h-[60vh] overflow-y-auto rounded-lg border border-border bg-card shadow-xl p-4"
+				class="fixed bottom-24 right-6 z-50 w-72 max-h-[60vh] overflow-y-auto rounded-lg border border-border bg-card shadow-xl p-4"
 			>
 				<div class="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
 					目录
@@ -181,6 +176,6 @@
 					{/each}
 				</ul>
 			</div>
-		{/if}
-	</div>
+		</div>
+	{/if}
 {/if}

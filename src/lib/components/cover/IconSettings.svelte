@@ -76,7 +76,7 @@
 						>
 							<img
 								src={`https://api.iconify.design/${icon.split(':')[0]}/${icon.split(':')[1]}.svg`}
-								class="w-full h-full"
+								class="w-6 h-6 sm:w-8 sm:h-8 lg:w-full lg:h-full"
 								alt={icon}
 							/>
 						</button>

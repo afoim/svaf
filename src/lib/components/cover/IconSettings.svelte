@@ -68,7 +68,7 @@
 					{#each searchResults as icon}
 						<button
 							onclick={() => onSelectIcon(icon)}
-							class="aspect-square flex items-center justify-center p-2 rounded-md border hover:bg-accent transition-colors {icon ===
+							class="aspect-square flex items-center justify-center p-1 sm:p-1.5 lg:p-2 rounded-md border hover:bg-accent transition-colors {icon ===
 							iconName
 								? 'border-primary bg-primary/10'
 								: 'border-input'}"
@@ -76,7 +76,7 @@
 						>
 							<img
 								src={`https://api.iconify.design/${icon.split(':')[0]}/${icon.split(':')[1]}.svg`}
-								class="w-6 h-6 sm:w-8 sm:h-8 lg:w-full lg:h-full"
+								class="w-full h-full"
 								alt={icon}
 							/>
 						</button>

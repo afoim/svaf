@@ -64,11 +64,11 @@
 
 		{#if searchResults.length > 0}
 			<div class="max-h-48 overflow-y-auto border rounded-lg p-2">
-				<div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-2">
+				<div class="grid gap-2" style="grid-template-columns: repeat(auto-fit, minmax(48px, 1fr));">
 					{#each searchResults as icon}
 						<button
 							onclick={() => onSelectIcon(icon)}
-							class="aspect-square flex items-center justify-center p-1 sm:p-1.5 rounded-md border hover:bg-accent transition-colors {icon ===
+							class="aspect-square flex items-center justify-center p-1.5 rounded-md border hover:bg-accent transition-colors {icon ===
 							iconName
 								? 'border-primary bg-primary/10'
 								: 'border-input'}"

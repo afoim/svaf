@@ -122,11 +122,27 @@
 <svelte:head>
 	<title>{data.post.metadata.title} - {siteConfig.title}</title>
 	<meta name="description" content={data.post.metadata.description} />
+	<meta property="og:type" content="article" />
 	<meta property="og:title" content={data.post.metadata.title} />
 	<meta property="og:description" content={data.post.metadata.description} />
+	<meta property="og:url" content="{siteConfig.url}/posts/{$page.params.slug}/" />
 	{#if data.post.metadata.image}
-		<meta property="og:image" content={data.post.metadata.image} />
+		<meta
+			property="og:image"
+			content={data.post.metadata.image.startsWith('http')
+				? data.post.metadata.image
+				: `${siteConfig.url}${data.post.metadata.image}`}
+		/>
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta
+			name="twitter:image"
+			content={data.post.metadata.image.startsWith('http')
+				? data.post.metadata.image
+				: `${siteConfig.url}${data.post.metadata.image}`}
+		/>
 	{/if}
+	<meta name="twitter:title" content={data.post.metadata.title} />
+	<meta name="twitter:description" content={data.post.metadata.description} />
 </svelte:head>
 
 <article class="container mx-auto max-w-3xl px-4 py-12">

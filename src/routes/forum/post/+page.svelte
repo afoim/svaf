@@ -149,7 +149,7 @@
 			emitErrorToast('评论', '请先登录后再发表评论。');
 			return;
 		}
-		if (turnstileEnabled && turnstileSiteKey && !turnstileToken) {
+		if (turnstileEnabled && !turnstileToken) {
 			emitErrorToast('评论', '验证码尚未加载完成或已过期，请稍后重试。');
 			return;
 		}
@@ -556,13 +556,19 @@
 								<TurnstileWidget siteKey={turnstileSiteKey} onToken={(t) => turnstileToken = t} onExpired={() => turnstileToken = ""} />
 							</div>
 						{/if}
+						{#if turnstileEnabled && !turnstileSiteKey}
+							<Alert>
+								<Icon icon="mdi:shield-off-outline" />
+								<AlertDescription>论坛已启用 Turnstile 但未配置站点密钥，请联系管理员。</AlertDescription>
+							</Alert>
+						{/if}
 						<div class="flex items-center justify-end gap-2">
 							<span class="text-xs text-muted-foreground">Ctrl/Cmd + Enter 提交</span>
 							<Button variant="outline" onclick={cancelCompose} disabled={commentSubmitting}>
 								<Icon icon="mdi:close" class="size-4" />
 								取消
 							</Button>
-							<Button onclick={submitComment} disabled={commentSubmitting || !commentDraft.trim() || (turnstileEnabled && turnstileSiteKey && !turnstileToken)}>
+							<Button onclick={submitComment} disabled={commentSubmitting || !commentDraft.trim() || (turnstileEnabled && !turnstileToken)}>
 								{#if commentSubmitting}
 									<Icon icon="mdi:loading" class="size-4 animate-spin" />
 								{:else}

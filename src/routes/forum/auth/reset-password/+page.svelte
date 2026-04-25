@@ -39,7 +39,7 @@
 	async function submit() {
 		if (loading) return;
 
-		if (turnstileEnabled && turnstileSiteKey && !turnstileToken) {
+		if (turnstileEnabled && !turnstileToken) {
 			emitErrorToast('重置密码', '验证码尚未加载完成或已过期，请稍后重试。');
 			return;
 		}
@@ -141,6 +141,13 @@
 				<div class="flex justify-center">
 					<TurnstileWidget siteKey={turnstileSiteKey} onToken={(t) => turnstileToken = t} onExpired={() => turnstileToken = ""} />
 				</div>
+			{/if}
+
+			{#if turnstileEnabled && !turnstileSiteKey}
+				<Alert>
+					<Icon icon="mdi:shield-off-outline" />
+					<AlertDescription>论坛已启用 Turnstile 但未配置站点密钥，请联系管理员。</AlertDescription>
+				</Alert>
 			{/if}
 
 			<div class="flex flex-wrap items-center gap-3 pt-2">

@@ -11,6 +11,7 @@
 	let scriptsLoaded = $state({
 		umami: false,
 		cloudflare: false,
+		cfUmami: false,
 		baidu: false,
 		google: false,
 		clarity: false,
@@ -41,6 +42,11 @@
 		if (!scriptsLoaded.cloudflare) {
 			loadCloudflare();
 			scriptsLoaded.cloudflare = true;
+		}
+
+		if (!scriptsLoaded.cfUmami) {
+			loadCfUmami();
+			scriptsLoaded.cfUmami = true;
 		}
 
 		// 功能性追踪器
@@ -86,6 +92,13 @@
 		script.defer = true;
 		script.src = 'https://static.cloudflareinsights.com/beacon.min.js';
 		script.setAttribute('data-cf-beacon', JSON.stringify({ token: '15fe148e91b34f10a15652e1a74ab26c' }));
+		document.head.appendChild(script);
+	}
+
+	function loadCfUmami() {
+		const script = document.createElement('script');
+		script.defer = true;
+		script.src = 'https://t.2x.nz/tracker.js';
 		document.head.appendChild(script);
 	}
 

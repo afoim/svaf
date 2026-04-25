@@ -56,6 +56,7 @@
 
 	const globalState = getGlobalState();
 	let statusLines = $state<StatusLine[][]>(globalState.statusLines);
+	let loaded = $state(!!globalState.payload);
 
 	// 监听全局状态变化并同步到本地状态
 	let syncInterval: number | null = null;
@@ -434,29 +435,37 @@
 	<div
 		class="ring-foreground/10 bg-card text-card-foreground overflow-hidden rounded-2xl text-sm ring-1 p-3 space-y-0.5"
 	>
-		{#each statusLines as line}
-			<p class="text-xs leading-relaxed">
-				{#each line as segment}
-					{#if segment.text.startsWith('###')}
-						<span
-							class="text-sm font-bold transition-colors"
-							style="color: {segment.color || 'inherit'}"
-						>
-							{segment.text.replace('###', '').trim()}
-						</span>
-					{:else}
-						<span
-							class="transition-colors"
-							class:font-bold={segment.bold}
-							class:line-through={segment.strikethrough}
-							class:opacity-60={segment.strikethrough}
-							style="color: {segment.color || 'inherit'}"
-						>
-							{segment.text}
-						</span>
-					{/if}
-				{/each}
-			</p>
-		{/each}
+		{#if loaded}
+			{#each statusLines as line}
+				<p class="text-xs leading-relaxed">
+					{#each line as segment}
+						{#if segment.text.startsWith('###')}
+							<span
+								class="text-sm font-bold transition-colors"
+								style="color: {segment.color || 'inherit'}"
+							>
+								{segment.text.replace('###', '').trim()}
+							</span>
+						{:else}
+							<span
+								class="transition-colors"
+								class:font-bold={segment.bold}
+								class:line-through={segment.strikethrough}
+								class:opacity-60={segment.strikethrough}
+								style="color: {segment.color || 'inherit'}"
+							>
+								{segment.text}
+							</span>
+						{/if}
+					{/each}
+				</p>
+			{/each}
+		{:else}
+			<div class="space-y-2 animate-pulse">
+				<div class="h-4 w-24 rounded bg-muted"></div>
+				<div class="h-3 w-48 rounded bg-muted/70"></div>
+				<div class="h-3 w-36 rounded bg-muted/70"></div>
+			</div>
+		{/if}
 	</div>
 </a>

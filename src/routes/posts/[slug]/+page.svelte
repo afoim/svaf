@@ -102,6 +102,7 @@
 	// 文章组件变化（首次挂载 + 同路由切换 slug）后重新渲染代码高亮与 mermaid
 	$effect(() => {
 		void data.component;
+		void $page.url;
 		(async () => {
 			await tick();
 			if (!proseEl) return;

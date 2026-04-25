@@ -1,14 +1,15 @@
-export function emitSuccessToast(title: string, description: string, silent = true): void {
-	if (!silent && typeof window !== 'undefined') {
-		alert(`${title}\n\n${description}`);
-	}
+import { forumToast } from '../stores/toast';
+
+export function emitSuccessToast(title: string, description: string): void {
+	forumToast.add('success', title, description);
 }
 
 export function emitErrorToast(title: string, description: string): void {
-	if (typeof window !== 'undefined') {
-		alert(`${title}\n\n${description}`);
-	}
+	forumToast.add('error', title, description);
 }
 
-export const emitInfoToast = emitSuccessToast;
+export function emitInfoToast(title: string, description: string): void {
+	forumToast.add('info', title, description);
+}
+
 export const emitWarningToast = emitErrorToast;

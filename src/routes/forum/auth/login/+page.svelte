@@ -12,6 +12,7 @@
 	import { ForumApiError } from '$lib/forum/types/api';
 	import { emitErrorToast, emitSuccessToast } from '$lib/forum/utils/toast';
 	import { describeGithubError } from '$lib/forum/utils/github-oauth';
+	import TurnstileWidget from '$lib/components/TurnstileWidget.svelte';
 
 	let email = $state('');
 	let password = $state('');
@@ -20,11 +21,14 @@
 	let githubLoading = $state(false);
 	let status = $state('');
 	let turnstileEnabled = $state(false);
+	let turnstileSiteKey = $state('');
+	let turnstileToken = $state('');
 
 	async function loadConfig() {
 		try {
 			const config = await getForumConfig();
 			turnstileEnabled = config.turnstileEnabled;
+			turnstileSiteKey = config.turnstileSiteKey || '';
 		} catch {
 			turnstileEnabled = false;
 		}
@@ -38,7 +42,8 @@
 			const session = await login({
 				email,
 				password,
-				totpCode: totpCode || undefined
+				totpCode: totpCode || undefined,
+				turnstileToken: turnstileToken || undefined
 			});
 			forumAuth.setSession(session);
 			if (session.requiresTotp) {
@@ -181,13 +186,10 @@
 				/>
 			</div>
 
-			{#if turnstileEnabled}
-				<Alert>
-					<Icon icon="mdi:shield-check-outline" />
-					<AlertDescription>
-						当前论坛配置已启用 Turnstile，后续可在此挂载验证码组件。
-					</AlertDescription>
-				</Alert>
+			{#if turnstileEnabled && turnstileSiteKey}
+				<div class="flex justify-center">
+					<TurnstileWidget siteKey={turnstileSiteKey} onToken={(t) => turnstileToken = t} />
+				</div>
 			{/if}
 
 			<div class="flex flex-wrap items-center gap-3 pt-2">

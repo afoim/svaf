@@ -6,6 +6,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Label } from '$lib/components/ui/label';
 	import { Alert, AlertDescription } from '$lib/components/ui/alert';
+	import TurnstileWidget from '$lib/components/TurnstileWidget.svelte';
 	import { resetPassword } from '$lib/forum/api/auth';
 	import { getForumConfig } from '$lib/forum/api/config';
 	import { ForumApiError } from '$lib/forum/types/api';
@@ -17,6 +18,8 @@
 	let loading = $state(false);
 	let status = $state('');
 	let turnstileEnabled = $state(false);
+	let turnstileSiteKey = $state('');
+	let turnstileToken = $state('');
 
 	function readTokenFromUrl(): string {
 		if (typeof window === 'undefined') return '';
@@ -27,6 +30,7 @@
 		try {
 			const config = await getForumConfig();
 			turnstileEnabled = config.turnstileEnabled;
+			turnstileSiteKey = config.turnstileSiteKey || '';
 		} catch {
 			turnstileEnabled = false;
 		}
@@ -49,9 +53,10 @@
 			await resetPassword({
 				token: trimmedToken,
 				newPassword,
-				totpCode: totpCode.trim() || undefined
+				totpCode: totpCode.trim() || undefined,
+				turnstileToken: turnstileToken || undefined
 			});
-			emitSuccessToast('重置密码', '密码已重置，正在前往登录页...', true);
+			emitSuccessToast('重置密码', '密码已重置，正在前往登录页...');
 			window.location.href = '/forum/auth/login/';
 		} catch (error) {
 			status = '';
@@ -127,13 +132,10 @@
 				/>
 			</div>
 
-			{#if turnstileEnabled}
-				<Alert>
-					<Icon icon="mdi:shield-check-outline" />
-					<AlertDescription>
-						当前论坛配置已启用 Turnstile，前端暂未挂载验证码组件，直接提交可能会被后端拦截。
-					</AlertDescription>
-				</Alert>
+			{#if turnstileEnabled && turnstileSiteKey}
+				<div class="flex justify-center">
+					<TurnstileWidget siteKey={turnstileSiteKey} onToken={(t) => turnstileToken = t} />
+				</div>
 			{/if}
 
 			<div class="flex flex-wrap items-center gap-3 pt-2">

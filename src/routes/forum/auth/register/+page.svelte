@@ -6,6 +6,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Label } from '$lib/components/ui/label';
 	import { Alert, AlertDescription } from '$lib/components/ui/alert';
+	import TurnstileWidget from '$lib/components/TurnstileWidget.svelte';
 	import { register } from '$lib/forum/api/auth';
 	import { getForumConfig } from '$lib/forum/api/config';
 	import { emitErrorToast, emitSuccessToast } from '$lib/forum/utils/toast';
@@ -16,12 +17,15 @@
 	let loading = $state(false);
 	let status = $state('');
 	let turnstileEnabled = $state(false);
+	let turnstileSiteKey = $state('');
+	let turnstileToken = $state('');
 	let allowRegistration = $state(true);
 
 	async function loadConfig() {
 		try {
 			const config = await getForumConfig();
 			turnstileEnabled = config.turnstileEnabled;
+			turnstileSiteKey = config.turnstileSiteKey || '';
 			allowRegistration = config.allowRegistration !== false;
 		} catch {
 			turnstileEnabled = false;
@@ -53,7 +57,8 @@
 			const result = await register({
 				username: username.trim(),
 				email: email.trim(),
-				password
+				password,
+				turnstileToken: turnstileToken || undefined
 			});
 			emitSuccessToast('注册', result.message || '注册成功，请前往邮箱完成验证。', true);
 			window.location.href = '/forum/auth/login/';
@@ -136,13 +141,10 @@
 				/>
 			</div>
 
-			{#if turnstileEnabled}
-				<Alert>
-					<Icon icon="mdi:shield-check-outline" />
-					<AlertDescription>
-						当前论坛配置已启用 Turnstile，前端暂未挂载验证码组件，直接注册可能会被后端拦截。
-					</AlertDescription>
-				</Alert>
+			{#if turnstileEnabled && turnstileSiteKey}
+				<div class="flex justify-center">
+					<TurnstileWidget siteKey={turnstileSiteKey} onToken={(t) => turnstileToken = t} />
+				</div>
 			{/if}
 
 			<div class="flex flex-wrap items-center gap-3 pt-2">

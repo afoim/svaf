@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
 	import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '$lib/components/ui/card';
 	import { Button } from '$lib/components/ui/button';
 	import Icon from '@iconify/svelte';
@@ -9,9 +9,14 @@
 	let target = $state('');
 	let targetHost = $state('');
 
-	onMount(() => {
-		const decoded = tryDecodeShortLink(window.location.pathname);
-		if (!decoded) return;
+	$effect(() => {
+		const pathname = $page.url.pathname;
+		const decoded = tryDecodeShortLink(decodeURIComponent(pathname));
+		if (!decoded) {
+			open = false;
+			document.body.style.overflow = '';
+			return;
+		}
 		target = decoded;
 		try {
 			targetHost = new URL(decoded).host;

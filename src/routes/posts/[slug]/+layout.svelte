@@ -1,16 +1,16 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { onMount } from 'svelte';
 	import { resolvePostAssetPath } from '$lib/utils/markdown';
 
 	let { children } = $props();
 
-	onMount(() => {
+	$effect(() => {
 		const slug = $page.params.slug;
-		const proseElement = document.querySelector('.prose');
-		
-		if (proseElement && slug) {
-			// 处理所有图片的相对路径
+		if (!slug) return;
+		// 微 tick，等子内容渲染完成
+		requestAnimationFrame(() => {
+			const proseElement = document.querySelector('.prose');
+			if (!proseElement) return;
 			const images = proseElement.querySelectorAll('img');
 			images.forEach((img) => {
 				const src = img.getAttribute('src');
@@ -18,7 +18,7 @@
 					img.src = resolvePostAssetPath(slug, src);
 				}
 			});
-		}
+		});
 	});
 </script>
 

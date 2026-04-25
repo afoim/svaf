@@ -8,6 +8,7 @@
 	import CookieConsent from '$lib/components/CookieConsent.svelte';
 	import ShortLinkRedirect from '$lib/components/ShortLinkRedirect.svelte';
 	import DashLoader from '$lib/components/DashLoader.svelte';
+	import Toast from '$lib/components/Toast.svelte';
 
 	let { children } = $props();
 
@@ -52,3 +53,5 @@
 <ShortLinkRedirect />
 
 <DashLoader />
+
+<Toast />

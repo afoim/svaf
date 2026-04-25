@@ -20,6 +20,7 @@
 	import { deletePost, getPost, getPostLikeStatus, likePost, updatePost } from '$lib/forum/api/posts';
 	import { getCategories } from '$lib/forum/api/categories';
 	import { getSession } from '$lib/forum/api/auth';
+	import { getForumConfig } from '$lib/forum/api/config';
 	import {
 		buildCommentTree,
 		createComment,
@@ -32,7 +33,8 @@
 	import { formatForumDateTime } from '$lib/forum/utils/markdown';
 	import { forumEnv } from '$lib/forum/stores/env';
 	import { forumAuth } from '$lib/forum/stores/auth';
-	import { emitErrorToast, emitSuccessToast } from '$lib/forum/utils/toast';
+		import TurnstileWidget from '$lib/components/TurnstileWidget.svelte';
+		import { emitErrorToast, emitSuccessToast } from '$lib/forum/utils/toast';
 
 	let postId = $state('');
 	let post = $state<ForumPostDetail | null>(null);
@@ -55,6 +57,9 @@
 
 	let composerExpanded = $state(false);
 	let likeBusy = $state(false);
+	let turnstileEnabled = $state(false);
+	let turnstileSiteKey = $state('');
+	let turnstileToken = $state('');
 
 	let commentCount = $derived.by(() => {
 		const walk = (list: ForumComment[]): number =>
@@ -146,7 +151,7 @@
 		}
 		commentSubmitting = true;
 		try {
-			await createComment({ postId, content });
+			await createComment({ postId, content, turnstileToken: turnstileToken || undefined });
 			commentDraft = '';
 			composerExpanded = false;
 			emitSuccessToast('评论', '评论已发表。');
@@ -161,6 +166,7 @@
 	function cancelCompose() {
 		composerExpanded = false;
 		commentDraft = '';
+		turnstileToken = '';
 	}
 
 	async function hydratePostLikeStatus() {
@@ -289,6 +295,16 @@
 		return new URLSearchParams(window.location.search).get('id') || '';
 	}
 
+	async function loadConfig() {
+		try {
+			const config = await getForumConfig();
+			turnstileEnabled = config.turnstileEnabled;
+			turnstileSiteKey = config.turnstileSiteKey || '';
+		} catch {
+			turnstileEnabled = false;
+		}
+	}
+
 	let isFirst = true;
 	$effect(() => {
 		const unsub = forumEnv.baseUrl.subscribe(() => {
@@ -307,6 +323,7 @@
 	onMount(() => {
 		postId = resolvePostId();
 		void hydrateSession();
+		void loadConfig();
 		if (postId) {
 			loadPost();
 			loadComments();
@@ -530,6 +547,11 @@
 							onsubmit={submitComment}
 							onescape={cancelCompose}
 						/>
+						{#if turnstileEnabled && turnstileSiteKey}
+							<div class="flex justify-center">
+								<TurnstileWidget siteKey={turnstileSiteKey} onToken={(t) => turnstileToken = t} />
+							</div>
+						{/if}
 						<div class="flex items-center justify-end gap-2">
 							<span class="text-xs text-muted-foreground">Ctrl/Cmd + Enter 提交</span>
 							<Button variant="outline" onclick={cancelCompose} disabled={commentSubmitting}>

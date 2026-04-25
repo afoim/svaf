@@ -1,7 +1,11 @@
 import { Feed } from 'feed';
+import MarkdownIt from 'markdown-it';
 import { siteConfig } from '$lib/config/site';
 import { getAllPosts } from '$lib/utils/posts';
+import { resolvePostAssetPath } from '$lib/utils/markdown';
 import type { RequestHandler } from './$types';
+
+const md = new MarkdownIt({ html: true, linkify: true });
 
 export const prerender = true;
 
@@ -27,7 +31,7 @@ export const GET: RequestHandler = async () => {
 		id: siteConfig.url,
 		link: siteConfig.url,
 		language: 'zh-CN',
-		favicon: `${siteConfig.url}${siteConfig.icon}`,
+		favicon: siteConfig.icon.startsWith('http') ? siteConfig.icon : `${siteConfig.url}${siteConfig.icon}`,
 		copyright: `All rights reserved ${new Date().getFullYear()}, ${siteConfig.bio.name}`,
 		feedLinks: {
 			rss: `${siteConfig.url}/rss.xml`,
@@ -68,14 +72,27 @@ export const GET: RequestHandler = async () => {
 		const publishedDate = new Date(post.metadata.published);
 		const safeDate = isNaN(publishedDate.getTime()) ? new Date() : publishedDate;
 
+		// 将 Markdown 渲染为 HTML，并解析相对图片路径
+		let htmlContent = md.render(safeContent);
+		htmlContent = htmlContent.replace(
+			/(<img[^>]+src=")(?!\/|https?:\/\/)([^"]+)(")/g,
+			(_m, before, src, after) =>
+				`${before}${siteConfig.url}/posts/${post.slug}/${src}${after}`
+		);
+
 		feed.addItem({
 			title: safeTitle,
 			id: `${siteConfig.url}/posts/${post.slug}/`,
 			link: `${siteConfig.url}/posts/${post.slug}/`,
 			description: safeDescription || safeTitle,
-			content: safeContent,
+			content: htmlContent,
 			date: safeDate,
-			image: post.metadata.image ? `${siteConfig.url}${post.metadata.image}` : undefined
+			image: post.metadata.image
+					? (() => {
+							const resolved = resolvePostAssetPath(post.slug, post.metadata.image);
+							return resolved.startsWith('http') ? resolved : `${siteConfig.url}${resolved}`;
+						})()
+					: undefined
 		});
 	}
 

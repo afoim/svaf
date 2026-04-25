@@ -81,33 +81,28 @@
 	
 	async function loadPageViews() {
 		if (isLoadingViews) return;
-		
 		isLoadingViews = true;
-		const currentPosts = paginatedPosts();
+		const currentPosts = paginatedPosts;
 		const pathnames = currentPosts.map(({ post }) => `/posts/${post.slug}/`);
-		const cacheKey = `pageviews-${pathnames.join(',')}`;
-		
-		const views = await spaCache.get(cacheKey, async () => {
+		try {
 			const response = await fetch('https://t.2x.nz/batch', {
 				method: 'POST',
-				headers: {
-					'Content-Type': 'text/plain'
-				},
+				headers: { 'Content-Type': 'text/plain' },
 				body: JSON.stringify(pathnames)
 			});
-			
 			if (response.ok) {
-				return await response.json() as number[];
+				const views = await response.json() as number[];
+				const viewsMap: Record<string, number> = { ...pageViews };
+				currentPosts.forEach(({ post }, index) => {
+					viewsMap[post.slug] = views[index] || 0;
+				});
+				pageViews = viewsMap;
 			}
-			return [];
-		}, 60000); // 1分钟过期
-		
-		const viewsMap: Record<string, number> = { ...pageViews };
-		currentPosts.forEach(({ post }, index) => {
-			viewsMap[post.slug] = views[index] || 0;
-		});
-		pageViews = viewsMap;
-		isLoadingViews = false;
+		} catch (e) {
+			console.error(e);
+		} finally {
+			isLoadingViews = false;
+		}
 	}
 
 	function parseQueryTerms(query: string): string[] {
@@ -156,7 +151,7 @@
 		return rssPost ? { wordCount: rssPost.wordCount, readTime: rssPost.readTime } : null;
 	}
 
-	let filteredPostsWithMatches = $derived(() => {
+	let filteredPostsWithMatches = $derived.by(() => {
 		if (!searchQuery.trim()) return posts.map(p => ({ post: p, matchedLines: [] }));
 
 		// 检查是否至少选择了一个过滤器
@@ -204,14 +199,14 @@
 		return results;
 	});
 	
-	let paginatedPosts = $derived(() => {
-		const allResults = filteredPostsWithMatches();
+	let paginatedPosts = $derived.by(() => {
+		const allResults = filteredPostsWithMatches;
 		const startIndex = (currentPage - 1) * postsPerPage;
 		const endIndex = startIndex + postsPerPage;
 		return allResults.slice(startIndex, endIndex);
 	});
 	
-	let totalPages = $derived(Math.ceil(filteredPostsWithMatches().length / postsPerPage));
+	let totalPages = $derived(Math.ceil(filteredPostsWithMatches.length / postsPerPage));
 	
 	// 当搜索条件改变时重置到第一页并加载访问量
 	$effect(() => {
@@ -236,7 +231,7 @@
 	
 	let hasAnyFilter = $derived(searchFilters.title || searchFilters.description || searchFilters.content || searchFilters.path);
 	
-	let totalStats = $derived(() => {
+	let totalStats = $derived.by(() => {
 		if (!hasLoaded) return { totalPosts: posts.length, totalWords: 0 };
 		const totalWords = allPosts.reduce((sum, post) => sum + post.wordCount, 0);
 		return { totalPosts: posts.length, totalWords };
@@ -270,7 +265,7 @@
 		<p class="text-muted-foreground">分享技术、想法和经验</p>
 		{#if hasLoaded}
 			<p class="mt-2 text-sm text-muted-foreground">
-				共 {totalStats().totalPosts} 篇文章 · 总计 {totalStats().totalWords.toLocaleString()} 字
+				共 {totalStats.totalPosts} 篇文章 · 总计 {totalStats.totalWords.toLocaleString()} 字
 			</p>
 		{/if}
 	</div>
@@ -309,17 +304,17 @@
 					<p class="text-sm text-red-500">你什么都不选怎么搜啊喂！</p>
 				{:else if isLoading}
 					<p class="text-sm text-muted-foreground">搜索中...</p>
-				{:else if filteredPostsWithMatches().length === 0}
+				{:else if filteredPostsWithMatches.length === 0}
 					<p class="text-sm text-muted-foreground">未找到匹配的文章</p>
 				{:else}
-					<p class="text-sm text-muted-foreground">找到 {filteredPostsWithMatches().length} 篇文章</p>
+					<p class="text-sm text-muted-foreground">找到 {filteredPostsWithMatches.length} 篇文章</p>
 				{/if}
 			</div>
 		{/if}
 	</div>
 
 	<div class="space-y-6">
-		{#each paginatedPosts() as { post, matchedLines }}
+		{#each paginatedPosts as { post, matchedLines }}
 			<a href="/posts/{post.slug}" class="block">
 				<Card.Root class="group transition-all hover:shadow-lg">
 					<Card.Content class="p-6">
@@ -424,7 +419,7 @@
 		{/each}
 	</div>
 
-	{#if paginatedPosts().length === 0 && !searchQuery}
+	{#if paginatedPosts.length === 0 && !searchQuery}
 		<div class="py-12 text-center">
 			<p class="text-muted-foreground">暂无文章</p>
 		</div>
@@ -432,7 +427,7 @@
 	
 	{#if totalPages > 1}
 		<div class="mt-8 flex justify-center">
-			<Pagination.Root count={filteredPostsWithMatches().length} perPage={postsPerPage} bind:page={currentPage}>
+			<Pagination.Root count={filteredPostsWithMatches.length} perPage={postsPerPage} bind:page={currentPage}>
 				{#snippet children({ pages })}
 					<Pagination.Content>
 						<Pagination.Item>

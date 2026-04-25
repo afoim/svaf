@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { spaCache } from '$lib/utils/spaCache';
 
 	let {
@@ -33,7 +32,10 @@
 		});
 	}
 
-	onMount(() => {
+	$effect(() => {
+		void pathname;
+		void cacheKey;
+		pageViews = null;
 		loadPageViews();
 	});
 </script>

@@ -22,7 +22,7 @@ jobs:
   triage:
     if: ${{ github.event_name == 'pull_request_target' }}
     runs-on: ubuntu-latest
-    container: mcr.microsoft.com/playwright:latest
+    container: mcr.microsoft.com/playwright:v1.59.1-jammy
     timeout-minutes: 15
     steps:
       - name: Setup Node.js
@@ -745,7 +745,7 @@ jobs:
   verify_and_merge:
     if: ${{ github.event_name == 'issue_comment' && github.event.issue.pull_request && github.event.comment.body == '准备完毕' }}
     runs-on: ubuntu-latest
-    container: mcr.microsoft.com/playwright:latest
+    container: mcr.microsoft.com/playwright:v1.59.1-jammy
     timeout-minutes: 15
     steps:
       - name: Setup Node.js

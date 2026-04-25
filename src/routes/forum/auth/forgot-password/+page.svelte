@@ -30,6 +30,11 @@
 
 	async function submit() {
 		if (loading) return;
+
+		if (turnstileEnabled && turnstileSiteKey && !turnstileToken) {
+			emitErrorToast('找回密码', '验证码尚未加载完成或已过期，请稍后重试。');
+			return;
+		}
 		const trimmed = email.trim();
 		if (!trimmed) {
 			emitErrorToast('找回密码', '请先填写邮箱。');
@@ -92,7 +97,7 @@
 
 			{#if turnstileEnabled && turnstileSiteKey}
 				<div class="flex justify-center">
-					<TurnstileWidget siteKey={turnstileSiteKey} onToken={(t) => turnstileToken = t} />
+					<TurnstileWidget siteKey={turnstileSiteKey} onToken={(t) => turnstileToken = t} onExpired={() => turnstileToken = ""} />
 				</div>
 			{/if}
 

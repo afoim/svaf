@@ -46,6 +46,11 @@
 
 	async function submit() {
 		if (loading) return;
+
+		if (turnstileEnabled && turnstileSiteKey && !turnstileToken) {
+			emitErrorToast('注册', '验证码尚未加载完成或已过期，请稍后重试。');
+			return;
+		}
 		const message = validate();
 		if (message) {
 			emitErrorToast('注册', message);
@@ -143,7 +148,7 @@
 
 			{#if turnstileEnabled && turnstileSiteKey}
 				<div class="flex justify-center">
-					<TurnstileWidget siteKey={turnstileSiteKey} onToken={(t) => turnstileToken = t} />
+					<TurnstileWidget siteKey={turnstileSiteKey} onToken={(t) => turnstileToken = t} onExpired={() => turnstileToken = ""} />
 				</div>
 			{/if}
 

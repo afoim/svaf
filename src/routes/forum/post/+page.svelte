@@ -149,6 +149,10 @@
 			emitErrorToast('评论', '请先登录后再发表评论。');
 			return;
 		}
+		if (turnstileEnabled && turnstileSiteKey && !turnstileToken) {
+			emitErrorToast('评论', '验证码尚未加载完成或已过期，请稍后重试。');
+			return;
+		}
 		commentSubmitting = true;
 		try {
 			await createComment({ postId, content, turnstileToken: turnstileToken || undefined });
@@ -549,7 +553,7 @@
 						/>
 						{#if turnstileEnabled && turnstileSiteKey}
 							<div class="flex justify-center">
-								<TurnstileWidget siteKey={turnstileSiteKey} onToken={(t) => turnstileToken = t} />
+								<TurnstileWidget siteKey={turnstileSiteKey} onToken={(t) => turnstileToken = t} onExpired={() => turnstileToken = ""} />
 							</div>
 						{/if}
 						<div class="flex items-center justify-end gap-2">
@@ -558,7 +562,7 @@
 								<Icon icon="mdi:close" class="size-4" />
 								取消
 							</Button>
-							<Button onclick={submitComment} disabled={commentSubmitting || !commentDraft.trim()}>
+							<Button onclick={submitComment} disabled={commentSubmitting || !commentDraft.trim() || (turnstileEnabled && turnstileSiteKey && !turnstileToken)}>
 								{#if commentSubmitting}
 									<Icon icon="mdi:loading" class="size-4 animate-spin" />
 								{:else}

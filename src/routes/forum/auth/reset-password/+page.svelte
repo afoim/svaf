@@ -38,6 +38,11 @@
 
 	async function submit() {
 		if (loading) return;
+
+		if (turnstileEnabled && turnstileSiteKey && !turnstileToken) {
+			emitErrorToast('重置密码', '验证码尚未加载完成或已过期，请稍后重试。');
+			return;
+		}
 		const trimmedToken = token.trim();
 		if (!trimmedToken) {
 			emitErrorToast('重置密码', '缺少重置 token。');
@@ -134,7 +139,7 @@
 
 			{#if turnstileEnabled && turnstileSiteKey}
 				<div class="flex justify-center">
-					<TurnstileWidget siteKey={turnstileSiteKey} onToken={(t) => turnstileToken = t} />
+					<TurnstileWidget siteKey={turnstileSiteKey} onToken={(t) => turnstileToken = t} onExpired={() => turnstileToken = ""} />
 				</div>
 			{/if}
 

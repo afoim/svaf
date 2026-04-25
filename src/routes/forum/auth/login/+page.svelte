@@ -36,6 +36,11 @@
 
 	async function submit() {
 		if (loading) return;
+
+		if (turnstileEnabled && turnstileSiteKey && !turnstileToken) {
+			emitErrorToast('登录', '验证码尚未加载完成或已过期，请稍后重试。');
+			return;
+		}
 		loading = true;
 		status = '登录中...';
 		try {
@@ -188,7 +193,7 @@
 
 			{#if turnstileEnabled && turnstileSiteKey}
 				<div class="flex justify-center">
-					<TurnstileWidget siteKey={turnstileSiteKey} onToken={(t) => turnstileToken = t} />
+					<TurnstileWidget siteKey={turnstileSiteKey} onToken={(t) => turnstileToken = t} onExpired={() => turnstileToken = ""} />
 				</div>
 			{/if}
 

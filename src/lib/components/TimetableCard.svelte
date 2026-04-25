@@ -385,6 +385,7 @@
 		// 如果已经有数据，直接使用
 		if (state.payload) {
 			statusLines = state.statusLines;
+			loaded = true;
 			
 			// 确保定时器在运行
 			if (state.intervalId === null) {
@@ -402,6 +403,7 @@
 			.then((payload) => {
 				state.payload = payload;
 				updateStatus(payload);
+				loaded = true;
 
 				// 启动定时器（全局唯一）
 				if (state.intervalId === null) {
@@ -417,6 +419,7 @@
 				const errorLines = [[{ text: '### 加载失败' }]];
 				statusLines = errorLines;
 				state.statusLines = errorLines;
+				loaded = true;
 			});
 	});
 

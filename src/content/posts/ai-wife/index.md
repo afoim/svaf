@@ -1,10 +1,12 @@
 ---
-title: 手把手教你跑一个二次元AI老婆！
-published: 2026-02-12T10:20:25
+title: 手把手教你跑一个二次元AI老婆！另附自然语言生图教程！
+published: 2026-04-26T10:20:25
 description: 极！其！简！单！傻！子！都！会！本期将手把手教你从软件安装，到模型配置再到出图，百分百画出惊艳的图片！
-image: img/ai-wife-15.png
-tags: [AI绘图, NoobAI]
-category: '教程'
+image: img/index.png
+tags:
+  - AI绘图
+  - WAI
+category: 教程
 draft: false
 lang: ""
 ---
@@ -35,10 +37,6 @@ lang: ""
 
 ## 下载ComfyUI
 
-> [!tip]
-> 更推荐使用 [Stable Diffusion Forge](https://www.bilibili.com/video/BV1rc6nYNEYo/)，如果不需要复杂的节点配布，sdf可以更方便的去写提示词
-> ![](img/ai-wife-17.png)
-> 
 > 尽管ComfyUI支持AMD显卡以及纯CPU绘图，但还是建议使用 **NVIDIA Cuda** 进行绘图，更快，兼容性也更好！ 
 
 ### 方式一：官方版（推荐）
@@ -47,33 +45,19 @@ lang: ""
 
 ![](img/ai-wife.png)
 
-### 方式二：秋叶整合包
-
-前往秋叶的视频评论区下载ComfyUI整合包，下载并解压： https://www.bilibili.com/video/BV1Ew411776J
-
-解压完后打开文件夹，打开 `A绘世启动器`
-
-![2025-05-13-12-05-17-image.webp](img/2025-05-13-12-05-17-image.webp)
-
 点击右下角的开始运行，先让他进行初始化，直到它自动打开你的浏览器并且可以正常进入ComfyUI的界面
 
 ![2025-05-13-12-06-57-image.webp](img/2025-05-13-12-06-57-image.webp)
 
 ## 下载基底模型
 
-大部分LoRA一般都需要这两个基底模型。其中 NoobAI 支持直接通过 Danbooru 里已有的角色直接作画，无需其他LoRA：
-
-- [NoobAI-XL (NAI-XL) - V-Pred-1.0-Version | NoobAI Checkpoint | Civitai](https://civitai.com/models/833294?modelVersionId=1190596)（需魔法）
+大部分LoRA一般都需要这两个基底模型。其中 WAI 支持直接通过 Danbooru 里已有的角色直接作画，无需其他LoRA：
 
 - [WAI-illustrious-SDXL - v16.0 | Illustrious Checkpoint | Civitai](https://civitai.com/models/827184/wai-illustrious-sdxl)
 
 点击下载即可
 
-![2025-05-13-12-08-17-image.webp](img/2025-05-13-12-08-17-image.webp)
-
-> [!warning]
-> 由于V预测模型（NoobAI-VPred）较新，只能在SDForge和ComfyUI上运行，原版SD无法运行，会崩图！
-
+![](img/index-1.png)
 ### 如果你需要下载LoRA
 
 首先你要知道你想画的角色的英文名，如 **Cartethyia** （鸣潮 - 卡提希娅） 
@@ -94,10 +78,10 @@ lang: ""
 > 这里有一个坑点，对于桌面版安装的ComfyUI，请将模型放到你当时安装时选择的文件夹中，如： `C:\Users\af\Documents\ComfyUI` ，而不是形如 `C:\Users\af\AppData\Local\Programs\ComfyUI\resources\ComfyUI` 的地方，更多请参见官方文档： [重要提示：请勿修改 resource/ComfyUI 文件夹 - Windows桌面版 - ComfyUI](https://docs.comfy.org/zh-CN/installation/desktop/windows#%E9%87%8D%E8%A6%81%E6%8F%90%E7%A4%BA%EF%BC%9A%E8%AF%B7%E5%8B%BF%E4%BF%AE%E6%94%B9-resource/comfyui-%E6%96%87%E4%BB%B6%E5%A4%B9)
 
 打开 `models` 目录：
-- 将基底模型（类似 `noobaiXLNAIXL_vPred10Version.safetensors`）放入 `checkpoints` 文件夹
+- 将基底模型（类似 `waiIllustriousSDXL_v160.safetensors`）放入 `checkpoints` 文件夹
 - 将LoRA模型放入 `loras` 文件夹
 
-![2025-05-13-12-10-06-image.webp](img/2025-05-13-12-10-06-image.webp)
+![](img/Pasted%20image%2020260426144044.png)
 
 ## 启动！开始画！
 
@@ -137,9 +121,9 @@ lang: ""
 
 #### 如何找到角色的提示词？
 
-**方式一：使用Danbooru角色标签（NoobAI专属）**
+**方式一：使用Danbooru角色标签（WAI专属）**
 
-NoobAI模型的一大特色就是支持直接通过Danbooru里已有的角色直接作画！你想要画什么呢？比如崩铁的流萤？
+WAI模型的一大特色就是支持直接通过Danbooru里已有的角色直接作画！你想要画什么呢？比如崩铁的流萤？
 
 进入 [Danbooru characters in NoobAI-XL (NAI-XL)](https://www.downloadmost.com/NoobAI-XL/danbooru-character/)
 
@@ -176,13 +160,13 @@ NoobAI模型的一大特色就是支持直接通过Danbooru里已有的角色直
 ![2025-05-13-12-19-32-image.webp](img/2025-05-13-12-19-32-image.webp)
 
 > [!tip]
-> 如果你想要图片是不同的样子请在正面提示词和反面提示词添加（**必须为英文！不知道的用翻译或者问AI！**）。比如想要让足部放到焦点上并且裸足就添加**正面提示词**：`barefoot, feet in foreground`
+> 如果你想要图片是不同的样子请在正面提示词和反面提示词添加（**必须为英文！不知道的用翻译或者问AI！**）。比如想要让足部放到焦点上并且裸足就添加**正面提示词**：`barefoot, feet in foreground` *如果你想要要纯自然语言生图就继续往下看！*
 
 ### 设置图像尺寸
 
 这里设置生成图片的分辨率，根据不同模型有不同的推荐分辨率：
 
-**NoobAI推荐分辨率**（总面积约为 1024x1024）：
+**WAI推荐分辨率**（总面积约为 1024x1024）：
 - **最推荐：832x1216**
 - 其余：768x1344、896x1152、1024x1024、1152x896、1216x832、1344x768、1024x1536、1536x1024
 
@@ -199,14 +183,9 @@ NoobAI模型的一大特色就是支持直接通过Danbooru里已有的角色直
 ![](img/ai-wife-9.png)
 
 - **种子**：每次都是一个随机值，如果固定下来且其他内容无变化则会始终出相同的图
-- **步数**：即AI需要重绘多少次，过低会导致鬼图、崩图，过高可能会导致元素冗杂、饱和度过高
-  - NoobAI推荐：28-35
-- **CFG**：AI对你输入的提示词的服从度，越高则越服从，越低则画得越天马行空（忽略一些提示词）
-  - NoobAI推荐：4-5
-  - 其他模型建议：7-9
-- **采样器名称**：采样方式
-  - NoobAI：**只能用euler**（❗重要！不能更改！可能会崩图！）
-  - 其他模型：大部分都能出正常图
+- **步数**：即AI需要重绘多少次，过低会导致鬼图、崩图，过高可能会导致元素冗杂、饱和度过高。**推荐：28-35**
+- **CFG**：AI对你输入的提示词的服从度，越高则越服从，越低则画得越天马行空（忽略一些提示词） **推荐7-9**
+- **采样器名称**：**euler**
 - **降噪**：AI生图的原理是将一张看起来像纯色图的图片一次次进行降噪来得到最终产物，该值设置得越低，则图片越不清楚、混杂，越高则越清晰，但更会出现过度锐利或过度解析
 
 ### 开启实时预览
@@ -245,7 +224,33 @@ NoobAI模型的一大特色就是支持直接通过Danbooru里已有的角色直
 
 - **避免生成涩图**：可以在负面提示词添加 `NSFW`，在正面提示词添加 `safe`
 
-- **关于V预测模型**：由于V预测模型较新，只能在SDForge和ComfyUI上运行，原版SD无法运行，会崩图
-
-- **参考资源**：更多NoobAI模型的技巧可以到Civitai模型页面的About查看
+- **参考资源**：更多WAI模型的技巧可以到Civitai模型页面的About查看
   ![2025-05-13-12-30-55-image.webp](img/2025-05-13-12-30-55-image.webp)
+
+# 新章：纯中文自然语言生图！
+
+> [!warning] 
+> 需要一个大显存（>8G）的图形显示卡
+
+### 思路
+
+现在LLM这么发达，我们为什么不能使用LLM将我们输入的 **中文句子** 翻译为生图模型能看懂的 **英文 Tag** 呢？
+
+当然可以，于是该项目应运而生了！
+
+https://github.com/afoim/natureDrawImage
+
+通过在本地启动LM Studio（或Ollama，其他的在线LLM...），做 **中文 -> 英文 Tag** 的转换，最后再传给生图模型，即可实现 **纯中文的生图！** 
+
+### 搭建
+
+> [!tip]
+> 推荐拉取仓库后直接询问AI如何部署该项目。后文只做项目特殊点阐述
+
+项目采用工作流形式来模仿 Stable Diffusion 的模板。你需要手动制作多个工作流来跑不同角色（Lora），或者创建一个通配工作流来跑Danbooru角色（无Lora）
+
+项目启动后会读取你的本地工作流，选择其一后即可开跑
+
+其余概述参见仓库 README 由于文章具有时效性，如果有不懂的地方建议询问AI
+
+![](img/Screenshot_2026-04-26-14-53-03-67.jpg)

@@ -36,6 +36,7 @@
 	let authenticated = $state(false);
 	let isAdmin = $state(false);
 	let ageConfirmed = $state(false);
+	let drawApiDown = $state(false);
 
 	// Workflow state
 	let workflows = $state<DrawWorkflow[]>([]);
@@ -175,8 +176,14 @@
 		loadingWorkflows = true;
 		try {
 			workflows = await getDrawWorkflows();
+			drawApiDown = false;
 		} catch (e) {
-			emitErrorToast('工作流', e instanceof Error ? e.message : '加载失败');
+			const msg = e instanceof Error ? e.message : '加载失败';
+			if (/HTTP 50[234]/.test(msg) || /Failed to fetch/i.test(msg)) {
+				drawApiDown = true;
+			} else {
+				emitErrorToast('工作流', msg);
+			}
 		}
 		loadingWorkflows = false;
 	}
@@ -294,7 +301,6 @@
 			};
 			ws.onerror = () => finishRun();
 		} catch (e) {
-			console.log('[startRun catch]', e);
 			const err = e as any;
 			if (err && (err.status === 429 || err.cooldown) && err.remaining) {
 				cooldownRemaining = err.remaining;
@@ -308,6 +314,9 @@
 				}, 1000);
 				showProgress = false;
 				emitErrorToast('速率限制', `请等待 ${cooldownRemaining} 秒后再试`);
+			} else if (err && (err.status === 502 || err.status === 503 || err.status === 504)) {
+				showProgress = false;
+				emitErrorToast('生图 API 不可用', '当前服务离线。本工具纯测试，不定时开放，不保证 SLA。');
 			} else {
 				appendLog('连接失败: ' + (e instanceof Error ? e.message : String(e)));
 				progressText = '连接失败';
@@ -616,6 +625,16 @@
 			</CardContent>
 		</Card>
 	{:else}
+		{#if drawApiDown}
+			<Alert variant="destructive">
+				<Icon icon="mdi:alert-circle-outline" class="size-5" />
+				<AlertDescription>
+					<strong>生图 API 当前不可用。</strong>
+					本工具纯测试用途，不定时开放，<strong>不保证 SLA</strong>。请稍后再试。
+				</AlertDescription>
+			</Alert>
+		{/if}
+
 		<!-- GPU monitor -->
 		{#if gpuInfo.length > 0}
 			<Card>

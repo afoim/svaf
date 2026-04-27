@@ -103,17 +103,13 @@ export async function interruptDraw() {
 	});
 }
 
-export function getDrawWsUrl(endpoint: 'run' | 'status'): string {
+export function createAuthenticatedWebSocket(endpoint: 'run' | 'status'): WebSocket {
 	const baseUrl = get(forumEnv.baseUrl);
 	const url = new URL(baseUrl);
 	const proto = url.protocol === 'https:' ? 'wss' : 'ws';
-	return `${proto}://${url.host}/api/draw/ws/${endpoint}`;
-}
-
-export function createAuthenticatedWebSocket(endpoint: 'run' | 'status'): WebSocket {
-	const wsUrl = getDrawWsUrl(endpoint);
+	const wsUrl = `${proto}://${url.host}/api/draw/ws/${endpoint}`;
 	const token = forumAuth.getToken();
-	const url = new URL(wsUrl);
-	if (token) url.searchParams.set('token', token);
-	return new WebSocket(url.toString());
+	const fullUrl = new URL(wsUrl);
+	if (token) fullUrl.searchParams.set('token', token);
+	return new WebSocket(fullUrl.toString());
 }

@@ -94,6 +94,20 @@
 	let lightboxTime = $state('');
 	let lightboxBanning = $state(false);
 
+	// GPU monitor
+	interface GpuInfo { name: string; util: number; mem_used: number; mem_total: number; temp: number; }
+	let gpuInfo = $state<GpuInfo[]>([]);
+	let gpuPollTimer: ReturnType<typeof setInterval> | null = null;
+
+	async function pollGpu() {
+		try {
+			const r = await fetch('https://d.2x.nz/api/gpu');
+			if (!r.ok) return;
+			const d = await r.json();
+			if (Array.isArray(d.gpus)) gpuInfo = d.gpus;
+		} catch {}
+	}
+
 	// WebSocket refs
 	let activeWS: WebSocket | null = null;
 	let statusWS: WebSocket | null = null;
@@ -143,6 +157,8 @@
 			currentWorkflowPath = localStorage.getItem('draw-currentWorkflow') || '';
 			await Promise.all([loadWorkflows(), loadCurrentWorkflow(), loadGallery(true)]);
 			connectStatus();
+			pollGpu();
+			gpuPollTimer = setInterval(pollGpu, 3000);
 		}
 	});
 
@@ -151,6 +167,7 @@
 		if (statusWS) { try { statusWS.close(); } catch {} statusWS = null; }
 		if (statusReconnectTimer) clearTimeout(statusReconnectTimer);
 		if (cooldownTimer) clearInterval(cooldownTimer);
+		if (gpuPollTimer) clearInterval(gpuPollTimer);
 	});
 
 	async function loadWorkflows() {
@@ -583,6 +600,33 @@
 			</CardContent>
 		</Card>
 	{:else}
+		<!-- GPU monitor -->
+		{#if gpuInfo.length > 0}
+			<Card>
+				<CardContent class="space-y-2 p-4">
+					{#each gpuInfo as g, i}
+						<div class="space-y-1">
+							<div class="flex items-center justify-between text-xs">
+								<span class="font-medium">🖥️ GPU{gpuInfo.length > 1 ? i : ''}: {g.name}</span>
+								<span class="text-muted-foreground">
+									{g.util}% · {g.mem_used}/{g.mem_total} MB · {g.temp}°C
+								</span>
+							</div>
+							<div class="h-2 w-full overflow-hidden rounded bg-muted">
+								<div
+									class="h-2 transition-all"
+									class:bg-green-500={g.util < 50}
+									class:bg-yellow-500={g.util >= 50 && g.util < 85}
+									class:bg-red-500={g.util >= 85}
+									style="width:{g.util}%"
+								></div>
+							</div>
+						</div>
+					{/each}
+				</CardContent>
+			</Card>
+		{/if}
+
 		<!-- Global busy status -->
 		{#if globalBusy}
 			<Alert>

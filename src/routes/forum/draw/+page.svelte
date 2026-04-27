@@ -268,18 +268,21 @@
 		try {
 			const ws = await createDrawWebSocket('run');
 			activeWS = ws;
+			let receivedAny = false;
 			ws.onopen = () => ws.send(JSON.stringify(payload));
-			ws.onmessage = (e) => handleMsg(JSON.parse(e.data));
-			ws.onclose = (e) => {
-				console.log('[run ws] close', e.code, e.reason);
-				if (e.code === 4003) {
-					appendLog('连接被拒绝：鉴权失败');
-					progressText = '鉴权失败';
-					emitErrorToast('生图', '连接被服务器拒绝，请重新登录');
+			ws.onmessage = (e) => {
+				receivedAny = true;
+				handleMsg(JSON.parse(e.data));
+			};
+			ws.onclose = () => {
+				if (!receivedAny) {
+					emitErrorToast('速率限制', '触发了速率限制，请稍后再试');
+					progressText = '已触发速率限制';
+					showProgress = false;
 				}
 				finishRun();
 			};
-			ws.onerror = (e) => { console.log('[run ws] error', e); finishRun(); };
+			ws.onerror = () => finishRun();
 		} catch (e) {
 			console.log('[startRun catch]', e);
 			const err = e as any;

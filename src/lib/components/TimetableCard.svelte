@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
+	import { resolveCurrentWeek } from '$lib/utils/timetable-normalizer';
 
 	interface TimetableCourseView {
 		courseId: number;
@@ -319,14 +320,17 @@
 		// Parse the JSON lines
 		JSON.parse(lines[0]); // config
 		const nodeTimes = JSON.parse(lines[1]);
-		JSON.parse(lines[2]); // meta
+		const meta = JSON.parse(lines[2]);
 		const courseDefinitions = JSON.parse(lines[3]);
 		const arrangements = JSON.parse(lines[4]);
 
+		const currentWeek = resolveCurrentWeek(meta.startDate, meta.maxWeek);
+
 		// Build coursesByDay
 		const coursesByDay: Record<number, TimetableCourseView[]> = {};
-		
+
 		for (const arr of arrangements) {
+			if (currentWeek < arr.startWeek || currentWeek > arr.endWeek) continue;
 			const courseDef = courseDefinitions.find((c: any) => c.id === arr.id);
 			if (!courseDef) continue;
 

@@ -60,7 +60,8 @@ export function getDrawOutputFileUrl(path: string, full = false): string {
 }
 
 export function getDrawThumbnailUrl(path: string): string {
-	return `${DRAW_BACKEND}/api/thumbnail?path=${encodeURIComponent(path)}`;
+	const stem = path.replace(/\.json$/i, '');
+	return `/draw-thumbnails/${encodeURIComponent(stem)}.png`;
 }
 
 export async function getDrawOutputCreator(path: string): Promise<{ creator_ip?: string; creator_name?: string }> {

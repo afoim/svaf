@@ -809,7 +809,7 @@
 			</CardHeader>
 			<CardContent>
 				<div class="grid grid-cols-3 gap-2 sm:grid-cols-4 md:grid-cols-6">
-					{#each galleryItems as item (item.path)}
+					{#each galleryItems as item, i (i)}
 						<button
 							class="group relative block overflow-hidden rounded border bg-muted"
 							title={item.path}

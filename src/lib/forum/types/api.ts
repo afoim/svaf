@@ -5,12 +5,16 @@ export interface ForumApiErrorPayload {
 	message?: string;
 	error?: string;
 	details?: unknown;
+	remaining?: number;
+	cooldown?: boolean;
 }
 
 export class ForumApiError extends Error {
 	status: number;
 	code?: string;
 	details?: unknown;
+	remaining?: number;
+	cooldown?: boolean;
 
 	constructor(status: number, payload: ForumApiErrorPayload = {}) {
 		super(payload.message || payload.error || `论坛请求失败（${status}）`);
@@ -18,6 +22,8 @@ export class ForumApiError extends Error {
 		this.status = status;
 		this.code = payload.code;
 		this.details = payload.details;
+		this.remaining = payload.remaining;
+		this.cooldown = payload.cooldown;
 	}
 }
 

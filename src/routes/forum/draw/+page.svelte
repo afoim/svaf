@@ -12,6 +12,7 @@
 	import { get } from 'svelte/store';
 	import { getSession } from '$lib/forum/api/auth';
 	import { emitErrorToast, emitSuccessToast } from '$lib/forum/utils/toast';
+	import { ForumApiError } from '$lib/forum/types/api';
 	import { getAdminUsers, toggleDrawBan } from '$lib/forum/api/admin';
 	import {
 		getDrawWorkflows,
@@ -57,6 +58,8 @@
 
 	// Generation state
 	let generating = $state(false);
+	let cooldownRemaining = $state(0);
+	let cooldownTimer: ReturnType<typeof setInterval> | null = null;
 	let progressText = $state('');
 	let progressPct = $state(0);
 	let showProgress = $state(false);
@@ -146,6 +149,7 @@
 		if (activeWS) { try { activeWS.close(); } catch {} activeWS = null; }
 		if (statusWS) { try { statusWS.close(); } catch {} statusWS = null; }
 		if (statusReconnectTimer) clearTimeout(statusReconnectTimer);
+		if (cooldownTimer) clearInterval(cooldownTimer);
 	});
 
 	async function loadWorkflows() {
@@ -251,9 +255,23 @@
 			ws.onclose = () => finishRun();
 			ws.onerror = () => { appendLog('WebSocket 错误'); finishRun(); };
 		} catch (e) {
-			appendLog('连接失败: ' + (e instanceof Error ? e.message : String(e)));
-			progressText = '连接失败';
-			emitErrorToast('生图', e instanceof Error ? e.message : '连接失败');
+			if (e instanceof ForumApiError && e.cooldown && e.remaining) {
+				cooldownRemaining = e.remaining;
+				if (cooldownTimer) clearInterval(cooldownTimer);
+				cooldownTimer = setInterval(() => {
+					cooldownRemaining -= 1;
+					if (cooldownRemaining <= 0) {
+						cooldownRemaining = 0;
+						if (cooldownTimer) { clearInterval(cooldownTimer); cooldownTimer = null; }
+					}
+				}, 1000);
+				progressText = `速率限制：还需等待 ${cooldownRemaining} 秒`;
+				emitErrorToast('速率限制', `请等待 ${cooldownRemaining} 秒后再试`);
+			} else {
+				appendLog('连接失败: ' + (e instanceof Error ? e.message : String(e)));
+				progressText = '连接失败';
+				emitErrorToast('生图', e instanceof Error ? e.message : '连接失败');
+			}
 			generating = false;
 		}
 	}
@@ -723,12 +741,16 @@
 					{/each}
 				</div>
 
-				<div class="flex gap-2">
-					<Button onclick={startRun} disabled={generating || (globalBusy && !activeWS)}>
+				<div class="flex items-center gap-2">
+					<Button onclick={startRun} disabled={generating || cooldownRemaining > 0 || (globalBusy && !activeWS)}>
 						{#if generating}
 							<Icon icon="mdi:loading" class="size-4 animate-spin" />
 						{/if}
-						▶ 开始生成
+						{#if cooldownRemaining > 0}
+							⏳ 冷却中 {cooldownRemaining}s
+						{:else}
+							▶ 开始生成
+						{/if}
 					</Button>
 					{#if generating}
 						<Button variant="destructive" onclick={cancelRun}>

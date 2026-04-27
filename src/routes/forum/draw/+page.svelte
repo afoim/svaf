@@ -674,7 +674,7 @@
 							</Button>
 						</div>
 					</div>
-				{:else if currentDetail}
+				{:else if currentDetail && currentDetail.path}
 					<div class="flex items-center gap-3">
 						{#if currentDetail.thumbnail}
 							<img src={getDrawThumbnailUrl(currentDetail.path)} alt="" class="h-16 w-16 flex-shrink-0 rounded border object-cover" />

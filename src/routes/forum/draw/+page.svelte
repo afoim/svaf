@@ -374,7 +374,23 @@
 		globalBusy = !!s.busy;
 		if (!s.busy) {
 			globalStage = '';
+			if (!activeWS && showProgress) {
+				showProgress = false;
+			}
 			return;
+		}
+		// 旁观模式：别人在生图，打开进度面板
+		if (!activeWS && !showProgress) {
+			showProgress = true;
+			showResult = false;
+			logLines = [];
+			llmStream = '';
+			showLlm = false;
+			progressText = '👀 旁观其它用户的任务';
+			progressPct = 0;
+			showProgressBar = false;
+			resultImages = [];
+			finalPrompt = '';
 		}
 		globalStage = STAGE_MAP[s.stage] || '处理中';
 		const meta: string[] = [];

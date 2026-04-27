@@ -271,6 +271,7 @@
 			ws.onopen = () => ws.send(JSON.stringify(payload));
 			ws.onmessage = (e) => handleMsg(JSON.parse(e.data));
 			ws.onclose = (e) => {
+				console.log('[run ws] close', e.code, e.reason);
 				if (e.code === 4003) {
 					appendLog('连接被拒绝：鉴权失败');
 					progressText = '鉴权失败';
@@ -278,10 +279,12 @@
 				}
 				finishRun();
 			};
-			ws.onerror = () => finishRun();
+			ws.onerror = (e) => { console.log('[run ws] error', e); finishRun(); };
 		} catch (e) {
-			if (e instanceof ForumApiError && e.cooldown && e.remaining) {
-				cooldownRemaining = e.remaining;
+			console.log('[startRun catch]', e);
+			const err = e as any;
+			if (err && (err.status === 429 || err.cooldown) && err.remaining) {
+				cooldownRemaining = err.remaining;
 				if (cooldownTimer) clearInterval(cooldownTimer);
 				cooldownTimer = setInterval(() => {
 					cooldownRemaining -= 1;

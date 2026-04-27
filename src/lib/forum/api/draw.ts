@@ -107,9 +107,9 @@ export async function createDrawWebSocket(endpoint: 'run' | 'status'): Promise<W
 	return new WebSocket(ticket.url);
 }
 
-export async function confirmDrawCooldown(): Promise<void> {
+export async function rollbackDrawCooldown(): Promise<void> {
 	try {
-		await forumRequest('/api/draw/ws/confirm', {
+		await forumRequest('/api/draw/ws/rollback', {
 			requiresAuth: true,
 			method: 'POST',
 			json: {},

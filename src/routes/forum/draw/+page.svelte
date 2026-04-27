@@ -25,7 +25,7 @@
 		forkDrawOutput,
 		interruptDraw,
 		createDrawWebSocket,
-		confirmDrawCooldown,
+		rollbackDrawCooldown,
 		type DrawWorkflow,
 		type DrawWorkflowDetail,
 		type DrawOutputItem
@@ -269,25 +269,26 @@
 		try {
 			const ws = await createDrawWebSocket('run');
 			activeWS = ws;
-			let confirmed = false;
+			let reallyStarted = false;
 			let gotError = false;
 			ws.onopen = () => ws.send(JSON.stringify(payload));
 			ws.onmessage = (e) => {
 				const m = JSON.parse(e.data);
-				// 收到任何"已开始生图"信号 → 确认消费冷却
-				if (!confirmed && (m.type === 'progress' || m.type === 'image' || m.type === 'llm_start' || m.type === 'llm_chunk' || m.type === 'prompt_id')) {
-					confirmed = true;
-					confirmDrawCooldown();
+				if (m.type === 'progress' || m.type === 'image' || m.type === 'llm_start' || m.type === 'llm_chunk' || m.type === 'prompt_id') {
+					reallyStarted = true;
 				}
 				if (m.type === 'error') gotError = true;
 				handleMsg(m);
 			};
 			ws.onclose = () => {
-				// 没收到任何业务消息且没收到 error → 触发速率限制
-				if (!confirmed && !gotError) {
-					emitErrorToast('速率限制', '触发了速率限制，请稍后再试');
-					progressText = '已触发速率限制';
-					showProgress = false;
+				// 没真正开始生图（只收到 error 或啥都没收到）→ 回滚冷却
+				if (!reallyStarted) {
+					rollbackDrawCooldown();
+					if (!gotError) {
+						emitErrorToast('速率限制', '触发了速率限制，请稍后再试');
+						progressText = '已触发速率限制';
+						showProgress = false;
+					}
 				}
 				finishRun();
 			};

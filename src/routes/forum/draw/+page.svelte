@@ -34,6 +34,7 @@
 	let loading = $state(true);
 	let authenticated = $state(false);
 	let isAdmin = $state(false);
+	let ageConfirmed = $state(false);
 
 	// Workflow state
 	let workflows = $state<DrawWorkflow[]>([]);
@@ -428,6 +429,7 @@
 			lightboxTime = '';
 		}
 		lightboxOpen = true;
+		document.body.style.overflow = 'hidden';
 		getDrawOutputCreator(item.path).then(d => {
 			if (d?.creator_name) lightboxCreator = d.creator_name;
 			else if (d?.creator_ip) lightboxCreator = d.creator_ip;
@@ -436,6 +438,7 @@
 
 	function closeLightbox() {
 		lightboxOpen = false;
+		document.body.style.overflow = '';
 	}
 
 	async function forkFromLightbox(path: string) {
@@ -533,6 +536,36 @@
 				请先 <a href="/forum/auth/login/" class="font-medium text-primary underline">登录论坛</a> 后使用 AI 生图功能。
 			</AlertDescription>
 		</Alert>
+	{:else if !ageConfirmed}
+		<Card>
+			<CardHeader>
+				<CardTitle class="text-red-600 dark:text-red-400">⚠️ 请确认您已年满 18 岁</CardTitle>
+			</CardHeader>
+			<CardContent class="space-y-3">
+				<p class="text-sm text-muted-foreground">
+					本工具为 AI 绘图<strong>测试展示</strong>工具，所有图片均由用户实时生成。
+					由于审查机制可能存在漏洞，生成结果中<strong>可能出现色情、暴力或其它不符合当地法律法规的内容</strong>。
+				</p>
+				<div class="rounded border border-red-200 bg-red-50 p-3 text-sm dark:border-red-800 dark:bg-red-950/20">
+					<strong>使用须知 — 继续即代表您同意：</strong><br>
+					① 已年满 18 周岁，自愿浏览并自行承担相应法律及精神风险；<br>
+					② 本工具<strong>仅供测试与展示</strong>，<strong>禁止任何商业用途</strong>；<br>
+					③ <strong>不得生成不合规内容</strong>（违反所在地法律法规、涉及未成年人、真实人物色情等）；<br>
+					④ 生成的内容<strong>必须在 24 小时内删除</strong>，不得长期保存或对外传播；<br>
+					⑤ 不会将本工具用于违法用途，亦不会向未成年人传播生成的内容。
+				</div>
+				<p class="text-xs text-muted-foreground">
+					本站<strong>不承担任何法律责任</strong>，使用过程中产生的一切后果由您本人自行承担。
+					若您不同意以上任何一条，请立即退出。
+				</p>
+				<div class="flex justify-end gap-2">
+					<Button variant="outline" href="/forum/">退出</Button>
+					<Button variant="destructive" onclick={() => { ageConfirmed = true; }}>
+						我已满 18 岁并同意全部条款
+					</Button>
+				</div>
+			</CardContent>
+		</Card>
 	{:else}
 		<!-- Global busy status -->
 		{#if globalBusy}
@@ -872,7 +905,7 @@
 <!-- Lightbox -->
 {#if lightboxOpen}
 	<div
-		class="fixed inset-0 z-50 flex flex-col bg-black"
+		class="fixed inset-0 z-[60] flex flex-col bg-black"
 		role="dialog"
 		aria-modal="true"
 	>

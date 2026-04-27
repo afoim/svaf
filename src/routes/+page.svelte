@@ -177,7 +177,14 @@
 				<Badge variant="secondary" class="ml-0.5">NEW</Badge>
 			</Button>
 		</a>
-		
+
+		<a href="/forum/draw">
+			<Button variant="outline" class="flex items-center gap-2">
+				<Icon icon="mdi:palette" class="w-5 h-5" />
+				AI 生图
+			</Button>
+		</a>
+
 		<a href="/timetable">
 			<Button variant="outline" class="flex items-center gap-2">
 				<Icon icon="mdi:calendar-month" class="w-5 h-5" />

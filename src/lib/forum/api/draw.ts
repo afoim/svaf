@@ -50,7 +50,10 @@ export async function getDrawOutputList(limit = 50, offset = 0) {
 
 function drawUrl(path: string, params?: Record<string, string>): string {
 	const baseUrl = get(forumEnv.baseUrl);
-	const qs = params ? '?' + new URLSearchParams(params).toString() : '';
+	const token = forumAuth.getToken();
+	const allParams = { ...params };
+	if (token) allParams.token = token;
+	const qs = '?' + new URLSearchParams(allParams).toString();
 	return `${baseUrl}${path}${qs}`;
 }
 
@@ -68,7 +71,7 @@ export function getDrawThumbnailUrl(path: string): string {
 	return drawUrl('/api/draw/api/thumbnail', { path });
 }
 
-export async function getDrawOutputCreator(path: string): Promise<{ creator_ip?: string }> {
+export async function getDrawOutputCreator(path: string): Promise<{ creator_ip?: string; creator_name?: string }> {
 	return forumRequest('/api/draw/api/output/creator', {
 		requiresAuth: true,
 		query: { path },

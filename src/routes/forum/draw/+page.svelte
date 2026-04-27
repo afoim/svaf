@@ -387,7 +387,8 @@
 		}
 		lightboxOpen = true;
 		getDrawOutputCreator(item.path).then(d => {
-			if (d?.creator_ip) lightboxCreator = d.creator_ip;
+			if (d?.creator_name) lightboxCreator = d.creator_name;
+			else if (d?.creator_ip) lightboxCreator = d.creator_ip;
 		}).catch(() => {});
 	}
 
@@ -596,6 +597,27 @@
 				<CardTitle class="text-base">生成图片</CardTitle>
 			</CardHeader>
 			<CardContent class="space-y-3">
+				<div class="rounded border border-pink-200 bg-pink-50 p-2 text-xs text-pink-900 dark:border-pink-800 dark:bg-pink-950/20 dark:text-pink-300">
+					💕 <strong>第一次用 AI 生图？</strong>
+					看这篇手把手教程：
+					<a href="https://2x.nz/posts/ai-wife" target="_blank" rel="noopener"
+						class="font-medium underline hover:text-pink-700">从零开始造老婆 →</a>
+				</div>
+
+				<div class="rounded border border-purple-200 bg-purple-50 p-2 text-xs text-purple-900 dark:border-purple-800 dark:bg-purple-950/20 dark:text-purple-300">
+					🎨 想换 <strong>Q 版 / 厚涂 / 像素 / 写实</strong> 等画风？试试在直接 Tag 里加上画师词条，参考
+					<a href="https://www.downloadmost.com/NoobAI-XL/danbooru-artist/" target="_blank" rel="noopener"
+						class="underline hover:text-purple-700">danbooru-artist 画师库</a>
+					（格式：<code class="rounded bg-white/70 px-1 dark:bg-white/10">by xxx</code>，可加括号调权重，如 <code class="rounded bg-white/70 px-1 dark:bg-white/10">(by xxx:1.2)</code>）。
+				</div>
+
+				<div class="rounded border border-blue-200 bg-blue-50 p-2 text-xs text-blue-900 dark:border-blue-800 dark:bg-blue-950/20 dark:text-blue-300">
+					👤 想画<strong>不同角色</strong>？请切换到<strong>无 Lora</strong> 的工作流（避免 Lora 强行把人物拉回原角色），
+					然后在直接 Tag 里加上角色词条，参考
+					<a href="https://www.downloadmost.com/NoobAI-XL/danbooru-character/" target="_blank" rel="noopener"
+						class="underline hover:text-blue-700">danbooru-character 角色库</a>。
+				</div>
+
 				<div class="space-y-1">
 					<Label>直接 Tag</Label>
 					<textarea
@@ -799,7 +821,7 @@
 				<span class="text-gray-300">🕒 {lightboxTime}</span>
 			{/if}
 			{#if lightboxCreator}
-				<span class="text-amber-300">生图者: {lightboxCreator}</span>
+				<span class="text-amber-300">by {lightboxCreator}</span>
 			{/if}
 			<a
 				href={getDrawOutputFileUrl(lightboxTitle, true)}

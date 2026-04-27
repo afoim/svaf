@@ -20,6 +20,7 @@ interface RawAdminSettings {
 	notify_on_avatar_change?: boolean;
 	notify_on_manual_verify?: boolean;
 	session_ttl_days?: number;
+	draw_cooldown_seconds?: number;
 }
 
 interface RawAdminUser {
@@ -33,6 +34,7 @@ interface RawAdminUser {
 	last_seen_at?: string | null;
 	verified?: number | boolean;
 	totp_enabled?: number | boolean;
+	draw_banned?: number | boolean;
 }
 
 interface RawCategory {
@@ -50,7 +52,8 @@ function normalizeAdminSettings(s: RawAdminSettings): ForumAdminSettings {
 		notifyOnUsernameChange: Boolean(s.notify_on_username_change),
 		notifyOnAvatarChange: Boolean(s.notify_on_avatar_change),
 		notifyOnManualVerify: Boolean(s.notify_on_manual_verify),
-		sessionTtlDays: s.session_ttl_days || 7
+		sessionTtlDays: s.session_ttl_days || 7,
+		drawCooldownSeconds: s.draw_cooldown_seconds || 0
 	};
 }
 
@@ -65,7 +68,8 @@ function normalizeAdminUser(u: RawAdminUser): ForumUser {
 		createdAt: u.created_at,
 		lastSeenAt: u.last_seen_at ?? null,
 		verified: u.verified !== undefined ? Boolean(u.verified) : undefined,
-		totpEnabled: u.totp_enabled !== undefined ? Boolean(u.totp_enabled) : undefined
+		totpEnabled: u.totp_enabled !== undefined ? Boolean(u.totp_enabled) : undefined,
+		drawBanned: u.draw_banned !== undefined ? Boolean(u.draw_banned) : undefined
 	};
 }
 
@@ -102,7 +106,8 @@ export function saveAdminSettings(
 			notify_on_username_change: settings.notifyOnUsernameChange,
 			notify_on_avatar_change: settings.notifyOnAvatarChange,
 			notify_on_manual_verify: settings.notifyOnManualVerify,
-			session_ttl_days: settings.sessionTtlDays
+			session_ttl_days: settings.sessionTtlDays,
+			draw_cooldown_seconds: settings.drawCooldownSeconds
 		}
 	});
 }
@@ -199,6 +204,14 @@ export function deleteAdminUser(userId: string): Promise<AdminUserActionResult> 
 	return forumRequest<AdminUserActionResult>(`/api/admin/users/${userId}`, {
 		method: 'DELETE',
 		requiresAuth: true
+	});
+}
+
+export function toggleDrawBan(userId: string): Promise<AdminUserActionResult> {
+	return forumRequest<AdminUserActionResult>(`/api/admin/users/${userId}/draw-ban`, {
+		method: 'POST',
+		requiresAuth: true,
+		json: {}
 	});
 }
 

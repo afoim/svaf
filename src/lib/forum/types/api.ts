@@ -60,6 +60,7 @@ export interface ForumAdminSettings {
 	notifyOnAvatarChange: boolean;
 	notifyOnManualVerify: boolean;
 	sessionTtlDays: number;
+	drawCooldownSeconds: number;
 }
 
 export interface AdminEmailTestResult {

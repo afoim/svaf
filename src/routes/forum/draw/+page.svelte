@@ -272,7 +272,7 @@
 						if (cooldownTimer) { clearInterval(cooldownTimer); cooldownTimer = null; }
 					}
 				}, 1000);
-				progressText = `速率限制：还需等待 ${cooldownRemaining} 秒`;
+				showProgress = false;
 				emitErrorToast('速率限制', `请等待 ${cooldownRemaining} 秒后再试`);
 			} else {
 				appendLog('连接失败: ' + (e instanceof Error ? e.message : String(e)));

@@ -252,8 +252,15 @@
 			activeWS = ws;
 			ws.onopen = () => ws.send(JSON.stringify(payload));
 			ws.onmessage = (e) => handleMsg(JSON.parse(e.data));
-			ws.onclose = () => finishRun();
-			ws.onerror = () => { appendLog('WebSocket 错误'); finishRun(); };
+			ws.onclose = (e) => {
+				if (e.code === 4003) {
+					appendLog('连接被拒绝：鉴权失败');
+					progressText = '鉴权失败';
+					emitErrorToast('生图', '连接被服务器拒绝，请重新登录');
+				}
+				finishRun();
+			};
+			ws.onerror = () => finishRun();
 		} catch (e) {
 			if (e instanceof ForumApiError && e.cooldown && e.remaining) {
 				cooldownRemaining = e.remaining;
@@ -341,7 +348,7 @@
 		try {
 			statusWS = await createDrawWebSocket('status');
 		} catch {
-			statusReconnectTimer = setTimeout(connectStatus, 3000);
+			statusReconnectTimer = setTimeout(connectStatus, 5000);
 			return;
 		}
 		statusWS.onmessage = (e) => {
@@ -354,9 +361,10 @@
 				handleMsg(m.event);
 			}
 		};
-		statusWS.onclose = () => {
+		statusWS.onclose = (e) => {
 			statusWS = null;
-			statusReconnectTimer = setTimeout(connectStatus, 2000);
+			if (e.code === 4003) return;
+			statusReconnectTimer = setTimeout(connectStatus, 3000);
 		};
 		statusWS.onerror = () => { try { statusWS?.close(); } catch {} };
 	}

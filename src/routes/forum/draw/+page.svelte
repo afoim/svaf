@@ -459,8 +459,7 @@
 
 	function rewriteBackendUrl(url: string): string {
 		if (url.startsWith('/api/')) {
-			const baseUrl = get(forumEnv.baseUrl);
-			return `${baseUrl}/api/draw${url}`;
+			return `https://d.2x.nz${url}`;
 		}
 		return url;
 	}

@@ -12,6 +12,7 @@
 	import { get } from 'svelte/store';
 	import { getSession } from '$lib/forum/api/auth';
 	import { emitErrorToast, emitSuccessToast } from '$lib/forum/utils/toast';
+	import { getAdminUsers, toggleDrawBan } from '$lib/forum/api/admin';
 	import {
 		getDrawWorkflows,
 		getDrawWorkflowCurrent,
@@ -31,6 +32,7 @@
 
 	let loading = $state(true);
 	let authenticated = $state(false);
+	let isAdmin = $state(false);
 
 	// Workflow state
 	let workflows = $state<DrawWorkflow[]>([]);
@@ -86,6 +88,7 @@
 	let lightboxTitle = $state('');
 	let lightboxCreator = $state('');
 	let lightboxTime = $state('');
+	let lightboxBanning = $state(false);
 
 	// WebSocket refs
 	let activeWS: WebSocket | null = null;
@@ -126,6 +129,7 @@
 			const session = await getSession();
 			forumAuth.setSession(session);
 			authenticated = true;
+			isAdmin = session.user?.role === 'admin';
 		} catch {
 			authenticated = false;
 		}
@@ -414,6 +418,26 @@
 			emitSuccessToast('Fork', '已临时还原工作流，可直接生图');
 		} catch (e) {
 			emitErrorToast('Fork 失败', e instanceof Error ? e.message : '未知错误');
+		}
+	}
+
+	async function banCreatorFromLightbox() {
+		if (!lightboxCreator || lightboxBanning) return;
+		if (!confirm(`确定要禁止用户「${lightboxCreator}」使用生图功能吗？`)) return;
+		lightboxBanning = true;
+		try {
+			const users = await getAdminUsers(lightboxCreator);
+			const match = users.find(u => u.username === lightboxCreator);
+			if (!match) {
+				emitErrorToast('Ban', `未找到用户「${lightboxCreator}」`);
+				return;
+			}
+			const r = await toggleDrawBan(match.id);
+			emitSuccessToast('Ban', r.message || '操作成功');
+		} catch (e) {
+			emitErrorToast('Ban', e instanceof Error ? e.message : '操作失败');
+		} finally {
+			lightboxBanning = false;
 		}
 	}
 
@@ -834,6 +858,13 @@
 				class="rounded bg-emerald-600 px-3 py-1 text-white hover:bg-emerald-700"
 				onclick={() => forkFromLightbox(lightboxTitle)}
 			>🍴 Fork 工作流</button>
+			{#if isAdmin && lightboxCreator}
+				<button
+					class="rounded bg-red-600 px-3 py-1 text-white hover:bg-red-700 disabled:opacity-50"
+					onclick={banCreatorFromLightbox}
+					disabled={lightboxBanning}
+				>{lightboxBanning ? '处理中...' : `🚫 禁止 ${lightboxCreator} 生图`}</button>
+			{/if}
 		</div>
 	</div>
 {/if}

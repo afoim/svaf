@@ -103,13 +103,15 @@ export async function interruptDraw() {
 	});
 }
 
-export function createAuthenticatedWebSocket(endpoint: 'run' | 'status'): WebSocket {
-	const baseUrl = get(forumEnv.baseUrl);
-	const url = new URL(baseUrl);
-	const proto = url.protocol === 'https:' ? 'wss' : 'ws';
-	const wsUrl = `${proto}://${url.host}/api/draw/ws/${endpoint}`;
-	const token = forumAuth.getToken();
-	const fullUrl = new URL(wsUrl);
-	if (token) fullUrl.searchParams.set('token', token);
-	return new WebSocket(fullUrl.toString());
+export async function getDrawWsTicket(endpoint: 'run' | 'status'): Promise<{ url: string }> {
+	return forumRequest<{ url: string }>('/api/draw/ws/ticket', {
+		requiresAuth: true,
+		method: 'POST',
+		json: { endpoint },
+	});
+}
+
+export async function createDrawWebSocket(endpoint: 'run' | 'status'): Promise<WebSocket> {
+	const ticket = await getDrawWsTicket(endpoint);
+	return new WebSocket(ticket.url);
 }

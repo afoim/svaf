@@ -23,7 +23,7 @@
 		getDrawOutputCreator,
 		forkDrawOutput,
 		interruptDraw,
-		createAuthenticatedWebSocket,
+		createDrawWebSocket,
 		type DrawWorkflow,
 		type DrawWorkflowDetail,
 		type DrawOutputItem
@@ -205,7 +205,7 @@
 	}
 
 	// Generation
-	function startRun() {
+	async function startRun() {
 		if (globalBusy) {
 			emitErrorToast('服务器繁忙', '已有任务在执行');
 			return;
@@ -243,12 +243,19 @@
 		finalPrompt = '';
 		generating = true;
 
-		const ws = createAuthenticatedWebSocket('run');
-		activeWS = ws;
-		ws.onopen = () => ws.send(JSON.stringify(payload));
-		ws.onmessage = (e) => handleMsg(JSON.parse(e.data));
-		ws.onclose = () => finishRun();
-		ws.onerror = () => { appendLog('WebSocket 错误'); finishRun(); };
+		try {
+			const ws = await createDrawWebSocket('run');
+			activeWS = ws;
+			ws.onopen = () => ws.send(JSON.stringify(payload));
+			ws.onmessage = (e) => handleMsg(JSON.parse(e.data));
+			ws.onclose = () => finishRun();
+			ws.onerror = () => { appendLog('WebSocket 错误'); finishRun(); };
+		} catch (e) {
+			appendLog('连接失败: ' + (e instanceof Error ? e.message : String(e)));
+			progressText = '连接失败';
+			emitErrorToast('生图', e instanceof Error ? e.message : '连接失败');
+			generating = false;
+		}
 	}
 
 	function handleMsg(m: any) {
@@ -312,8 +319,13 @@
 	}
 
 	// Global status WebSocket
-	function connectStatus() {
-		statusWS = createAuthenticatedWebSocket('status');
+	async function connectStatus() {
+		try {
+			statusWS = await createDrawWebSocket('status');
+		} catch {
+			statusReconnectTimer = setTimeout(connectStatus, 3000);
+			return;
+		}
 		statusWS.onmessage = (e) => {
 			let m: any;
 			try { m = JSON.parse(e.data); } catch { return; }

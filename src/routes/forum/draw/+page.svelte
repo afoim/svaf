@@ -25,6 +25,7 @@
 		forkDrawOutput,
 		interruptDraw,
 		createDrawWebSocket,
+		confirmDrawCooldown,
 		type DrawWorkflow,
 		type DrawWorkflowDetail,
 		type DrawOutputItem
@@ -268,14 +269,22 @@
 		try {
 			const ws = await createDrawWebSocket('run');
 			activeWS = ws;
-			let receivedAny = false;
+			let confirmed = false;
+			let gotError = false;
 			ws.onopen = () => ws.send(JSON.stringify(payload));
 			ws.onmessage = (e) => {
-				receivedAny = true;
-				handleMsg(JSON.parse(e.data));
+				const m = JSON.parse(e.data);
+				// 收到任何"已开始生图"信号 → 确认消费冷却
+				if (!confirmed && (m.type === 'progress' || m.type === 'image' || m.type === 'llm_start' || m.type === 'llm_chunk' || m.type === 'prompt_id')) {
+					confirmed = true;
+					confirmDrawCooldown();
+				}
+				if (m.type === 'error') gotError = true;
+				handleMsg(m);
 			};
 			ws.onclose = () => {
-				if (!receivedAny) {
+				// 没收到任何业务消息且没收到 error → 触发速率限制
+				if (!confirmed && !gotError) {
 					emitErrorToast('速率限制', '触发了速率限制，请稍后再试');
 					progressText = '已触发速率限制';
 					showProgress = false;

@@ -106,3 +106,13 @@ export async function createDrawWebSocket(endpoint: 'run' | 'status'): Promise<W
 	const ticket = await getDrawWsTicket(endpoint);
 	return new WebSocket(ticket.url);
 }
+
+export async function confirmDrawCooldown(): Promise<void> {
+	try {
+		await forumRequest('/api/draw/ws/confirm', {
+			requiresAuth: true,
+			method: 'POST',
+			json: {},
+		});
+	} catch {}
+}

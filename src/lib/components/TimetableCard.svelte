@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
-	import { resolveCurrentWeek } from '$lib/utils/timetable-normalizer';
+	import { resolveCurrentWeek, parseArgbColor } from '$lib/utils/timetable-normalizer';
 
 	interface TimetableCourseView {
 		courseId: number;
@@ -348,7 +348,7 @@
 			const course: TimetableCourseView = {
 				courseId: arr.id,
 				courseName: courseDef.courseName,
-				color: courseDef.color || '#000000',
+				color: parseArgbColor(courseDef.color ?? '') || courseDef.color || '#000000',
 				teacher: arr.teacher || '',
 				room: arr.room || '',
 				day: arr.day,

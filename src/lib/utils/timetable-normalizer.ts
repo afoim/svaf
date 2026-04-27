@@ -25,12 +25,20 @@ function hashText(input: string): number {
 	return Math.abs(hash);
 }
 
-function buildCourseColor(courseName: string, courseId: number): string {
+export function parseArgbColor(raw: string): string | null {
+	if (!raw || !raw.startsWith('#') || raw.length !== 9) return null;
+	const r = raw.slice(3, 5);
+	const g = raw.slice(5, 7);
+	const b = raw.slice(7, 9);
+	return `#${r}${g}${b}`;
+}
+
+function buildCourseColor(courseName: string, courseId: number, rawColor?: string): string {
+	const parsed = parseArgbColor(rawColor ?? '');
+	if (parsed) return parsed;
 	const seed = hashText(`${courseName}-${courseId}`);
 	const hue = seed % 360;
-	const saturation = 78;
-	const lightness = 68;
-	return `hsl(${hue} ${saturation}% ${lightness}%)`;
+	return `hsl(${hue} 78% 68%)`;
 }
 
 function parseDateFromYmd(ymd: string): Date | null {
@@ -60,7 +68,7 @@ export function resolveCurrentWeek(
 		return 1;
 	}
 	if (week > maxWeek) {
-		return 1;
+		return maxWeek;
 	}
 	return week;
 }
@@ -113,9 +121,9 @@ function toCourseView(
 	color: string,
 	nodeRows: TimetableNodeRow[]
 ): TimetableCourseView {
-	const fixedDurationNodes = 2;
+	const durationNodes = arrangement.step;
 	const maxNode = Math.max(...nodeRows.map((row) => row.node), arrangement.startNode);
-	const endNode = Math.min(arrangement.startNode + fixedDurationNodes - 1, maxNode);
+	const endNode = Math.min(arrangement.startNode + durationNodes - 1, maxNode);
 	const startNodeRow = nodeRows.find((row) => row.node === arrangement.startNode);
 	const endNodeRow = nodeRows.find((row) => row.node === endNode);
 	const startTime = startNodeRow?.startTime ?? '--:--';
@@ -130,7 +138,7 @@ function toCourseView(
 		day: arrangement.day,
 		startNode: arrangement.startNode,
 		endNode,
-		durationNodes: fixedDurationNodes,
+		durationNodes,
 		startWeek: arrangement.startWeek,
 		endWeek: arrangement.endWeek,
 		nodeText: `第 ${arrangement.startNode}-${endNode} 节`,
@@ -167,7 +175,7 @@ export function buildTimetableViewModel(
 
 		const courseDef = courseMap.get(arrangement.id);
 		const courseName = courseDef?.courseName ?? `课程 #${arrangement.id}`;
-		const color = buildCourseColor(courseName, arrangement.id);
+		const color = buildCourseColor(courseName, arrangement.id, courseDef?.color);
 		coursesByDay[arrangement.day].push(toCourseView(arrangement, courseName, color, nodeRows));
 	}
 

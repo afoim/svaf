@@ -16,9 +16,8 @@
 	let errorMessage = $state('');
 
 	function stringToBinary(str: string) {
-		return str
-			.split('')
-			.map((c) => c.charCodeAt(0).toString(2).padStart(8, '0'))
+		return Array.from(new TextEncoder().encode(str))
+			.map((b) => b.toString(2).padStart(8, '0'))
 			.join('');
 	}
 

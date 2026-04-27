@@ -30,6 +30,9 @@
 		} catch {
 			// ignore
 		}
+		return () => {
+			document.body.style.overflow = '';
+		};
 	});
 
 	function confirm() {

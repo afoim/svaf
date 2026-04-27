@@ -220,7 +220,7 @@ export const staticData = {
     {
       "name": "南糊世界",
       "avatar": "https://jolla.pp.ua/_astro/avatar.QcdjOinG_2cgdpE.webp",
-      "introduction": "一个生活爱好者!",
+      "description": "一个生活爱好者!",
       "url": "https://jolla.pp.ua"
     },
     {

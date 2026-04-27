@@ -4,6 +4,8 @@ export interface PostMetadata {
 	published: string;
 	pinned: boolean;
 	description: string;
+	draft?: boolean;
+	updated?: string;
 }
 
 export interface Post {

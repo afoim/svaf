@@ -90,11 +90,17 @@
 					<a href={friend.url} target="_blank" rel="noopener noreferrer">
 						<Card class="h-full transition-all hover:shadow-lg">
 							<CardContent class="flex items-start gap-4 p-6">
-								<img
-									src={friend.avatar}
-									alt={friend.name}
-									class="h-16 w-16 rounded-full"
-								/>
+								{#if friend.avatar}
+									<img
+										src={friend.avatar}
+										alt={friend.name}
+										class="h-16 w-16 rounded-full"
+									/>
+								{:else}
+									<div class="flex h-16 w-16 items-center justify-center rounded-full bg-muted text-2xl font-bold text-muted-foreground">
+										{friend.name.charAt(0)}
+									</div>
+								{/if}
 								<div class="flex-1 overflow-hidden">
 									<div class="mb-1 truncate font-semibold">{friend.name}</div>
 									<div class="line-clamp-2 text-sm text-muted-foreground">

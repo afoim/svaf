@@ -28,19 +28,19 @@
 
 	onMount(() => {
 		loadPreferences();
-		
-		// 监听打开设置的事件
-		const handleOpenSettings = (e: Event) => {
-			e.preventDefault();
-			showSettings = true;
-		};
-		
-		document.addEventListener('click', (e) => {
+
+		const handleClick = (e: Event) => {
 			const target = e.target as HTMLElement;
 			if (target.id === 'open_preferences_center' || target.closest('#open_preferences_center')) {
-				handleOpenSettings(e);
+				e.preventDefault();
+				showSettings = true;
 			}
-		});
+		};
+
+		document.addEventListener('click', handleClick);
+		return () => {
+			document.removeEventListener('click', handleClick);
+		};
 	});
 
 	function loadPreferences() {

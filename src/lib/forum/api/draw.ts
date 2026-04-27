@@ -27,55 +27,46 @@ export interface DrawOutputItem {
 	mtime?: number;
 }
 
+const DRAW_BACKEND = 'https://d.2x.nz';
+
 export async function getDrawWorkflows(): Promise<DrawWorkflow[]> {
-	const data = await forumRequest<{ workflows: DrawWorkflow[] }>('/api/draw/api/workflows', {
-		requiresAuth: true,
-	});
+	const r = await fetch(`${DRAW_BACKEND}/api/workflows`);
+	if (!r.ok) throw new Error(`HTTP ${r.status}`);
+	const data = await r.json();
 	return data.workflows || [];
 }
 
 export async function getDrawWorkflowCurrent(path: string): Promise<DrawWorkflowDetail> {
-	return forumRequest<DrawWorkflowDetail>('/api/draw/api/workflows/current', {
-		requiresAuth: true,
-		query: { path },
-	});
+	const r = await fetch(`${DRAW_BACKEND}/api/workflows/current?path=${encodeURIComponent(path)}`);
+	if (!r.ok) throw new Error(`HTTP ${r.status}`);
+	return r.json();
 }
 
 export async function getDrawOutputList(limit = 50, offset = 0) {
-	return forumRequest<{ items: DrawOutputItem[]; total: number; output_dir: string; exists: boolean }>(
-		'/api/draw/api/output/list',
-		{ requiresAuth: true, query: { limit, offset } }
-	);
-}
-
-function drawUrl(path: string, params?: Record<string, string>): string {
-	const baseUrl = get(forumEnv.baseUrl);
-	const token = forumAuth.getToken();
-	const allParams = { ...params };
-	if (token) allParams.token = token;
-	const qs = '?' + new URLSearchParams(allParams).toString();
-	return `${baseUrl}${path}${qs}`;
+	const r = await fetch(`${DRAW_BACKEND}/api/output/list?limit=${limit}&offset=${offset}`);
+	if (!r.ok) throw new Error(`HTTP ${r.status}`);
+	return r.json();
 }
 
 export function getDrawImageUrl(filename: string, subfolder = '', type = 'output'): string {
-	return drawUrl('/api/draw/api/image', { filename, subfolder, type });
+	const params = new URLSearchParams({ filename, subfolder, type });
+	return `${DRAW_BACKEND}/api/image?${params}`;
 }
 
 export function getDrawOutputFileUrl(path: string, full = false): string {
-	const params: Record<string, string> = { path };
-	if (full) params.full = '1';
-	return drawUrl('/api/draw/api/output/file', params);
+	const params = new URLSearchParams({ path });
+	if (full) params.set('full', '1');
+	return `${DRAW_BACKEND}/api/output/file?${params}`;
 }
 
 export function getDrawThumbnailUrl(path: string): string {
-	return drawUrl('/api/draw/api/thumbnail', { path });
+	return `${DRAW_BACKEND}/api/thumbnail?path=${encodeURIComponent(path)}`;
 }
 
 export async function getDrawOutputCreator(path: string): Promise<{ creator_ip?: string; creator_name?: string }> {
-	return forumRequest('/api/draw/api/output/creator', {
-		requiresAuth: true,
-		query: { path },
-	});
+	const r = await fetch(`${DRAW_BACKEND}/api/output/creator?path=${encodeURIComponent(path)}`);
+	if (!r.ok) return {};
+	return r.json();
 }
 
 export async function forkDrawOutput(path: string) {

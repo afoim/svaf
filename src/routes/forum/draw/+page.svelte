@@ -101,8 +101,7 @@
 
 	async function pollGpu() {
 		try {
-			const baseUrl = get(forumEnv.baseUrl);
-			const r = await fetch(`${baseUrl}/api/draw/api/gpu`);
+			const r = await fetch('https://d.2x.nz/api/gpu');
 			if (!r.ok) return;
 			const d = await r.json();
 			if (Array.isArray(d.gpus)) gpuInfo = d.gpus;

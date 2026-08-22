@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">D1 事故复盘：测试不要碰生产数据库</title>
+  <desc id="desc">一台标有 forum-db 的数据库被 DELETE FROM users 和 remote true 的警告包围，前景是静态审查的盾牌。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#111a35"/>
+      <stop offset="1" stop-color="#0a0e1d"/>
+    </linearGradient>
+    <linearGradient id="db" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#59d8ff"/>
+      <stop offset="1" stop-color="#6b72ff"/>
+    </linearGradient>
+    <linearGradient id="shield" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7df5b1"/>
+      <stop offset="1" stop-color="#24bb83"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="16" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M48 0H0V48" fill="none" stroke="#ffffff" stroke-opacity=".045"/>
+    </pattern>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <rect width="1600" height="900" fill="url(#grid)"/>
+  <circle cx="1250" cy="160" r="230" fill="#5256ff" opacity=".1" filter="url(#glow)"/>
+  <circle cx="340" cy="700" r="260" fill="#25c98d" opacity=".08" filter="url(#glow)"/>
+
+  <text x="120" y="150" fill="#8ea3c7" font-family="Inter,Segoe UI,sans-serif" font-size="28" font-weight="700" letter-spacing="6">INCIDENT REVIEW / 2026</text>
+  <text x="120" y="245" fill="#ffffff" font-family="Inter,Segoe UI,sans-serif" font-size="76" font-weight="800">测试不要碰生产数据库</text>
+  <text x="124" y="306" fill="#aebbd5" font-family="Inter,Segoe UI,sans-serif" font-size="29">一次 D1 清库事故，最后留下的不是一条命令，而是一条硬契约。</text>
+
+  <g transform="translate(130 420)">
+    <rect x="0" y="0" width="410" height="260" rx="30" fill="#182544" stroke="#344a76" stroke-width="2"/>
+    <text x="34" y="52" fill="#91a4c8" font-family="ui-monospace,Consolas,monospace" font-size="24">wrangler.jsonc</text>
+    <text x="34" y="108" fill="#f5c86b" font-family="ui-monospace,Consolas,monospace" font-size="30">remote: true</text>
+    <text x="34" y="158" fill="#e7edf9" font-family="ui-monospace,Consolas,monospace" font-size="24">forum-db</text>
+    <path d="M34 188H370" stroke="#344a76"/>
+    <text x="34" y="226" fill="#ff7c8d" font-family="ui-monospace,Consolas,monospace" font-size="22">not a test database</text>
+  </g>
+
+  <path d="M575 548C660 548 690 548 760 548" fill="none" stroke="#ff7083" stroke-width="7" stroke-linecap="round" stroke-dasharray="14 18"/>
+  <path d="m742 528 32 20-32 20" fill="none" stroke="#ff7083" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <g transform="translate(830 390)">
+    <ellipse cx="180" cy="54" rx="145" ry="44" fill="url(#db)"/>
+    <path d="M35 54v172c0 24 65 44 145 44s145-20 145-44V54" fill="url(#db)" opacity=".92"/>
+    <ellipse cx="180" cy="226" rx="145" ry="44" fill="#4b63d6"/>
+    <path d="M36 112c0 24 64 44 144 44s144-20 144-44M36 168c0 24 64 44 144 44s144-20 144-44" fill="none" stroke="#b4e9ff" stroke-opacity=".5" stroke-width="4"/>
+    <ellipse cx="180" cy="54" rx="145" ry="44" fill="none" stroke="#c3f1ff" stroke-width="4"/>
+    <text x="180" y="142" text-anchor="middle" fill="#fff" font-family="Inter,Segoe UI,sans-serif" font-size="30" font-weight="800">forum-db</text>
+    <text x="180" y="182" text-anchor="middle" fill="#e2eaff" font-family="ui-monospace,Consolas,monospace" font-size="20">USERS = 0 ?</text>
+  </g>
+
+  <g transform="translate(1190 500)">
+    <path d="M120 0 236 44v96c0 84-53 136-116 163C57 276 4 224 4 140V44z" fill="url(#shield)"/>
+    <path d="m64 138 39 39 76-82" fill="none" stroke="#0d4e3a" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="120" y="382" text-anchor="middle" fill="#a5f6ca" font-family="Inter,Segoe UI,sans-serif" font-size="24" font-weight="700">STATIC REVIEW</text>
+  </g>
+
+  <text x="120" y="820" fill="#7f91b4" font-family="Inter,Segoe UI,sans-serif" font-size="23">小提交 · 可回滚 · 不让验证动作拥有删库权限</text>
+</svg>

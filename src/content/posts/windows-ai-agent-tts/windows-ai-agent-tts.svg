@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 860" role="img" aria-labelledby="title desc">
+  <title id="title">Windows 下给 AI 编程工具添加语音完成提示</title>
+  <desc id="desc">PowerShell TTS 从中间连接到 Codex、Claude Code 和 OpenCode 三个终端 AI 工具。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8fbff"/>
+      <stop offset="1" stop-color="#edf2ff"/>
+    </linearGradient>
+    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3e6fe8"/>
+      <stop offset="1" stop-color="#7259d9"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-25%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#20335e" flood-opacity=".13"/>
+    </filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="m0 0 12 6-12 6z" fill="#5874c8"/>
+    </marker>
+  </defs>
+
+  <rect width="1600" height="860" fill="url(#bg)"/>
+  <circle cx="1450" cy="110" r="190" fill="#dfe8ff" opacity=".58"/>
+  <circle cx="90" cy="790" r="210" fill="#e9e4ff" opacity=".52"/>
+
+  <text x="100" y="105" fill="#172442" font-family="Inter,Segoe UI,sans-serif" font-size="42" font-weight="800">AI 干完活，Windows 自己喊一声</text>
+  <text x="100" y="150" fill="#657391" font-family="Inter,Segoe UI,sans-serif" font-size="23">PowerShell 内置 TTS · 不用 Beep · 不额外维护 .ps1 文件</text>
+
+  <g filter="url(#shadow)">
+    <rect x="100" y="235" width="380" height="410" rx="28" fill="#fff"/>
+    <rect x="100" y="235" width="380" height="78" rx="28" fill="#eaf0ff"/>
+    <path d="M100 285h380" stroke="#d2dcfb"/>
+    <circle cx="143" cy="274" r="13" fill="#5874c8"/>
+    <text x="177" y="284" fill="#35529e" font-family="Inter,Segoe UI,sans-serif" font-size="27" font-weight="800">Codex</text>
+    <text x="450" y="284" text-anchor="end" fill="#7e91c8" font-family="ui-monospace,Consolas,monospace" font-size="18">Stop</text>
+    <rect x="145" y="370" width="290" height="92" rx="18" fill="#f5f7ff" stroke="#c8d4fa" stroke-width="2"/>
+    <text x="290" y="410" text-anchor="middle" fill="#304b96" font-family="ui-monospace,Consolas,monospace" font-size="22">hooks.json</text>
+    <text x="290" y="441" text-anchor="middle" fill="#7182b6" font-family="Inter,Segoe UI,sans-serif" font-size="18">~/.codex/</text>
+    <text x="290" y="552" text-anchor="middle" fill="#4861ad" font-family="Inter,Segoe UI,sans-serif" font-size="22" font-weight="700">一轮响应结束</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="610" y="235" width="380" height="410" rx="28" fill="#fff"/>
+    <rect x="610" y="235" width="380" height="78" rx="28" fill="#f0ebff"/>
+    <path d="M610 285h380" stroke="#ded4ff"/>
+    <circle cx="653" cy="274" r="13" fill="#765ed1"/>
+    <text x="687" y="284" fill="#5a42ac" font-family="Inter,Segoe UI,sans-serif" font-size="27" font-weight="800">Claude Code</text>
+    <text x="960" y="284" text-anchor="end" fill="#9385c7" font-family="ui-monospace,Consolas,monospace" font-size="18">Stop</text>
+    <rect x="655" y="370" width="290" height="92" rx="18" fill="#faf8ff" stroke="#d9d0fa" stroke-width="2"/>
+    <text x="800" y="410" text-anchor="middle" fill="#5b43ac" font-family="ui-monospace,Consolas,monospace" font-size="22">settings.json</text>
+    <text x="800" y="441" text-anchor="middle" fill="#8a7dbc" font-family="Inter,Segoe UI,sans-serif" font-size="18">~/.claude/</text>
+    <text x="800" y="552" text-anchor="middle" fill="#7259c5" font-family="Inter,Segoe UI,sans-serif" font-size="22" font-weight="700">主代理停止响应</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="1120" y="235" width="380" height="410" rx="28" fill="#fff"/>
+    <rect x="1120" y="235" width="380" height="78" rx="28" fill="#e9fbf7"/>
+    <path d="M1120 285h380" stroke="#c7eee4"/>
+    <circle cx="1163" cy="274" r="13" fill="#169b83"/>
+    <text x="1197" y="284" fill="#11745f" font-family="Inter,Segoe UI,sans-serif" font-size="27" font-weight="800">OpenCode</text>
+    <text x="1470" y="284" text-anchor="end" fill="#6eab9f" font-family="ui-monospace,Consolas,monospace" font-size="18">session.idle</text>
+    <rect x="1165" y="370" width="290" height="92" rx="18" fill="#f2fcfa" stroke="#b9e7dc" stroke-width="2"/>
+    <text x="1310" y="410" text-anchor="middle" fill="#147764" font-family="ui-monospace,Consolas,monospace" font-size="22">done-sound.ts</text>
+    <text x="1310" y="441" text-anchor="middle" fill="#62a392" font-family="Inter,Segoe UI,sans-serif" font-size="18">plugins/</text>
+    <text x="1310" y="552" text-anchor="middle" fill="#168b76" font-family="Inter,Segoe UI,sans-serif" font-size="22" font-weight="700">会话进入空闲</text>
+  </g>
+
+  <path d="M480 440h108" stroke="#5874c8" stroke-width="6" marker-end="url(#arrow)"/>
+  <path d="M990 440h108" stroke="#5874c8" stroke-width="6" marker-end="url(#arrow)"/>
+
+  <g filter="url(#shadow)">
+    <rect x="440" y="700" width="720" height="90" rx="45" fill="url(#blue)"/>
+    <g transform="translate(510 720)" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" opacity=".94">
+      <rect x="15" y="0" width="28" height="42" rx="14"/>
+      <path d="M5 26v3a24 24 0 0 0 48 0v-3M29 53v14M17 67h24"/>
+    </g>
+    <text x="850" y="755" text-anchor="middle" fill="#fff" font-family="Inter,Segoe UI,sans-serif" font-size="24" font-weight="700">SpeechSynthesizer · “工作完成”</text>
+  </g>
+</svg>

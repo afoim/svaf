@@ -102,21 +102,21 @@ return rewriter.transform(assetRes);
 
 Google 搜索 "二叉树树"，首页第一就是本站，正文片段也能正常展示：
 
-![Google 搜索 "二叉树树" 结果](img/search-google.jpg)
+![Google 搜索“二叉树树”结果](img/search-google.jpg)
 
 百度同样有很好的收录表现：
 
-![百度搜索 "二叉树树" 结果](img/search-baidu.jpg)
+![百度搜索“二叉树树”结果](img/search-baidu.jpg)
 
 Bing 也没落下，同样排名靠前：
 
-![Bing 搜索 "二叉树树" 结果](img/search-bing.jpg)
+![Bing 搜索“二叉树树”结果](img/search-bing.jpg)
 
 更让人惊喜的是，这套 SEO 方案不只让网站名称能搜到，一些技术关键词也有不错的权重。比如搜索 "Cloudflare优选"，在 Google 和 Bing 上本站同样位列前排：
 
-![Google 搜索 "Cloudflare优选" 结果](img/search-google-cf.jpg)
+![Google 搜索“Cloudflare优选”结果](img/search-google-cf.jpg)
 
-![Bing 搜索 "Cloudflare优选" 结果](img/search-bing-cf.jpg)
+![Bing 搜索“Cloudflare优选”结果](img/search-bing-cf.jpg)
 
 这就是边缘 Worker + 路由元数据 + 预渲染 + 结构化数据四管齐下的成果。
 
